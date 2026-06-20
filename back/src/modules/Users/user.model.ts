@@ -46,9 +46,9 @@ const UserSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["SUPER_ADMIN", "FINANCE", "CASE_MANAGER", "SERVICE STAFF"],
+      enum: ["SUPER_ADMIN", "FINANCE", "CASE_MANAGER", "SERVICE_STAFF"],
       required: true,
-      default: "THRIFTEE",
+      default: "SERVICE_STAFF",
     },
     
     isActivated: { type: Boolean, default: false },
@@ -70,6 +70,6 @@ const UserSchema = new mongoose.Schema(
 UserSchema.index({ email: 1 });
 UserSchema.index({ username: 1 });
 UserSchema.index({ role: 1 });
-UserSchema.index({ accountStatus: 1 });
+UserSchema.index({ isActivated: 1 });
 
 export const UserModel = mongoose.model("User", UserSchema);

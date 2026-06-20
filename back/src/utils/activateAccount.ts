@@ -17,7 +17,8 @@ export const activateAccount = async (email: string): Promise<boolean> => {
     from: "Support Team",
     to: normalizedEmail,
     subject: "Account Activation",
-    html: `<p>Hello,</p><p>Click the link to activate your account.</p>`,
+    html: `<p>Hello,</p><p>Click the link to activate your account.</p> <br/>
+    <a href="https://yourapp.com/activate?email=${encodeURIComponent(normalizedEmail)}">Activate Account</a>`,
   });
 
   user.isActivated = true;
