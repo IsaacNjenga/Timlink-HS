@@ -1,23 +1,27 @@
 import React, { useState } from "react";
-import { Avatar, Layout, Menu, Tooltip } from "antd";
+import { Avatar, Layout, Menu, Switch, Tooltip, Typography } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/icons/logo.png";
 import {
   CreditCardOutlined,
   HomeOutlined,
   PoweroffOutlined,
-  UsergroupAddOutlined,
-  VideoCameraOutlined,
   SettingOutlined,
   LeftSquareOutlined,
   RightSquareOutlined,
-  CameraOutlined,
+  IdcardOutlined,
+  FolderOpenOutlined,
+  TruckOutlined,
+  UserSwitchOutlined,
+  ReadOutlined,
+  SolutionOutlined,MoonOutlined,SunOutlined
 } from "@ant-design/icons";
 import { useAuth } from "../contexts/authContext";
 import Swal from "sweetalert2";
-import { primary, accent, accentMid } from "../utils/uiConfig";
+import { primary, accentMid } from "../utils/uiConfig";
 
 const { Header, Sider, Content } = Layout;
+const { Title, Text } = Typography;
 
 const menuConfig = [
   {
@@ -29,50 +33,44 @@ const menuConfig = [
   {
     key: "patient&leads",
     label: "Patient & Leads",
-    icon: CreditCardOutlined,
+    icon: IdcardOutlined,
     path: "/patient&leads",
   },
   {
     key: "cases&surgery",
     label: "Cases & Surgery",
-    icon: VideoCameraOutlined,
+    icon: FolderOpenOutlined,
     path: "/cases&surgery",
   },
   {
     key: "revenue&fees",
     label: "Revenue & Fees",
-    icon: UsergroupAddOutlined,
+    icon: CreditCardOutlined,
     path: "/revenue&fees",
   },
   {
     key: "mobile-imaging",
     label: "Mobile Imaging",
-    icon: CameraOutlined,
+    icon: TruckOutlined,
     path: "/mobile-imaging",
   },
   {
     key: "quotations&invoices",
     label: "Quotations & Invoices",
-    icon: CameraOutlined,
+    icon: ReadOutlined,
     path: "/quotations&invoices",
   },
   {
     key: "doctor-portfolio",
     label: "Doctors' Portfolio",
-    icon: CameraOutlined,
+    icon: SolutionOutlined,
     path: "/doctor-portfolio",
   },
   {
     key: "follow-ups",
     label: "Follow-ups",
-    icon: CameraOutlined,
+    icon: UserSwitchOutlined,
     path: "/follow-up",
-  },
-  {
-    key: "settings",
-    label: "Settings",
-    icon: CameraOutlined,
-    path: "/settings",
   },
 ];
 
@@ -206,7 +204,7 @@ function Navbar() {
           collapsed={collapsed}
           breakpoint="md"
           onBreakpoint={(broken) => setCollapsed(broken)}
-          width={260}
+          width={240}
           collapsedWidth={72}
           style={{
             background: "var(--timlink-sidebar-bg)",
@@ -223,72 +221,59 @@ function Navbar() {
           {/* ── Logo block ── */}
           <div
             style={{
-              padding: collapsed ? "16px 12px" : "14px 12px",
+              padding: collapsed ? "16px" : "14px",
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
               alignItems: "center",
               borderBottom: "1px solid rgba(113,232,161,0.1)",
               marginBottom: 4,
               transition: "padding 0.3s ease",
             }}
           >
-            <img
-              src={logo}
-              alt="logo"
-              style={{
-                width: collapsed ? 44 : 80,
-                height: collapsed ? 44 : 80,
-                borderRadius: collapsed ? 6 : 8,
-                objectFit: "cover",
-                boxShadow: "0 4px 18px rgba(0,0,0,0.28)",
-                transition: "all 0.35s ease",
-              }}
-            />
+            <div>
+              <img
+                src={logo}
+                alt="logo"
+                style={{
+                  width: collapsed ? 40 : 55,
+                  height: collapsed ? 40 : 55,
+                  borderRadius: collapsed ? 6 : 8,
+                  objectFit: "cover",
+                  boxShadow: "0 4px 18px rgba(0,0,0,0.28)",
+                  transition: "all 0.35s ease",
+                }}
+              />
+            </div>
             {!collapsed && (
-              <div style={{ textAlign: "center", marginTop: 12 }}>
-                <p
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    fontSize: 15,
-                    fontWeight: 700,
-                    color: "#fff",
-                    margin: "0 0 4px",
-                    letterSpacing: "0.03em",
-                  }}
-                >
-                  Timlink HS
-                </p>
-
-                {user && (
-                  <div
+              <div style={{ textAlign: "left", marginLeft: 12 }}>
+                <div>
+                  <Title
+                    level={3}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      fontFamily: "'Outfit', sans-serif",
+                      fontWeight: 700,
+                      color: "#fff",
+                      margin: 0,
+                      letterSpacing: "0.03em",
                     }}
                   >
-                    <p
-                      style={{
-                        fontFamily: "'Outfit', sans-serif",
-                        fontSize: 12,
-                        color: "rgba(255,255,255,0.4)",
-                        margin: "0px 0 0",
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      {user?.username}
-                    </p>
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        backgroundColor: accent,
-                        marginLeft: 4,
-                        borderRadius: "50%",
-                      }}
-                    />
-                  </div>
-                )}
+                    THS
+                  </Title>
+                </div>
+                <div>
+                  <Text
+                    style={{
+                      fontFamily: "'Outfit', sans-serif",
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: "#fff",
+                      margin: "0 0 4px",
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    Healthcare Solutions
+                  </Text>
+                </div>
               </div>
             )}
           </div>
@@ -399,17 +384,23 @@ function Navbar() {
                   </Badge>
                 </Tooltip> */}
 
+                 <Switch
+      checkedChildren={<SunOutlined/>}
+      unCheckedChildren={<MoonOutlined />}
+      defaultChecked
+    />
+
                 {/* Settings */}
                 <Tooltip title="Settings">
                   <button
                     className="header-icon-btn"
                     onClick={() => navigate("/settings")}
                     style={{
-                      width: 36,
-                      height: 36,
+                      width: 40,
+                      height: 42,
                       borderRadius: 8,
-                      border: "1px solid rgba(113,232,161,0.16)",
-                      background: "rgba(113,232,161,0.07)",
+                      border: "1px solid rgba(113,232,161,0.0)",
+                      background: "rgba(113,232,161,0.0)",
                       color: "rgba(255,255,255,0.72)",
                       display: "flex",
                       alignItems: "center",
@@ -424,15 +415,7 @@ function Navbar() {
                   </button>
                 </Tooltip>
 
-                {/* Divider */}
-                <div
-                  style={{
-                    width: 1,
-                    height: 28,
-                    background: "rgba(113,232,161,0.16)",
-                    margin: "0 4px",
-                  }}
-                />
+              
 
                 {/* User avatar + name */}
                 <Tooltip title={user?.username}>
@@ -443,8 +426,8 @@ function Navbar() {
                       gap: 10,
                       padding: "6px 12px 6px 6px",
                       borderRadius: 10,
-                      border: "1px solid rgba(113,232,161,0.14)",
-                      background: "rgba(113,232,161,0.07)",
+                      border: "1px solid rgba(113,232,161,0.0)",
+                      background: "rgba(113,232,161,0.0)",
                       cursor: "default",
                     }}
                   >
@@ -487,17 +470,27 @@ function Navbar() {
                   </div>
                 </Tooltip>
 
+                  {/* Divider */}
+                <div
+                  style={{
+                    width: 1,
+                    height: 28,
+                    background: "rgba(113,232,161,0.16)",
+                    margin: "0 4px",
+                  }}
+                />
+
                 {/* Logout */}
                 <Tooltip title="Log Out">
                   <button
                     className="logout-btn"
                     onClick={handleLogout}
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 8,
-                      border: "1px solid rgba(231,76,60,0.3)",
-                      background: "rgba(231,76,60,0.08)",
+                      width: 42,
+                      height: 42,
+                      borderRadius: 50,
+                      border: "1px solid rgba(231,76,60,0.0)",
+                      background: "rgba(231,76,60,0.0)",
                       color: "#e74c3c",
                       display: "flex",
                       alignItems: "center",
