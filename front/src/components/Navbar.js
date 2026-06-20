@@ -5,88 +5,76 @@ import logo from "../assets/icons/logo.png";
 import {
   CreditCardOutlined,
   HomeOutlined,
-  PictureOutlined,
   PoweroffOutlined,
   UsergroupAddOutlined,
-  VideoCameraAddOutlined,
   VideoCameraOutlined,
   SettingOutlined,
   LeftSquareOutlined,
   RightSquareOutlined,
-  CodeOutlined,
   CameraOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "../contexts/authContext";
 import Swal from "sweetalert2";
-import {
-  sidebarBg,
-  primary,
-  globalStyles,
-  accentMid,
-} from "../utils/uiConfig";
+import { primary, accent, accentMid } from "../utils/uiConfig";
 
 const { Header, Sider, Content } = Layout;
 
 const menuConfig = [
   {
-    key: "/",
+    key: "dashboard",
     label: "Dashboard",
     icon: HomeOutlined,
     path: "/",
   },
   {
-    key: "/donations",
-    label: "Donations",
+    key: "patient&leads",
+    label: "Patient & Leads",
     icon: CreditCardOutlined,
-    path: "/donations",
+    path: "/patient&leads",
   },
   {
-    key: "media-group",
-    label: "Gallery",
+    key: "cases&surgery",
+    label: "Cases & Surgery",
     icon: VideoCameraOutlined,
-    children: [
-      {
-        key: "/media",
-        label: "View Gallery",
-        icon: PictureOutlined,
-        path: "/media",
-      },
-      {
-        key: "/media/albums",
-        label: "View Albums",
-        icon: CameraOutlined,
-        path: "/media/albums",},
-      {
-        key: "/media/create",
-        label: "Upload Media",
-        icon: VideoCameraAddOutlined,
-        path: "/media/create",
-      },
-      
-    ],
+    path: "/cases&surgery",
   },
   {
-    key: "/volunteers",
-    label: "Volunteers",
+    key: "revenue&fees",
+    label: "Revenue & Fees",
     icon: UsergroupAddOutlined,
-    path: "/volunteers",
+    path: "/revenue&fees",
   },
   {
-    key: "/webpage-editor",
-    label: "Site Editor",
-    icon: CodeOutlined,
-    path: "/webpage-editor",
+    key: "mobile-imaging",
+    label: "Mobile Imaging",
+    icon: CameraOutlined,
+    path: "/mobile-imaging",
+  },
+  {
+    key: "quotations&invoices",
+    label: "Quotations & Invoices",
+    icon: CameraOutlined,
+    path: "/quotations&invoices",
+  },
+  {
+    key: "doctor-portfolio",
+    label: "Doctors' Portfolio",
+    icon: CameraOutlined,
+    path: "/doctor-portfolio",
+  },
+  {
+    key: "follow-ups",
+    label: "Follow-ups",
+    icon: CameraOutlined,
+    path: "/follow-up",
+  },
+  {
+    key: "settings",
+    label: "Settings",
+    icon: CameraOutlined,
+    path: "/settings",
   },
 ];
-
-// const allLeafItems = menuConfig.flatMap((item) =>
-//   item.children ? item.children : [item],
-// );
-
-// const getTitleFromPath = (path) => {
-//   const found = allLeafItems.find((item) => item.path === path);
-//   return found?.label ?? "Dashboard";
-// };
 
 export const NavLabel = ({ label, collapsed }) => {
   return (
@@ -104,7 +92,7 @@ export const NavLabel = ({ label, collapsed }) => {
           fontFamily: "'Outfit', sans-serif",
           fontSize: 14,
           fontWeight: 500,
-          color: "rgba(255,255,255,0.85)",
+          color: "rgba(255,255,255,0.86)",
           letterSpacing: "0.02em",
           flex: 1,
           display: collapsed ? "none" : "block",
@@ -201,7 +189,7 @@ function Navbar() {
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: primary,
-      cancelButtonColor: "#555",
+      cancelButtonColor: "var(--timlink-secondary-dark)",
       confirmButtonText: "Yes, log out",
     }).then(async (result) => {
       if (result.isConfirmed) await logout();
@@ -210,7 +198,6 @@ function Navbar() {
 
   return (
     <>
-      <style>{globalStyles}</style>
       <Layout style={{ minHeight: "100vh" }}>
         {/* ── SIDEBAR ─────────────────────────────────────────── */}
         <Sider
@@ -222,13 +209,13 @@ function Navbar() {
           width={260}
           collapsedWidth={72}
           style={{
-            background: sidebarBg,
+            background: "var(--timlink-sidebar-bg)",
             overflow: "auto",
             height: "100vh",
             position: "sticky",
             top: 0,
             insetInlineStart: 0,
-            borderRight: "1px solid rgba(255,255,255,0.06)",
+            borderRight: "1px solid rgba(113,232,161,0.1)",
             display: "flex",
             flexDirection: "column",
           }}
@@ -240,7 +227,7 @@ function Navbar() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              borderBottom: "1px solid rgba(255,255,255,0.07)",
+              borderBottom: "1px solid rgba(113,232,161,0.1)",
               marginBottom: 4,
               transition: "padding 0.3s ease",
             }}
@@ -253,8 +240,7 @@ function Navbar() {
                 height: collapsed ? 44 : 80,
                 borderRadius: collapsed ? 6 : 8,
                 objectFit: "cover",
-                // border: `2px solid rgba(254,165,73,0.25)`,
-                boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+                boxShadow: "0 4px 18px rgba(0,0,0,0.28)",
                 transition: "all 0.35s ease",
               }}
             />
@@ -270,7 +256,7 @@ function Navbar() {
                     letterSpacing: "0.03em",
                   }}
                 >
-                  TotoKalezi
+                  Timlink HS
                 </p>
 
                 {user && (
@@ -296,7 +282,7 @@ function Navbar() {
                       style={{
                         width: 8,
                         height: 8,
-                        backgroundColor: "green",
+                        backgroundColor: accent,
                         marginLeft: 4,
                         borderRadius: "50%",
                       }}
@@ -329,7 +315,7 @@ function Navbar() {
           <div
             style={{
               padding: collapsed ? "16px 12px" : "16px 20px",
-              borderTop: "1px solid rgba(255,255,255,0.07)",
+              borderTop: "1px solid rgba(113,232,161,0.1)",
               display: "flex",
               justifyContent: collapsed ? "center" : "flex-start",
             }}
@@ -342,7 +328,7 @@ function Navbar() {
                 alignItems: "center",
                 gap: 10,
                 background: "transparent",
-                border: "1px solid rgba(255,255,255,0.1)",
+                border: "1px solid rgba(113,232,161,0.14)",
                 borderRadius: 8,
                 padding: collapsed ? "8px" : "8px 16px",
                 cursor: "pointer",
@@ -366,10 +352,10 @@ function Navbar() {
           {/* ── HEADER ──────────────────────────────────────────── */}
           <Header
             style={{
-              background: sidebarBg,
+              background: "var(--timlink-header-bg)",
               height: "auto",
               padding: "0",
-              borderBottom: "1px solid rgba(255,255,255,0.06)",
+              borderBottom: "1px solid rgba(113,232,161,0.1)",
               position: "sticky",
               top: 0,
               zIndex: 100,
@@ -422,9 +408,9 @@ function Navbar() {
                       width: 36,
                       height: 36,
                       borderRadius: 8,
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      background: "rgba(255,255,255,0.04)",
-                      color: "rgba(255,255,255,0.6)",
+                      border: "1px solid rgba(113,232,161,0.16)",
+                      background: "rgba(113,232,161,0.07)",
+                      color: "rgba(255,255,255,0.72)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -443,7 +429,7 @@ function Navbar() {
                   style={{
                     width: 1,
                     height: 28,
-                    background: "rgba(255,255,255,0.1)",
+                    background: "rgba(113,232,161,0.16)",
                     margin: "0 4px",
                   }}
                 />
@@ -457,8 +443,8 @@ function Navbar() {
                       gap: 10,
                       padding: "6px 12px 6px 6px",
                       borderRadius: 10,
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(113,232,161,0.14)",
+                      background: "rgba(113,232,161,0.07)",
                       cursor: "default",
                     }}
                   >
@@ -535,7 +521,7 @@ function Navbar() {
               margin: 20,
               padding: 0,
               minHeight: "calc(100vh - 104px)",
-              background: "transparent",
+              background: "var(--timlink-content-bg)",
             }}
           >
             <Outlet />

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Button, Card, Divider, Form, Input, Typography } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import axios from "axios";
 import { useAuth } from "../contexts/authContext";
 import { useNotification } from "../contexts/notificationContext";
+import logo from "../assets/icons/logo.png";
+import { brand, primary, primaryGlow } from "../utils/uiConfig";
 import {
   checkEmailExists,
   checkUsernameExists,
@@ -11,19 +13,11 @@ import {
 
 const { Title, Text } = Typography;
 
-const cardStyle = {
-  maxHeight: "95vh",
-  height: "100%",
-  borderRadius: 0,
-  background: "linear-gradient(to left, rgba(0,0,0,0.26), rgba(0,0,0,0.2))",
-  border: "none",
-};
-
 const titleStyle = {
   textAlign: "center",
-  marginBottom: 5,
+  marginBottom: 4,
   marginTop: 0,
-  color: "#ffffff",
+  color: "var(--timlink-text)",
 };
 
 const labelStyle = {
@@ -31,22 +25,29 @@ const labelStyle = {
   fontSize: 14,
   fontWeight: 500,
   marginTop: 0,
-  color: "#ffffff",
+  color: "var(--timlink-text)",
 };
 
 const inputStyle = {
   marginBottom: 0,
-  borderRadius: 12,
+  borderRadius: 8,
   marginTop: 0,
+  minHeight: 42,
 };
 
 const submitBtnStyle = {
-  padding: 18,
-  borderRadius: 18,
+  minHeight: 44,
+  borderRadius: 8,
+  fontWeight: 700,
   transition: "all 0.3s ease",
+  boxShadow: `0 10px 26px ${primaryGlow}`,
 };
 
-const signInTextStyle = { cursor: "pointer" };
+const signInTextStyle = {
+  color: primary,
+  cursor: "pointer",
+  fontWeight: 700,
+};
 
 function Auth() {
   const [form] = Form.useForm();
@@ -84,7 +85,7 @@ function Auth() {
           };
 
       const res = await axios.post(
-        `${isSignIn ? "sign-in" : "sign-up"}`,
+        `${isSignIn ? "auth/sign-in" : "auth/sign-up"}`,
         payload,
       );
 
@@ -130,67 +131,134 @@ function Auth() {
       style={{
         position: "relative",
         minHeight: "100vh",
-        background: `url(${"https://images.unsplash.com/photo-1655720358066-2aab2a903ef8?w=900"}) no-repeat center center/cover`,
+        background:
+          "linear-gradient(135deg, rgba(6,27,24,0.72), rgba(15,107,120,0.45)), url(https://images.unsplash.com/photo-1655720358066-2aab2a903ef8?w=1400) no-repeat center center/cover",
+        display: "grid",
+        placeItems: "center",
+        padding: 24,
       }}
     >
       <div
+        className="auth-panel"
         style={{
-          position: "absolute",
-          padding: 28,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          margin: "10px 0",
-          border: "none",
+          width: "min(920px, 100%)",
+          display: "grid",
+          gridTemplateColumns: "minmax(280px, 0.9fr) minmax(320px, 1fr)",
+          border: "1px solid rgba(113,232,161,0.22)",
+          borderRadius: 8,
+          overflow: "hidden",
+          boxShadow: "0 24px 70px rgba(0,0,0,0.32)",
+          background: "var(--timlink-surface)",
         }}
       >
-        <Card
+        <div
           style={{
-            margin: 0,
-            border: "none",
-            background: 0,
-            borderRadius: 20,
+            minHeight: isSignIn ? 520 : 620,
+            padding: 32,
+            background:
+              "linear-gradient(160deg, rgba(6,27,24,0.92), rgba(15,107,120,0.76)), url(https://images.unsplash.com/photo-1444664361762-afba083a4d77?w=900) no-repeat center center/cover",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
           }}
         >
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
-              padding: 0,
-              margin: 0,
-              border: "none",
-              background: 0,
-              borderRadius: 20,
+              alignItems: "center",
+              gap: 12,
             }}
           >
-            <div
+            <img
+              src={logo}
+              alt="Timlink Healthcare Solutions"
               style={{
-                background: `url(${"https://images.unsplash.com/photo-1444664361762-afba083a4d77?w=900"}) no-repeat center center/cover`,
-                width: 400,
-                height: isSignIn ? 500 : 600,
-                border: "none",
-                borderTopLeftRadius: 20,
-                borderBottomLeftRadius: 20,
+                width: 52,
+                height: 52,
+                borderRadius: 8,
+                objectFit: "cover",
+                boxShadow: "0 8px 26px rgba(0,0,0,0.28)",
               }}
-            ></div>
+            />
             <div
               style={{
-                background:
-                  "linear-gradient(to right, #011b2290 0%, #18839b53 100%)",
-                width: 500,
-                height: isSignIn ? 500 : 600,
-                border: "none",
-                borderTopRightRadius: 20,
-                borderBottomRightRadius: 20,
+                color: "#fff",
               }}
             >
-              <Card style={{ ...cardStyle, width: "auto" }}>
-                <Divider style={{ borderColor: "#fff" }}>
-                  <Title level={1} style={{ ...titleStyle, fontSize: 40 }}>
-                    {isSignIn ? "Sign In" : "Sign Up"}
-                  </Title>
-                </Divider>
-                <div>
+              <Text
+                style={{
+                  display: "block",
+                  color: "rgba(255,255,255,0.72)",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  fontSize: 11,
+                }}
+              >
+                Timlink
+              </Text>
+              <Title
+                level={3}
+                style={{
+                  color: "#fff",
+                  margin: 0,
+                  lineHeight: 1.1,
+                }}
+              >
+                Healthcare Solutions
+              </Title>
+            </div>
+          </div>
+          <div>
+            <Title
+              level={2}
+              style={{
+                color: "#fff",
+                marginBottom: 12,
+                lineHeight: 1.12,
+              }}
+            >
+              Connected care operations.
+            </Title>
+            <div
+              style={{
+                width: 72,
+                height: 4,
+                borderRadius: 999,
+                background: brand.seed,
+                boxShadow: `0 0 24px ${primaryGlow}`,
+              }}
+            />
+          </div>
+        </div>
+
+        <div
+          style={{
+            minHeight: isSignIn ? 520 : 620,
+            padding: "38px min(44px, 7vw)",
+            background:
+              "linear-gradient(180deg, var(--timlink-surface), var(--timlink-surface-muted))",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <Title level={1} style={{ ...titleStyle, fontSize: 36 }}>
+            {isSignIn ? "Sign In" : "Sign Up"}
+          </Title>
+          <Text
+            style={{
+              display: "block",
+              textAlign: "center",
+              color: "var(--timlink-text-muted)",
+              marginBottom: 28,
+            }}
+          >
+            {isSignIn
+              ? "Access your Timlink workspace"
+              : "Create your Timlink workspace account"}
+          </Text>
+          <div>
                   <Form
                     layout="vertical"
                     form={form}
@@ -280,7 +348,11 @@ function Auth() {
                     >
                       <Input.Password
                         iconRender={(visible) =>
-                          visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                          visible ? (
+                            <EyeTwoTone twoToneColor={primary} />
+                          ) : (
+                            <EyeInvisibleOutlined />
+                          )
                         }
                         value={values.password}
                         onChange={(e) =>
@@ -320,7 +392,11 @@ function Auth() {
                       >
                         <Input.Password
                           iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                            visible ? (
+                              <EyeTwoTone twoToneColor={primary} />
+                            ) : (
+                              <EyeInvisibleOutlined />
+                            )
                           }
                           style={inputStyle}
                         />
@@ -329,7 +405,12 @@ function Auth() {
 
                     {isSignIn && (
                       <div style={{ marginTop: 0, marginBottom: 10 }}>
-                        <Text style={{ color: "#fff", cursor: "pointer" }}>
+                        <Text
+                          style={{
+                            color: "var(--timlink-text-muted)",
+                            cursor: "pointer",
+                          }}
+                        >
                           Forgot your password?
                         </Text>
                       </div>
@@ -344,10 +425,11 @@ function Auth() {
                         htmlType="submit"
                         disabled={!values.email}
                         onMouseEnter={(e) =>
-                          (e.currentTarget.style.transform = "scale(1.05)")
+                          (e.currentTarget.style.transform =
+                            "translateY(-1px)")
                         }
                         onMouseLeave={(e) =>
-                          (e.currentTarget.style.transform = "scale(1)")
+                          (e.currentTarget.style.transform = "translateY(0)")
                         }
                       >
                         {loading ? "" : "Submit"}
@@ -364,7 +446,7 @@ function Auth() {
                       {isSignIn ? (
                         <Text
                           style={{
-                            color: "#ffffff",
+                            color: "var(--timlink-text-muted)",
                           }}
                         >
                           Don't have an account?{" "}
@@ -375,7 +457,7 @@ function Auth() {
                       ) : (
                         <Text
                           style={{
-                            color: "#ffffff",
+                            color: "var(--timlink-text-muted)",
                           }}
                         >
                           Already have an account?{" "}
@@ -386,12 +468,23 @@ function Auth() {
                       )}
                     </div>
                   </Form>
-                </div>
-              </Card>
-            </div>
           </div>
-        </Card>
+        </div>
       </div>
+      <style>
+        {`
+          @media (max-width: 780px) {
+            [data-theme] .ant-form {
+              width: 100%;
+            }
+          }
+          @media (max-width: 720px) {
+            .auth-panel {
+              grid-template-columns: 1fr !important;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }

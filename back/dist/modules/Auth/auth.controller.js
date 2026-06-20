@@ -43,6 +43,7 @@ exports.userLoginController = (0, catchAsync_1.catchAsync)(async (req, res) => {
         success: true,
         message: "Login successful",
         token: loginResult?.accessToken,
+        refreshToken: loginResult?.refreshToken,
         user: {
             id: user._id,
             email: user.email,

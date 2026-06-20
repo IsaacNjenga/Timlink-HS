@@ -62,6 +62,7 @@ export const userLoginController = catchAsync(
       success: true,
       message: "Login successful",
       token: loginResult?.accessToken,
+      refreshToken: loginResult?.refreshToken,
       user: {
         id: user._id,
         email: user.email,
