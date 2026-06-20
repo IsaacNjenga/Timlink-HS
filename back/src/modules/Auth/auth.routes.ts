@@ -7,6 +7,8 @@ import {
   changePasswordController,
   activateAccountController,
   userRegisterController,
+  checkEmailExists,
+  checkUsernameExists,
 } from "./auth.controller";
 
 export function AuthRouter(): Router {
@@ -19,6 +21,8 @@ export function AuthRouter(): Router {
   router.post("/password-reset/request-otp", requestPasswordResetOtpController);
   router.post("/password-reset/verify-otp", verifyPasswordResetOtpController);
   router.post("/password-reset/reset", resetPasswordController);
+  router.get("/check-username", checkUsernameExists);
+  router.get("/check-email", checkEmailExists);
 
   return router;
 }

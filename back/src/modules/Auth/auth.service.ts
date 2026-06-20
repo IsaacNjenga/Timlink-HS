@@ -221,3 +221,15 @@ export const resetPassword = async (
 
   return true;
 };
+
+export const checkEmail = async (email: string): Promise<boolean> => {
+  const count = await UserModel.countDocuments({ email: email });
+  if (!count) throw new BadRequestError("Email not found");
+  return count > 0;
+};
+
+export const checkUsername = async (username: string): Promise<boolean> => {
+  const count = await UserModel.countDocuments({ username: username });
+  if (!count) throw new BadRequestError("Username not found");
+  return count > 0;
+};

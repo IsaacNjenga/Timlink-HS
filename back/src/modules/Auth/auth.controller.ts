@@ -8,6 +8,8 @@ import {
   resetPassword,
   verifyPasswordResetOtp,
   createAccount,
+  checkEmail,
+  checkUsername,
 } from "./auth.service";
 import { UserModel } from "../Users/user.model";
 import { createLog } from "../Logs/logs.service";
@@ -185,5 +187,49 @@ export const resetPasswordController = catchAsync(
       success: true,
       message: "Password reset successfully",
     });
+  },
+);
+
+export const checkEmailExists = catchAsync(
+  async (req: Request, res: Response) => {
+    const email = Array.isArray(req.query.email)
+      ? req.query.email[0]
+      : req.query.email;
+
+    if (typeof email !== "string" || !email) {
+      throw new BadRequestError("Email query parameter is required");
+    }
+
+    const exists = await checkEmail(email);
+
+    if (exists) {
+      res.status(200).json({
+        success: true,
+        data: "Email is already in use",
+        message: "Email check successful",
+      });
+    }
+  },
+);
+
+export const checkUsernameExists = catchAsync(
+  async (req: Request, res: Response) => {
+    const username = Array.isArray(req.query.username)
+      ? req.query.username[0]
+      : req.query.username;
+
+    if (typeof username !== "string" || !username) {
+      throw new BadRequestError("Username query parameter is required");
+    }
+
+    const exists = await checkUsername(username);
+
+    if (exists) {
+      res.status(200).json({
+        success: true,
+        data: "Username is already in use",
+        message: "Username check successful",
+      });
+    }
   },
 );

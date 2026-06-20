@@ -2,20 +2,17 @@ import { BadRequestError } from "../../common/errors/BadRequestError";
 import { UserModel } from "./user.model";
 import { UpdateUserDTO, User } from "./user.types";
 
-
 const USER_PROFILE_POPULATE = [
-    {
-        path: "profile",
-        populate: {
-            path: "role",
-        },
+  {
+    path: "profile",
+    populate: {
+      path: "role",
     },
+  },
 ];
 
 const USER_PRIVATE_SELECT = "-password -refreshToken";
-const ADMIN_ONLY_FIELDS = new Set([
-  "role",
-]);
+const ADMIN_ONLY_FIELDS = new Set(["role"]);
 const BLOCKED_UPDATE_FIELDS = new Set([
   "_id",
   "id",
@@ -121,7 +118,6 @@ export class UserService {
       throw new BadRequestError("User not found");
     }
 
-    
     return toUser(user);
   }
 
@@ -144,7 +140,8 @@ export class UserService {
       throw new BadRequestError("User not found");
     }
 
-  
     return toUser(user);
   }
+
+ 
 }
