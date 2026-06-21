@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
 import { useAuth } from "../contexts/authContext";
-import Auth from "../pages/Auth";
+import Auth from "../pages/Auth/Auth";
 import { useNotification } from "../contexts/notificationContext";
 
 function ProtectedRoutes({ children }) {

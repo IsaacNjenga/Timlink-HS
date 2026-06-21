@@ -14,9 +14,13 @@ import {
   TruckOutlined,
   UserSwitchOutlined,
   ReadOutlined,
-  SolutionOutlined,MoonOutlined,SunOutlined
+  SolutionOutlined,
+  MoonOutlined,
+  SunOutlined,
+  MedicineBoxOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "../contexts/authContext";
+import { useUser } from "../contexts/userContext";
 import Swal from "sweetalert2";
 import { primary, accentMid } from "../utils/uiConfig";
 
@@ -67,6 +71,12 @@ const menuConfig = [
     path: "/doctor-portfolio",
   },
   {
+    key: "hospitals",
+    label: "Hospitals",
+    icon: MedicineBoxOutlined,
+    path: "/hospitals",
+  },
+  {
     key: "follow-ups",
     label: "Follow-ups",
     icon: UserSwitchOutlined,
@@ -108,6 +118,7 @@ function Navbar() {
   const navigate = useNavigate();
   const { logout, user, collapsed, setCollapsed } = useAuth();
   const [current, setCurrent] = useState(location.pathname);
+  const { mode, setMode } = useUser();
 
   // Ant Design menu items
   const antMenuItems = menuConfig.map((item) => {
@@ -384,11 +395,12 @@ function Navbar() {
                   </Badge>
                 </Tooltip> */}
 
-                 <Switch
-      checkedChildren={<SunOutlined/>}
-      unCheckedChildren={<MoonOutlined />}
-      defaultChecked
-    />
+                <Switch
+                  checkedChildren={<SunOutlined />}
+                  unCheckedChildren={<MoonOutlined />}
+                  checked={mode === "light"}
+                  onChange={(checked) => setMode(checked ? "light" : "dark")}
+                />
 
                 {/* Settings */}
                 <Tooltip title="Settings">
@@ -414,8 +426,6 @@ function Navbar() {
                     <SettingOutlined />
                   </button>
                 </Tooltip>
-
-              
 
                 {/* User avatar + name */}
                 <Tooltip title={user?.username}>
@@ -470,7 +480,7 @@ function Navbar() {
                   </div>
                 </Tooltip>
 
-                  {/* Divider */}
+                {/* Divider */}
                 <div
                   style={{
                     width: 1,

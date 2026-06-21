@@ -1,4 +1,6 @@
 
+import { theme } from "antd";
+
 export const brand = {
   seed: "#71e8a1",
   primary: "#2fbd74",
@@ -45,6 +47,8 @@ export const getAntdTheme = (mode = "light") => {
   const selectedTheme = getTheme(mode);
 
   return {
+    algorithm:
+      selectedTheme.name === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
     token: {
       colorPrimary: brand.primary,
       colorSuccess: brand.success,
@@ -144,6 +148,115 @@ export const dark = themeModes.light.sidebarBg;
 export const globalStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
   ${themeCssVariables}
+
+  html,
+  body,
+  #root,
+  [data-theme] {
+    min-height: 100%;
+    background: var(--timlink-bg);
+    color: var(--timlink-text);
+  }
+
+  [data-theme] {
+    min-height: 100vh;
+    color-scheme: light;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  [data-theme] .ant-layout,
+  [data-theme] .ant-layout-content {
+    background: var(--timlink-content-bg) !important;
+    color: var(--timlink-text);
+  }
+
+  [data-theme] .ant-typography,
+  [data-theme] .ant-table,
+  [data-theme] .ant-form,
+  [data-theme] .ant-card,
+  [data-theme] .ant-collapse,
+  [data-theme] .ant-input,
+  [data-theme] .ant-select,
+  [data-theme] .ant-tag {
+    font-family: 'Outfit', sans-serif !important;
+  }
+
+  [data-theme] .ant-typography,
+  [data-theme] .ant-table,
+  [data-theme] .ant-form,
+  [data-theme] .ant-card,
+  [data-theme] .ant-collapse,
+  [data-theme] .ant-table-cell,
+  [data-theme] .ant-empty-description {
+    color: var(--timlink-text) !important;
+  }
+
+  [data-theme] .ant-typography-secondary,
+  [data-theme] .ant-table-thead > tr > th,
+  [data-theme] .ant-form-item-label > label {
+    color: var(--timlink-text-muted) !important;
+  }
+
+  [data-theme] .ant-table-wrapper,
+  [data-theme] .ant-table,
+  [data-theme] .ant-table-container,
+  [data-theme] .ant-table-content,
+  [data-theme] .ant-table-thead > tr > th,
+  [data-theme] .ant-table-tbody > tr > td,
+  [data-theme] .ant-collapse,
+  [data-theme] .ant-collapse-header,
+  [data-theme] .ant-collapse-content,
+  [data-theme] .ant-input,
+  [data-theme] .ant-input-affix-wrapper,
+  [data-theme] .ant-select-selector,
+  [data-theme] .ant-picker,
+  [data-theme] .ant-card {
+    background: var(--timlink-surface) !important;
+    border-color: var(--timlink-border) !important;
+  }
+
+  [data-theme] .ant-table-thead > tr > th,
+  [data-theme] .ant-collapse-header {
+    background: var(--timlink-surface-muted) !important;
+  }
+
+  [data-theme] .ant-table-tbody > tr:hover > td,
+  [data-theme] .ant-table-tbody > tr.ant-table-row:hover > td {
+    background: var(--timlink-surface-muted) !important;
+  }
+
+  [data-theme] .ant-tag {
+    background: var(--timlink-surface-muted);
+    border-color: var(--timlink-border);
+    color: var(--timlink-text);
+  }
+
+  [data-theme] .ant-tag-checkable {
+    border: 1px solid var(--timlink-border);
+    border-radius: 999px;
+    padding: 3px 12px;
+    transition: all 0.2s ease;
+  }
+
+  [data-theme] .ant-tag-checkable:hover {
+    color: ${primary};
+    border-color: ${primaryMid};
+    background: ${primaryDim};
+  }
+
+  [data-theme] .ant-tag-checkable-checked {
+    background: ${primary} !important;
+    border-color: ${primary} !important;
+    color: #fff !important;
+  }
+
+  [data-theme] .ant-input::placeholder,
+  [data-theme] .ant-select-selection-placeholder {
+    color: var(--timlink-text-muted) !important;
+  }
 
   .media-card-wrap { position: relative; border-radius: 10px; overflow: hidden; cursor: pointer; break-inside: avoid; margin-bottom: 14px; }
   .media-card-wrap img,
