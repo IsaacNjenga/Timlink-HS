@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, Layout, Menu, Switch, Tooltip, Typography } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/icons/logo.png";
+import logo from "../assets/logo.jpeg";
 import {
   CreditCardOutlined,
   HomeOutlined,
@@ -216,7 +216,7 @@ function Navbar() {
           breakpoint="md"
           onBreakpoint={(broken) => setCollapsed(broken)}
           width={240}
-          collapsedWidth={72}
+          collapsedWidth={70}
           style={{
             background: "var(--timlink-sidebar-bg)",
             overflow: "auto",
@@ -232,12 +232,12 @@ function Navbar() {
           {/* ── Logo block ── */}
           <div
             style={{
-              padding: collapsed ? "16px" : "14px",
+              padding: collapsed ? "11px 14px" : "4px 14px",
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
               borderBottom: "1px solid rgba(113,232,161,0.1)",
-              marginBottom: 4,
+              marginBottom: 0,
               transition: "padding 0.3s ease",
             }}
           >
@@ -248,7 +248,7 @@ function Navbar() {
                 style={{
                   width: collapsed ? 40 : 55,
                   height: collapsed ? 40 : 55,
-                  borderRadius: collapsed ? 6 : 8,
+                  borderRadius: 0,
                   objectFit: "cover",
                   boxShadow: "0 4px 18px rgba(0,0,0,0.28)",
                   transition: "all 0.35s ease",

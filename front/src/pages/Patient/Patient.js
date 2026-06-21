@@ -7,6 +7,7 @@ import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { formatDistanceToNowStrict } from "date-fns";
+import ViewPatient from "./ViewPatient";
 
 const { Text } = Typography;
 
@@ -24,6 +25,16 @@ function Patient() {
   const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [content, setContent] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const viewPatient = (patient) => {
+    setLoading(true);
+    setContent(patient);
+    setOpenModal(true);
+    setTimeout(() => setLoading(false), 100);
+  };
 
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -150,12 +161,18 @@ function Patient() {
               }}
             />
           </Tooltip>
-          <Tooltip title="View Patient">
-            <Button type="link" icon={<EyeOutlined />} />
-          </Tooltip>
           <Tooltip title="Delete Patient">
             <Button type="link" icon={<DeleteOutlined />} />
           </Tooltip>
+          {/* <Tooltip title="View Patient">
+            <Button
+              type="link"
+              icon={<EyeOutlined />}
+              onClick={() => {
+                viewPatient(record);
+              }}
+            />
+          </Tooltip> */}
         </Space>
       ),
     },
@@ -215,8 +232,22 @@ function Patient() {
             </Tag>
           </div>
         )}
-        <TableComponent columns={columns} data={filteredData} size="large" />
+        <TableComponent
+          rowKey="_id"
+          columns={columns}
+          data={filteredData}
+          size="large"
+          loading={loading}
+          viewRecord={viewPatient}
+        />
       </div>
+
+      <ViewPatient
+        content={content}
+        loading={loading}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
     </>
   );
 }

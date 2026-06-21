@@ -1,15 +1,25 @@
 import { CloseOutlined } from "@ant-design/icons";
-import { Modal } from "antd";
+import { Modal, theme } from "antd";
 import React from "react";
 
-function ModalComponent({ content, openModal, setOpenModal, loading }) {
+function ModalComponent({
+  children,
+  openModal,
+  setOpenModal,
+  loading,
+  title,
+  width,
+}) {
+  const { token } = theme.useToken();
+
   return (
     <Modal
       footer={null}
       open={openModal}
+      title={title}
       onCancel={() => setOpenModal(false)}
       confirmLoading={loading}
-      width="95%"
+      width={width}
       closeIcon={
         <CloseOutlined
           style={{
@@ -23,19 +33,19 @@ function ModalComponent({ content, openModal, setOpenModal, loading }) {
       }
       bodyStyle={{
         padding: 0,
-        background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+        background: token.colorBgContainer,
         borderRadius: 16,
         overflow: "hidden",
       }}
       style={{ top: 20 }}
       styles={{
         body: {
-          maxHeight: "90vh",
+          maxHeight: "85vh",
           overflowY: "auto",
         },
       }}
     >
-      {content}
+      {children}
     </Modal>
   );
 }
