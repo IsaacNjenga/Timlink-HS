@@ -66,9 +66,7 @@ export const userLoginController = catchAsync(
       user: {
         id: user._id,
         email: user.email,
-        first_name: user.firstname,
-        last_name: user.lastname,
-        phone_number: user.phonenumber,
+        username: user.username,
         avatar: user.avatar,
         role: user.role,
       },

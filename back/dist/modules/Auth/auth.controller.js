@@ -47,9 +47,7 @@ exports.userLoginController = (0, catchAsync_1.catchAsync)(async (req, res) => {
         user: {
             id: user._id,
             email: user.email,
-            first_name: user.firstname,
-            last_name: user.lastname,
-            phone_number: user.phonenumber,
+            username: user.username,
             avatar: user.avatar,
             role: user.role,
         },

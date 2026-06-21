@@ -104,7 +104,6 @@ function Auth() {
           setIsSignIn(true);
           return;
         }
-
         login(user, token, refreshToken);
       }
     } catch (error) {

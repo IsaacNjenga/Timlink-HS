@@ -1,59 +1,14 @@
 import React, { useMemo, useState } from "react";
 import PageTitle from "../../components/PageTitle";
 import { PatientData as data } from "../../assets/data/patientData";
-
-import { Button, Space, Tag, Flex, Tooltip } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { formatDistanceToNowStrict } from "date-fns";
 
-const columns = [
-  {
-    title: "Patient Name",
-    dataIndex: "name",
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-  },
-  {
-    title: "Diagnosis",
-    dataIndex: "diagnosis",
-  },
-  {
-    title: "Referral",
-    dataIndex: "referral",
-  },
-  {
-    title: "Payment",
-    dataIndex: "payment",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-  },
-  {
-    title: "Date of Registration",
-    dataIndex: "date",
-  },
-  {
-    title: "Actions",
-    dataIndex: "actions",
-    render: (_, record) => (
-      <Space size="small">
-        <Tooltip title="Edit Patient">
-          <Button type="link" icon={<EditOutlined />} />
-        </Tooltip>
-        <Tooltip title="View Patient">
-          <Button type="link" icon={<EyeOutlined />} />
-        </Tooltip>
-        <Tooltip title="Delete Patient">
-          <Button type="link" icon={<DeleteOutlined />} />
-        </Tooltip>
-      </Space>
-    ),
-  },
-];
+const { Text } = Typography;
 
 const statusTags = [
   "All",
@@ -66,6 +21,7 @@ const statusTags = [
 ];
 
 function Patient() {
+  const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -85,6 +41,126 @@ function Patient() {
     });
   }, [searchTerm, selectedStatus]);
 
+  const columns = [
+    {
+      title: "Patient",
+      dataIndex: "name",
+      render: (_, record) => (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            alignContent: "center",
+            padding: 4,
+            borderRadius: 8,
+          }}
+        >
+          <div
+            style={{ marginRight: 12, display: "flex", alignItems: "center" }}
+          >
+            <Avatar
+              size="medium"
+              style={{ backgroundColor: "#f56a00", verticalAlign: "middle" }}
+            >
+              {record.firstName?.charAt(0)} {record.lastName?.charAt(0)}
+            </Avatar>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
+              {record.firstName} {record.lastName}
+            </div>
+
+            <div>
+              <Text type="secondary">
+                {formatDistanceToNowStrict(new Date(record.dob), {
+                  addSuffix: false,
+                })}
+              </Text>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+
+    {
+      title: "Diagnosis",
+      dataIndex: "diagnosis",
+    },
+    {
+      title: "Referral",
+      dataIndex: "referral",
+      render: (_, record) =>
+        record.referral || (
+          <Text>
+            {record.referral === "referral doctor"
+              ? record.referringDoctor
+              : record.referral}
+          </Text>
+        ),
+    },
+    {
+      title: "Payment",
+      dataIndex: "payment",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (status) => {
+        let color;
+        switch (status) {
+          case "New Lead":
+            color = "blue";
+            break;
+          case "Under Review":
+            color = "orange";
+            break;
+          case "Matched":
+            color = "green";
+            break;
+          case "Scheduled":
+            color = "purple";
+            break;
+          case "Completed":
+            color = "cyan";
+            break;
+          case "Closed":
+            color = "red";
+            break;
+          default:
+            color = "default";
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+    {
+      title: "Date of Registration",
+      dataIndex: "date",
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      render: (_, record) => (
+        <Space size="small">
+          <Tooltip title="Edit Patient">
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => {
+                navigate(`/patient&leads/edit-patient/${record._id}`);
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="View Patient">
+            <Button type="link" icon={<EyeOutlined />} />
+          </Tooltip>
+          <Tooltip title="Delete Patient">
+            <Button type="link" icon={<DeleteOutlined />} />
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <>
       <div
@@ -99,7 +175,11 @@ function Patient() {
           title="Patient & Leads"
           subtitle="Manage patient intake, history and case progression."
         />
-        <Button type="primary" style={{ marginTop: 10 }}>
+        <Button
+          type="primary"
+          style={{ marginTop: 10 }}
+          onClick={() => navigate("/patient&leads/add-patient")}
+        >
           + Add New Patient
         </Button>
       </div>
@@ -108,6 +188,7 @@ function Patient() {
         <div>
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
         </div>
+
         <div style={{ marginTop: 20 }}>
           <Flex gap="large" wrap align="center">
             {statusTags.map((status) => (

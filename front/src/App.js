@@ -17,6 +17,8 @@ import { ConfigProvider, Spin } from "antd";
 import ProtectedRoutes from "./utils/ProtectedRoute";
 import { getAntdTheme, globalStyles } from "./utils/uiConfig";
 import { useUser } from "./contexts/userContext";
+import AddPatient from "./pages/Patient/AddPatient";
+import EditPatient from "./pages/Patient/EditPatient";
 
 axios.defaults.baseURL = process.env.REACT_APP_DEV_API_URL;
 //axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -52,6 +54,22 @@ function App() {
                 element={
                   <ProtectedRoutes>
                     <Patient />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/patient&leads/add-patient"
+                element={
+                  <ProtectedRoutes>
+                    <AddPatient />
+                  </ProtectedRoutes>
+                }
+              />{" "}
+              <Route
+                path="/patient&leads/edit-patient/:id"
+                element={
+                  <ProtectedRoutes>
+                    <EditPatient />
                   </ProtectedRoutes>
                 }
               />
