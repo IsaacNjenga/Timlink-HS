@@ -1,18 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Form, Typography } from "antd";
 import PatientForm from "./PatientForm";
+import { useParams } from "react-router-dom";
+import dayjs from "dayjs";
+import { PatientData } from "../../assets/data/patientData";
+
 const { Title, Text } = Typography;
 
+const formatDateValue = (dateValue) => {
+  if (!dateValue) return undefined;
+  return dayjs.isDayjs(dateValue) ? dateValue.format("YYYY-MM-DD") : dateValue;
+};
+
 function EditPatient() {
+  const { id } = useParams();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const patient = useMemo(
+    () => PatientData.find((item) => item._id === id),
+    [id],
+  );
+
+  useEffect(() => {
+    if (!patient) return;
+
+    form.setFieldsValue({
+      ...patient,
+      dob: patient.dob ? dayjs(patient.dob) : undefined,
+    });
+  }, [patient, form]);
 
   const handleSubmit = (values) => {
     setLoading(true);
     try {
       const formattedValues = {
         ...values,
-        dob: values.dob ? values.dob.format("YYYY-MM-DD") : undefined,
+        dob: formatDateValue(values.dob),
       };
       console.log("Form values:", formattedValues);
     } catch (error) {

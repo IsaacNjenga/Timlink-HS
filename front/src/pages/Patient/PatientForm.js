@@ -346,9 +346,11 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
             borderRadius: "6px",
           }}
         >
-          {formType === "create"
-            ? "Submit Patient Record"
-            : "Update Patient Record"}
+          {loading
+            ? "Submitting..."
+            : formType === "create"
+              ? "Submit Patient Record"
+              : "Update Patient Record"}
         </Button>
       </div>
     </Form>
