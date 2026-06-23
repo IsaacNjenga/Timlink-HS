@@ -19,6 +19,8 @@ import { getAntdTheme, globalStyles } from "./utils/uiConfig";
 import { useUser } from "./contexts/userContext";
 import AddPatient from "./pages/Patient/AddPatient";
 import EditPatient from "./pages/Patient/EditPatient";
+import AddCase from "./pages/Cases/AddCase";
+import EditCase from "./pages/Cases/EditCase";
 
 axios.defaults.baseURL = process.env.REACT_APP_DEV_API_URL;
 //axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -78,6 +80,22 @@ function App() {
                 element={
                   <ProtectedRoutes>
                     <Cases />
+                  </ProtectedRoutes>
+                }
+              />
+               <Route
+                path="/cases&surgery/add-case"
+                element={
+                  <ProtectedRoutes>
+                    <AddCase />
+                  </ProtectedRoutes>
+                }
+              />
+               <Route
+                path="/cases&surgery/edit-case/:id"
+                element={
+                  <ProtectedRoutes>
+                    <EditCase />
                   </ProtectedRoutes>
                 }
               />

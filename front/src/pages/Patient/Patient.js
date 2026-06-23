@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined,  } from "@ant-design/icons";
 import { formatDistanceToNowStrict } from "date-fns";
 import ViewPatient from "./ViewPatient";
 
