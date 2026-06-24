@@ -1,44 +1,82 @@
 import React, { useMemo, useState } from "react";
 import PageTitle from "../../components/PageTitle";
 import { useNavigate } from "react-router-dom";
-import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
+import { Button, Space, Tag, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { formatDistanceToNowStrict } from "date-fns";
 import { DoctorData as data } from "../../assets/data/doctorData";
+import ViewDoctor from "./ViewDoctor";
 
 const { Text } = Typography;
 
 function Doctors() {
   const navigate = useNavigate();
-  const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const filteredData = useMemo(() => {
-      const normalizedSearch = searchTerm.trim().toLowerCase();
-  
-      return data.filter((item) => {
-        const matchesStatus =
-          selectedStatus === "All" || item.status === selectedStatus;
-        const matchesSearch =
-          !normalizedSearch ||
-          Object.values(item).some((value) =>
-            String(value).toLowerCase().includes(normalizedSearch),
-          );
-  
-        return matchesStatus && matchesSearch;
-      });
-    }, [searchTerm, selectedStatus]);
+  const viewDoctor = (doctor) => {
+    setLoading(true);
+    setContent(doctor);
+    setOpenModal(true);
+    setTimeout(() => setLoading(false), 100);
+  };
 
-  const columns=[
+  const filteredData = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
+    return data.filter((item) => {
+      const matchesSearch =
+        !normalizedSearch ||
+        Object.values(item).some((value) =>
+          String(value).toLowerCase().includes(normalizedSearch),
+        );
+
+      return matchesSearch;
+    });
+  }, [searchTerm]);
+
+  const columns = [
     {
-      title: "Name",
+      title: "Patient",
       dataIndex: "name",
       key: "name",
+      width: 320,
+      render: (_, record) => (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            alignContent: "center",
+            padding: 4,
+            borderRadius: 8,
+          }}
+        >
+          <div
+            style={{ marginRight: 12, display: "flex", alignItems: "center" }}
+          >
+            <Avatar
+              size="medium"
+              style={{ backgroundColor: "#f53100", verticalAlign: "middle" }}
+            >
+              {record.firstName?.charAt(0)} {record.lastName?.charAt(0)}
+            </Avatar>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
+              {record.firstName} {record.lastName}
+            </div>
+            <div>
+              <Text type="secondary">{record.contact.email}</Text>
+            </div>
+            <div>
+              <Text type="secondary">{record.contact.phone}</Text>
+            </div>
+          </div>
+        </div>
+      ),
     },
     {
       title: "Specialty",
@@ -46,11 +84,57 @@ function Doctors() {
       key: "specialty",
     },
     {
-      title: "Fee",
-      dataIndex: "fee",
-      key: "fee",
+      title: "Fee (%)",
+      dataIndex: "agreedFeePercent",
+      key: "agreedFeePercent",
     },
-  ]
+    {
+      title: "Revenue",
+      dataIndex: "totalRevenue",
+      key: "totalRevenue",
+      render: (_, record) => (
+        <Text style={{ color: "green" }}>
+          Ksh {record.totalRevenue.toLocaleString()}
+        </Text>
+      ),
+    },
+
+    {
+      title: "Partner Hospitals",
+      dataIndex: "partnerHospitals",
+      key: "partnerHospitals",
+      render: (_, record) => (
+        <div>
+          {record.partnerHospitals.map((hospital, index) => (
+            <div>
+              <Tag key={index}>{hospital}</Tag>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      render: (_, record) => (
+        <Space size="small">
+          <Tooltip title="Edit Doctor">
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => {
+                navigate(`/doctor-portfolio/edit-doctor/${record._id}`);
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete Doctor">
+            <Button type="link" icon={<DeleteOutlined />} />
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -80,8 +164,7 @@ function Doctors() {
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
         </div>
       </div>
-
-<div>
+      <div>
         {searchTerm && (
           <div style={{ marginBottom: 10 }}>
             <Tag>
@@ -95,10 +178,15 @@ function Doctors() {
           data={filteredData}
           size="large"
           loading={loading}
-          // viewRecord={viewPatient}
+          viewRecord={viewDoctor}
         />
       </div>
-
+      <ViewDoctor
+        content={content}
+        loading={loading}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
     </>
   );
 }

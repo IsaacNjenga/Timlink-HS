@@ -21,6 +21,8 @@ import EditPatient from "./pages/Patient/EditPatient";
 import AddCase from "./pages/Cases/AddCase";
 import EditCase from "./pages/Cases/EditCase";
 import Doctors from "./pages/Doctors/Doctors";
+import AddDoctor from "./pages/Doctors/AddDoctor";
+import EditDoctor from "./pages/Doctors/EditDoctor";
 
 axios.defaults.baseURL = process.env.REACT_APP_DEV_API_URL;
 //axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -128,6 +130,22 @@ function App() {
                 element={
                   <ProtectedRoutes>
                     <Doctors />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/doctor-portfolio/add-doctor"
+                element={
+                  <ProtectedRoutes>
+                    <AddDoctor />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/doctor-portfolio/edit-doctor/:id"
+                element={
+                  <ProtectedRoutes>
+                    <EditDoctor />
                   </ProtectedRoutes>
                 }
               />
