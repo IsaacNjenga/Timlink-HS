@@ -1,0 +1,114 @@
+export const DoctorData=[
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220001" },
+    "firstName": "James",
+    "lastName": "Mutua",
+    "specialty": "General Surgery",
+    "contact": {
+      "phone": "+254 711 333444",
+      "email": "dr.james.mutua@nairobihospital.org"
+    },
+    "agreedFeePercent": 70.0,
+    "status": "Active",
+    "partnerHospitals": ["Nairobi Hospital", "MP Shah Hospital"],
+    "createdAt": { "$date": "2026-01-15T08:00:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220002" },
+    "firstName": "Amina",
+    "lastName": "Odhiambo",
+    "specialty": "Orthopedics",
+    "contact": {
+      "phone": "+254 722 555666",
+      "email": "dr.amina.o@agakhanuon.ac.ke"
+    },
+    "agreedFeePercent": 72.5,
+    "status": "Active",
+    "partnerHospitals": ["Aga Khan University Hospital", "Nairobi Hospital"],
+    "createdAt": { "$date": "2026-02-10T11:24:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220003" },
+    "firstName": "Peter",
+    "lastName": "Kamau",
+    "specialty": "Cardiology",
+    "contact": {
+      "phone": "+254 733 777888",
+      "email": "pkamau@mpshah.co.ke"
+    },
+    "agreedFeePercent": 70.0,
+    "status": "Active",
+    "partnerHospitals": ["MP Shah Hospital", "Mater Hospital"],
+    "createdAt": { "$date": "2026-03-01T09:15:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220004" },
+    "firstName": "Sarah",
+    "lastName": "Njoroge",
+    "specialty": "Obstetrics",
+    "contact": {
+      "phone": "+254 701 999000",
+      "email": "snjoroge@materkenya.com"
+    },
+    "agreedFeePercent": 75.0,
+    "status": "Active",
+    "partnerHospitals": ["Mater Hospital", "Nairobi Hospital"],
+    "createdAt": { "$date": "2026-03-18T14:45:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220005" },
+    "firstName": "David",
+    "lastName": "Kiprop",
+    "specialty": "Neurosurgery",
+    "contact": {
+      "phone": "+254 715 222111",
+      "email": "david.kiprop@neuro.co.ke"
+    },
+    "agreedFeePercent": 68.0,
+    "status": "Active",
+    "partnerHospitals": ["Nairobi Hospital", "Aga Khan University Hospital", "MP Shah Hospital"],
+    "createdAt": { "$date": "2026-04-05T07:30:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220006" },
+    "firstName": "Fatuma",
+    "lastName": "Ali",
+    "specialty": "Oncology",
+    "contact": {
+      "phone": "+254 724 444333",
+      "email": "fali@cancercenter.or.ke"
+    },
+    "agreedFeePercent": 70.0,
+    "status": "Inactive",
+    "partnerHospitals": ["MP Shah Hospital"],
+    "createdAt": { "$date": "2026-04-20T16:10:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220007" },
+    "firstName": "Samuel",
+    "lastName": "Wekesa",
+    "specialty": "Urology",
+    "contact": {
+      "phone": "+254 735 666555",
+      "email": "samuel.wekesa@urologykenya.com"
+    },
+    "agreedFeePercent": 65.0,
+    "status": "Active",
+    "partnerHospitals": ["Aga Khan University Hospital", "Mater Hospital"],
+    "createdAt": { "$date": "2026-05-12T10:05:00.000Z" }
+  },
+  {
+    "_id": { "$oid": "66792a1b8b2d4c5e9a220008" },
+    "firstName": "Grace",
+    "lastName": "Chege",
+    "specialty": "Pediatrics",
+    "contact": {
+      "phone": "+254 719 888777",
+      "email": "gchege@pedsclinic.co.ke"
+    },
+    "agreedFeePercent": 72.0,
+    "status": "Active",
+    "partnerHospitals": ["Nairobi Hospital", "Mater Hospital"],
+    "createdAt": { "$date": "2026-06-02T13:50:00.000Z" }
+  }
+]

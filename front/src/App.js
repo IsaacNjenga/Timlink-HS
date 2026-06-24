@@ -10,7 +10,6 @@ import Revenue from "./pages/Revenue/Revenue";
 import MobileImaging from "./pages/MobileImaging/MobileImaging";
 import Quotations from "./pages/Quotations/Quotations";
 import Hospitals from "./pages/Hospitals/Hospitals";
-import Portfolio from "./pages/Portfolio/Portfolio";
 import Settings from "./pages/Settings/Settings";
 import { useAuth } from "./contexts/authContext";
 import { ConfigProvider, Spin } from "antd";
@@ -21,6 +20,7 @@ import AddPatient from "./pages/Patient/AddPatient";
 import EditPatient from "./pages/Patient/EditPatient";
 import AddCase from "./pages/Cases/AddCase";
 import EditCase from "./pages/Cases/EditCase";
+import Doctors from "./pages/Doctors/Doctors";
 
 axios.defaults.baseURL = process.env.REACT_APP_DEV_API_URL;
 //axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -127,7 +127,7 @@ function App() {
                 path="/doctor-portfolio"
                 element={
                   <ProtectedRoutes>
-                    <Portfolio />
+                    <Doctors />
                   </ProtectedRoutes>
                 }
               />
