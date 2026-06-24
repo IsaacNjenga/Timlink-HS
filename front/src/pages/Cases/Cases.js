@@ -5,7 +5,7 @@ import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import SearchComponent from "../../components/SearchComponent";
 import TableComponent from "../../components/TableComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { casesData as data } from "../../assets/data/casesData";
+import { CasesData as data } from "../../assets/data/casesData";
 import ViewCase from "./ViewCase";
 
 const { Text } = Typography;

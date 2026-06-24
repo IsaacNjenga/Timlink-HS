@@ -53,7 +53,6 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
         </Row>
 
         <Row gutter={24}>
-          {" "}
           <Col xs={24} sm={12}>
             <Form.Item
               label="Date of Birth"

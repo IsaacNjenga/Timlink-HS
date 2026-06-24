@@ -1,4 +1,4 @@
-export const casesData = [
+export const CasesData = [
   {
     _id: "6677af4c8b2d4c5e9a112233",
     patient: {
