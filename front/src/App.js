@@ -23,6 +23,8 @@ import EditCase from "./pages/Cases/EditCase";
 import Doctors from "./pages/Doctors/Doctors";
 import AddDoctor from "./pages/Doctors/AddDoctor";
 import EditDoctor from "./pages/Doctors/EditDoctor";
+import AddHospital from "./pages/Hospitals/AddHospital";
+import EditHospital from "./pages/Hospitals/EditHospital";
 
 axios.defaults.baseURL = process.env.REACT_APP_DEV_API_URL;
 //axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -157,6 +159,15 @@ function App() {
                   </ProtectedRoutes>
                 }
               />
+              <Route path='/hospitals/add-hospital' element={
+                <ProtectedRoutes>
+                  <AddHospital /> 
+                </ProtectedRoutes>}
+                /><Route path='/hospitals/edit-hospital' element={
+                <ProtectedRoutes>
+                  <EditHospital /> 
+                </ProtectedRoutes>}
+                />
               <Route
                 path="/follow-up"
                 element={

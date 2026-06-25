@@ -31,7 +31,7 @@ function ViewDoctor({ content, loading, openModal, setOpenModal }) {
     <DrawerComponent
       openModal={openModal}
       setOpenModal={setOpenModal}
-      width={650}
+      width={700}
       title={content ? `Dr. ${content.firstName} ${content.lastName}` : "Doctor Profile View"}
     >
       {loading ? (
