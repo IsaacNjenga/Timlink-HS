@@ -1,6 +1,6 @@
 import React from "react";
 import ModalComponent from "../../components/ModalComponent";
-import { Spin, Descriptions, Tag, Divider, Typography, theme } from "antd";
+import { Descriptions, Tag, Divider, Typography, theme } from "antd";
 import {
   UserOutlined,
   ContactsOutlined,
@@ -29,21 +29,15 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
   return (
     <ModalComponent
       openModal={openModal}
-      setOpenModal={setOpenModal}      
-      width={700}
+      setOpenModal={setOpenModal}
+      width={750}
+      title={"Patient File"}
+      contentLoading={loading}
+      recordId={content._id}
+      editPath={`/patient&leads/edit-patient/${content._id}`}
     >
-      {loading ? (
-        <div style={{ textAlign: "center", padding: "40px 20px" }}>
-          <Spin size="large" tip="Loading profile..." />
-        </div>
-      ) : content ? (
-        <div
-          style={{
-            padding: "10px 12px",
-            background: token.colorBgContainer,
-            color: token.colorText,
-          }}
-        >
+      {content ? (
+        <>
           {/* SECTION 1: Personal Profile */}
           <Divider orientation="left" style={{ marginTop: 0 }}>
             <span style={{ color: token.colorPrimary }}>
@@ -154,7 +148,7 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
               </div>
             </Descriptions.Item>
           </Descriptions>
-        </div>
+        </>
       ) : (
         <div style={{ textAlign: "center", padding: "20px 0" }}>
           <Text type="secondary">No patient data available to view.</Text>

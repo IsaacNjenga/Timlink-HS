@@ -148,7 +148,8 @@ function Cases() {
             <Button
               type="link"
               icon={<EditOutlined />}
-              onClick={(e) => {e.stopPropagation();
+              onClick={(e) => {
+                e.stopPropagation();
                 navigate(`/cases&surgery/edit-case/${record._id}`);
               }}
             />

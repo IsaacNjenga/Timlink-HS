@@ -1,6 +1,6 @@
 import React from "react";
 import ModalComponent from "../../components/ModalComponent";
-import { Spin, Descriptions, Tag, Divider, Typography, theme } from "antd";
+import { Descriptions, Tag, Divider, Typography, theme } from "antd";
 import {
   FileTextOutlined,
   DollarCircleOutlined,
@@ -54,19 +54,12 @@ function ViewCase({ content, loading, openModal, setOpenModal }) {
           : "Case File View"
       }
       width={750}
+      contentLoading={loading}
+      recordId={content._id}
+      editPath={`/cases&surgery/edit-case/${content._id}`}
     >
-      {loading ? (
-        <div style={{ textAlign: "center", padding: "40px 20px" }}>
-          <Spin size="large" tip="Loading case record..." />
-        </div>
-      ) : content ? (
-        <div
-          style={{
-            padding: "8px 4px",
-            background: token.colorBgContainer,
-            color: token.colorText,
-          }}
-        >
+      {content ? (
+        <>
           {/* SECTION 1: Case & Admission Data */}
           <Divider orientation="left" style={{ marginTop: 0 }}>
             <span style={{ color: token.colorPrimary }}>
@@ -186,7 +179,7 @@ function ViewCase({ content, loading, openModal, setOpenModal }) {
                 "No special case or clearance comments recorded against this billing workflow entry."}
             </Text>
           </div>
-        </div>
+        </>
       ) : (
         <div style={{ textAlign: "center", padding: "20px 0" }}>
           <Text type="secondary">No case data available to view.</Text>
