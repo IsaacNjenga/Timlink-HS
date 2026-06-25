@@ -4,8 +4,6 @@ import HospitalForm from "./HospitalForm";
 
 const { Title, Text } = Typography;
 
-
-
 function AddHospital() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
