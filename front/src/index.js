@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/authContext";
 import { NotificationProvider } from "./contexts/notificationContext";
 import { UserProvider } from "./contexts/userContext";
+import { PopProvider } from "./contexts/popContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +16,9 @@ root.render(
       <AuthProvider>
         <UserProvider>
           <NotificationProvider>
-            <App />
+            <PopProvider>
+              <App />
+            </PopProvider>
           </NotificationProvider>
         </UserProvider>
       </AuthProvider>

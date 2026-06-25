@@ -87,7 +87,7 @@ function App() {
                   </ProtectedRoutes>
                 }
               />
-               <Route
+              <Route
                 path="/cases&surgery/add-case"
                 element={
                   <ProtectedRoutes>
@@ -95,7 +95,7 @@ function App() {
                   </ProtectedRoutes>
                 }
               />
-               <Route
+              <Route
                 path="/cases&surgery/edit-case/:id"
                 element={
                   <ProtectedRoutes>
@@ -159,15 +159,22 @@ function App() {
                   </ProtectedRoutes>
                 }
               />
-              <Route path='/hospitals/add-hospital' element={
-                <ProtectedRoutes>
-                  <AddHospital /> 
-                </ProtectedRoutes>}
-                /><Route path='/hospitals/edit-hospital' element={
-                <ProtectedRoutes>
-                  <EditHospital /> 
-                </ProtectedRoutes>}
-                />
+              <Route
+                path="/hospitals/add-hospital"
+                element={
+                  <ProtectedRoutes>
+                    <AddHospital />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/hospitals/edit-hospital/:id"
+                element={
+                  <ProtectedRoutes>
+                    <EditHospital />
+                  </ProtectedRoutes>
+                }
+              />
               <Route
                 path="/follow-up"
                 element={

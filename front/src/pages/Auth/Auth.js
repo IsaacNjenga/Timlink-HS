@@ -4,7 +4,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import axios from "axios";
 import { useAuth } from "../../contexts/authContext";
 import { useNotification } from "../../contexts/notificationContext";
-import logo from "../../assets/icons/logo.png";
+import logo from "../../assets/icons/logo.jpeg";
 import { brand, primary, primaryGlow } from "../../utils/uiConfig";
 import {
   checkEmailExists,
@@ -153,7 +153,7 @@ function Auth() {
         <div
           style={{
             minHeight: isSignIn ? 520 : 620,
-            padding: 32,
+            padding: 30,
             background:
               "linear-gradient(160deg, rgba(6,27,24,0.92), rgba(15,107,120,0.76)), url(https://images.unsplash.com/photo-1444664361762-afba083a4d77?w=900) no-repeat center center/cover",
             display: "flex",
@@ -174,7 +174,6 @@ function Auth() {
               style={{
                 width: 52,
                 height: 52,
-                borderRadius: 8,
                 objectFit: "cover",
                 boxShadow: "0 8px 26px rgba(0,0,0,0.28)",
               }}

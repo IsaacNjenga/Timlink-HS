@@ -7,6 +7,8 @@ import TableComponent from "../../components/TableComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { CasesData as data } from "../../assets/data/casesData";
 import ViewCase from "./ViewCase";
+import DeleteConfirm from "../../components/DeleteConfirm";
+import { usePop } from "../../contexts/popContext";
 
 const { Text } = Typography;
 
@@ -14,6 +16,7 @@ const statusTags = ["All", "Paid", "Partial", "Pending"];
 
 function Cases() {
   const navigate = useNavigate();
+  const { setOpenConfirm } = usePop();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [content, setContent] = useState({});
@@ -145,13 +148,29 @@ function Cases() {
             <Button
               type="link"
               icon={<EditOutlined />}
-              onClick={() => {
+              onClick={(e) => {e.stopPropagation();
                 navigate(`/cases&surgery/edit-case/${record._id}`);
               }}
             />
           </Tooltip>
           <Tooltip title="Delete Case">
-            <Button type="link" icon={<DeleteOutlined />} />
+            <DeleteConfirm
+              recordId={record._id}
+              title="Are you sure?"
+              description="This action cannot be undone!"
+              onConfirmSuccess={(id) => {
+                console.log(`Successfully deleted ${id}`);
+              }}
+            >
+              <Button
+                type="link"
+                icon={<DeleteOutlined />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenConfirm(record._id);
+                }}
+              />
+            </DeleteConfirm>
           </Tooltip>
         </Space>
       ),

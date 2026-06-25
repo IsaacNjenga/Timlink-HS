@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, Layout, Menu, Switch, Tooltip, Typography } from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/icons/logo.jpeg";
 import {
   CreditCardOutlined,
   HomeOutlined,

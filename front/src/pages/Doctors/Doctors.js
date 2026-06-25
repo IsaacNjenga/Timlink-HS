@@ -7,11 +7,14 @@ import SearchComponent from "../../components/SearchComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { DoctorData as data } from "../../assets/data/doctorData";
 import ViewDoctor from "./ViewDoctor";
+import { usePop } from "../../contexts/popContext";
+import DeleteConfirm from "../../components/DeleteConfirm";
 
 const { Text } = Typography;
 
 function Doctors() {
   const navigate = useNavigate();
+  const { setOpenConfirm } = usePop();
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
@@ -123,13 +126,30 @@ function Doctors() {
             <Button
               type="link"
               icon={<EditOutlined />}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 navigate(`/doctor-portfolio/edit-doctor/${record._id}`);
               }}
             />
           </Tooltip>
           <Tooltip title="Delete Doctor">
-            <Button type="link" icon={<DeleteOutlined />} />
+            <DeleteConfirm
+              recordId={record._id}
+              title="Are you sure?"
+              description="This action cannot be undone!"
+              onConfirmSuccess={(id) => {
+                console.log(`Successfully deleted ${id}`);
+              }}
+            >
+              <Button
+                type="link"
+                icon={<DeleteOutlined />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenConfirm(record._id);
+                }}
+              />
+            </DeleteConfirm>
           </Tooltip>
         </Space>
       ),

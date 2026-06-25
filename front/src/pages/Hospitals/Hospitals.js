@@ -7,6 +7,8 @@ import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ViewHospital from "./ViewHospital";
+import { usePop } from "../../contexts/popContext";
+import DeleteConfirm from "../../components/DeleteConfirm";
 
 const { Text } = Typography;
 
@@ -14,6 +16,7 @@ const statusTags = ["All", "Active", "Inactive"];
 
 function Hospitals() {
   const navigate = useNavigate();
+  const { setOpenConfirm } = usePop();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -140,13 +143,30 @@ function Hospitals() {
             <Button
               type="link"
               icon={<EditOutlined />}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 navigate(`/hospitals/edit-hospital/${record._id}`);
               }}
             />
           </Tooltip>
           <Tooltip title="Delete Hospital Record">
-            <Button type="link" icon={<DeleteOutlined />} />
+            <DeleteConfirm
+              recordId={record._id}
+              title="Are you sure?"
+              description="This action cannot be undone!"
+              onConfirmSuccess={(id) => {
+                console.log(`Successfully deleted ${id}`);
+              }}
+            >
+              <Button
+                type="link"
+                icon={<DeleteOutlined />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenConfirm(record._id);
+                }}
+              />
+            </DeleteConfirm>
           </Tooltip>
         </Space>
       ),

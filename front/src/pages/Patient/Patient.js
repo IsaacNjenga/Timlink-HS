@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
-import { DeleteOutlined, EditOutlined,  } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { formatDistanceToNowStrict } from "date-fns";
 import ViewPatient from "./ViewPatient";
+import DeleteConfirm from "../../components/DeleteConfirm";
+import { usePop } from "../../contexts/popContext";
 
 const { Text } = Typography;
 
@@ -23,6 +25,7 @@ const statusTags = [
 
 function Patient() {
   const navigate = useNavigate();
+  const { setOpenConfirm } = usePop();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -156,23 +159,31 @@ function Patient() {
             <Button
               type="link"
               icon={<EditOutlined />}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 navigate(`/patient&leads/edit-patient/${record._id}`);
               }}
             />
           </Tooltip>
           <Tooltip title="Delete Patient">
-            <Button type="link" icon={<DeleteOutlined />} />
-          </Tooltip>
-          {/* <Tooltip title="View Patient">
-            <Button
-              type="link"
-              icon={<EyeOutlined />}
-              onClick={() => {
-                viewPatient(record);
+            <DeleteConfirm
+              recordId={record._id}
+              title="Are you sure?"
+              description="This action cannot be undone!"
+              onConfirmSuccess={(id) => {
+                console.log(`Successfully deleted ${id}`);
               }}
-            />
-          </Tooltip> */}
+            >
+              <Button
+                type="link"
+                icon={<DeleteOutlined />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenConfirm(record._id);
+                }}
+              />
+            </DeleteConfirm>
+          </Tooltip>
         </Space>
       ),
     },
@@ -236,7 +247,7 @@ function Patient() {
           rowKey="_id"
           columns={columns}
           data={filteredData}
-          size="large"
+          size="medium"
           loading={loading}
           viewRecord={viewPatient}
         />
