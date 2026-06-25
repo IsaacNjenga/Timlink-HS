@@ -36,7 +36,7 @@ function ViewHospital({ content, loading, openModal, setOpenModal }) {
     <DrawerComponent
       openModal={openModal}
       setOpenModal={setOpenModal}
-      width={650}
+      width={700}
       title={content ? content.hospitalName : "Hospital Profile View"}
     >
       {loading ? (
