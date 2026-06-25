@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { Form, Typography } from "antd";
 import HospitalForm from "./HospitalForm";
-import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 
-const formatDateValue = (dateValue) => {
-  if (!dateValue) return undefined;
-  return dayjs.isDayjs(dateValue) ? dateValue.format("YYYY-MM-DD") : dateValue;
-};
+
 
 function AddHospital() {
   const [form] = Form.useForm();
@@ -19,7 +15,6 @@ function AddHospital() {
     try {
       const formattedValues = {
         ...values,
-        dob: formatDateValue(values.dob),
       };
       console.log("Form values:", formattedValues);
     } catch (error) {
