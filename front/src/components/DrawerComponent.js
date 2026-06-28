@@ -15,7 +15,7 @@ function DrawerComponent({
       closable={{ "aria-label": "Close Button" }}
       onClose={() => setOpenModal(false)}
       open={openModal}      
-      width={width}
+      size={width}
     >
       {children}
     </Drawer>

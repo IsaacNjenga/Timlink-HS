@@ -39,7 +39,6 @@ function FollowUp() {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openForm, setOpenForm] = useState(false);
-  const [editContent, setEditContent] = useState(null);
 
   const activeValue = data.filter(
     (d) => d.clinicalAssessment.status === "Active",
@@ -179,7 +178,7 @@ function FollowUp() {
               icon={<EditOutlined />}
               onClick={(e) => {
                 e.stopPropagation();
-                setEditContent(record);
+                setContent(record);
                 console.log(record);
                 // navigate(`/patient&leads/edit-patient/${record._id}`);
               }}
@@ -340,11 +339,11 @@ function FollowUp() {
 
       <AddFollowUp setOpenForm={setOpenForm} openForm={openForm} />
 
-      {editContent && (
+      {content && (
         <EditFollowUp
           setOpenForm={setOpenForm}
           openForm={openForm}
-          schedule={editContent}
+          schedule={content}
         />
       )}
     </>

@@ -22,10 +22,10 @@ function EditFollowUp({ openForm, setOpenForm, schedule }) {
       ...schedule,
       followUpSchedule: {
         ...schedule.followUpSchedule,
-        dueDate: schedule.followUpSchedule.dueDate
+        dueDate: schedule.followUpSchedule?.dueDate
           ? dayjs(schedule.followUpSchedule.dueDate)
           : undefined,
-        lastFollowUpDate: schedule.followUpSchedule.lastFollowUpDate
+        lastFollowUpDate: schedule.followUpSchedule?.lastFollowUpDate
           ? dayjs(schedule.followUpSchedule.lastFollowUpDate)
           : undefined,
       },
