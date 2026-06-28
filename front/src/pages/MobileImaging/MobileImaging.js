@@ -2,7 +2,8 @@ import React from 'react'
 
 function MobileImaging() {
   return (
-    <div>MobileImaging</div>
+    <div>Mobile Imaging & Services
+Manage the mobile X-ray and ultrasound fleet, service bookings, and revenue from external work.</div>
   )
 }
 

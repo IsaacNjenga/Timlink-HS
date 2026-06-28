@@ -54,7 +54,7 @@ const menuConfig = [
   },
   {
     key: "mobile-imaging",
-    label: "Mobile Imaging",
+    label: "Mobile Imaging & Services",
     icon: TruckOutlined,
     path: "/mobile-imaging",
   },
@@ -149,14 +149,14 @@ function Navbar() {
         children: item.children.map((child) => ({
           key: child.path,
           icon: React.createElement(child.icon, {
-            style: { fontSize: 16, color: "rgba(255,255,255,0.65)" },
+            style: { fontSize: 14, color: "rgba(255,255,255,0.65)" },
           }),
           label: (
             <Link
               to={child.path}
               style={{
                 fontFamily: "'Outfit', sans-serif",
-                fontSize: 13,
+                fontSize: 12,
                 color: "rgba(255,255,255,0.75)",
                 textDecoration: "none",
               }}
@@ -215,7 +215,7 @@ function Navbar() {
           collapsed={collapsed}
           breakpoint="md"
           onBreakpoint={(broken) => setCollapsed(broken)}
-          width={240}
+          width={270}
           collapsedWidth={70}
           style={{
             background: "var(--timlink-sidebar-bg)",
@@ -301,7 +301,7 @@ function Navbar() {
               background: "transparent",
               border: "none",
               flex: 1,
-              padding: "0 4px",
+              padding: "0 2px",
             }}
             items={antMenuItems}
             onClick={({ key }) => setCurrent(key)}
