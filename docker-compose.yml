@@ -1,0 +1,43 @@
+name: Timlink-HS
+
+services: 
+  mongo:
+    image: mongo:8
+    container_name: timlink-mongo
+    restart: unless-stopped
+    # environment: 
+      # MONGO_INITDB_ROOT_USERNAME:
+      # MONGO_INITDB_ROOT_PASSWORD:
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+       - timlink-hs
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+     context: ./back
+     dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./back/.env
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - ./back:/app
+      - /app/node_modules
+    networks:
+      - timlink-hs
+    ports:
+      - 3001:3001
+
+volumes:
+  mongo_data:
+networks:
+  timlink-hs:
+    driver: bridge
