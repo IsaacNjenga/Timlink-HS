@@ -15,6 +15,8 @@ const envSchema = z.object({
   EMAIL_PORT: z.string().default("465"),
   EMAIL_USER: z.string().min(1),
   EMAIL_PASS: z.string().min(1),
+  REDIS_HOST: z.string().min(1),
+  REDIS_PORT: z.string().default("6379")
 });
 
 // This will throw an error if process.env.variable is missing

@@ -19,6 +19,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis:
+    image: redis:8-alpine
+    container_name: timlink-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - timlink-hs  
+
   api:
     build:
      context: ./back
@@ -28,6 +38,8 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+      redis:
+        condition: service_started  
     volumes:
       - ./back:/app
       - /app/node_modules
@@ -35,6 +47,24 @@ services:
       - timlink-hs
     ports:
       - 3001:3001
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./front/.env
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    networks:
+      - timlink-hs
+    ports:
+      - 3000:3000
+    command: npm start -- --host
+    depends_on:
+      - api  
+
 
 volumes:
   mongo_data:

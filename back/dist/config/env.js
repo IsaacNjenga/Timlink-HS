@@ -19,6 +19,8 @@ const envSchema = zod_1.z.object({
     EMAIL_PORT: zod_1.z.string().default("465"),
     EMAIL_USER: zod_1.z.string().min(1),
     EMAIL_PASS: zod_1.z.string().min(1),
+    REDIS_HOST: zod_1.z.string().min(1),
+    REDIS_PORT: zod_1.z.string().default("6379")
 });
 // This will throw an error if process.env.variable is missing
 exports.env = envSchema.parse(process.env);
