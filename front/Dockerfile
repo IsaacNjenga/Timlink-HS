@@ -17,3 +17,20 @@ COPY . .
 # CMD ["npm","start","--","--host"]
 
 # docker build . -> runs the Dockerfile
+
+
+# FROM node:24-bookworm-slim AS builder
+
+# WORKDIR /app
+
+# COPY package*.json ./
+
+# RUN npm ci
+
+# COPY . .
+
+# RUN npm run build
+
+# FROM caddy:2-alpine
+
+# COPY --from=builder /app/build /usr/share/caddy

@@ -1,0 +1,48 @@
+services:
+
+  mongo:
+    ports:
+      - "27017:27017"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  api:
+
+    build:
+      dockerfile: Dockerfile.dev
+
+    env_file:
+      - ./back/.env
+
+    volumes:
+      - ./back:/app
+      - /app/node_modules
+
+    ports:
+      - "3001:3001"
+
+    command: npm run dev
+
+  front:
+
+    build:
+      dockerfile: Dockerfile.dev
+
+    env_file:
+      - ./front/.env
+
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+
+    environment:
+      HOST: 0.0.0.0
+
+    ports:
+      - "3000:3000"
+
+    command: npm start
+
+    # docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build

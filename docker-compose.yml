@@ -65,9 +65,25 @@ services:
     depends_on:
       - api  
 
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - timlink-hs
+    depends_on:
+      - api
+      - front
 
 volumes:
   mongo_data:
+  caddy_data:
+  caddy_config:
 networks:
   timlink-hs:
     driver: bridge
