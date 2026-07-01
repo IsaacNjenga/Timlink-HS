@@ -59,7 +59,17 @@ function EditFollowUp({ openForm, setOpenForm, schedule }) {
       openModal={openForm}
       setOpenModal={setOpenForm}
       loading={loading}
-      title={""}
+      title={
+        <span>
+          <Text>
+            {`${schedule?.patientDetails?.fullName} | ${schedule?.patientDetails?.patientCode} ` ||
+              "Edit Patient Follow-Up Details"}
+          </Text>
+          <Text type="secondary" style={{ display: "block", fontSize: "14px" }}>
+            Update the follow-up information for the patient.
+          </Text>
+        </span>
+      }
       width={650}
     >
       <div style={{ maxWidth: "850px", margin: "0px auto", padding: "0px" }}>

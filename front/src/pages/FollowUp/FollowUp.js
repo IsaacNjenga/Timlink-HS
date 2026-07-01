@@ -22,11 +22,14 @@ import CountUpComponent from "../../components/CountUpComponent";
 import {
   CheckCircleOutlined,
   ClockCircleOutlined,
+  DeleteOutlined,
   EditOutlined,
   PushpinOutlined,
 } from "@ant-design/icons";
 import AddFollowUp from "./AddFollowUp";
 import EditFollowUp from "./EditFollowUp";
+import { usePop } from "../../contexts/popContext";
+import DeleteConfirm from "../../components/DeleteConfirm";
 
 const { Text } = Typography;
 
@@ -34,6 +37,7 @@ const statusTags = ["All", "Active", "Pending", "Completed"];
 
 function FollowUp() {
   const [selectedStatus, setSelectedStatus] = useState("All");
+    const { setOpenConfirm } = usePop();
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
@@ -178,13 +182,12 @@ function FollowUp() {
               icon={<EditOutlined />}
               onClick={(e) => {
                 e.stopPropagation();
+                setOpenForm(true);
                 setContent(record);
-                console.log(record);
-                // navigate(`/patient&leads/edit-patient/${record._id}`);
               }}
             />
           </Tooltip>
-          {/* <Tooltip title="Delete Patient">
+          <Tooltip title="Delete Patient">
             <DeleteConfirm
               recordId={record._id}
               title="Are you sure?"
@@ -202,7 +205,7 @@ function FollowUp() {
                 }}
               />
             </DeleteConfirm>
-          </Tooltip> */}
+          </Tooltip>
         </Space>
       ),
     },
@@ -339,13 +342,11 @@ function FollowUp() {
 
       <AddFollowUp setOpenForm={setOpenForm} openForm={openForm} />
 
-      {content && (
-        <EditFollowUp
-          setOpenForm={setOpenForm}
-          openForm={openForm}
-          schedule={content}
-        />
-      )}
+      <EditFollowUp
+        setOpenForm={setOpenForm}
+        openForm={openForm}
+        schedule={content}
+      />
     </>
   );
 }

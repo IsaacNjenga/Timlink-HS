@@ -1,6 +1,6 @@
 export const FollowUpData = [
   {
-    _id: { $oid: "667ebd1b8b2d4c5e9a440001" },
+    _id: "667ebd1b8b2d4c5e9a440001",
     caseDetails: {
       caseId: { $oid: "667a2a1b8b2d4c5e9a1100aa" },
       caseCode: "CS001",
@@ -31,7 +31,7 @@ export const FollowUpData = [
     updatedAt: { $date: "2026-06-26T09:20:00.000Z" },
   },
   {
-    _id: { $oid: "667ebd1b8b2d4c5e9a440002" },
+    _id: "667ebd1b8b2d4c5e9a440002",
     caseDetails: {
       caseId: { $oid: "667a2a1b8b2d4c5e9a1100bb" },
       caseCode: "CS002",
@@ -62,7 +62,7 @@ export const FollowUpData = [
     updatedAt: { $date: "2026-06-28T08:35:00.000Z" },
   },
   {
-    _id: { $oid: "667ebd1b8b2d4c5e9a440003" },
+    _id: "667ebd1b8b2d4c5e9a440003",
     caseDetails: {
       caseId: { $oid: "667a2a1b8b2d4c5e9a1100cc" },
       caseCode: "CS003",

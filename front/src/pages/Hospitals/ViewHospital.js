@@ -1,7 +1,6 @@
 import React from "react";
 import DrawerComponent from "../../components/DrawerComponent";
 import {
-  Spin,
   Descriptions,
   Tag,
   Divider,
@@ -38,19 +37,12 @@ function ViewHospital({ content, loading, openModal, setOpenModal }) {
       setOpenModal={setOpenModal}
       width={700}
       title={content ? content.hospitalName : "Hospital Profile View"}
+      contentLoading={loading}
+      recordId={content._id}
+      editPath={`/hospitals/edit-hospital/${content._id}`}
     >
-      {loading ? (
-        <div style={{ textAlign: "center", padding: "40px 20px" }}>
-          <Spin size="large" tip="Loading clinical profile..." />
-        </div>
-      ) : content ? (
-        <div
-          style={{
-            padding: "4px 8px",
-            background: token.colorBgContainer,
-            color: token.colorText,
-          }}
-        >
+      {content ? (
+        <>
           {/* SECTION 1: Base Core Profile */}
           <Divider orientation="left" style={{ marginTop: 0 }}>
             <span style={{ color: token.colorPrimary }}>
@@ -214,7 +206,7 @@ function ViewHospital({ content, loading, openModal, setOpenModal }) {
               </Text>
             )}
           </div>
-        </div>
+        </>
       ) : (
         <div style={{ textAlign: "center", padding: "20px 0" }}>
           <Text type="secondary">No hospital data available to display.</Text>
