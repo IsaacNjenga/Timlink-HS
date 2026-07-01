@@ -58,6 +58,7 @@ function DrawerComponent({
             <DeleteConfirm
               recordId={recordId}
               title="Are you sure?"
+              source="modal"
               description="This action cannot be undone!"
               onConfirmSuccess={(id) => {
                 console.log(`Successfully deleted ${id}`);
@@ -69,7 +70,10 @@ function DrawerComponent({
                 icon={<DeleteOutlined />}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpenConfirm(recordId);
+                  setOpenConfirm({
+                    id: recordId,
+                    source: "modal",
+                  });
                 }}
               />
             </DeleteConfirm>

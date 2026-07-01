@@ -168,6 +168,7 @@ function Patient() {
           <Tooltip title="Delete Patient">
             <DeleteConfirm
               recordId={record._id}
+              source="table"
               title="Are you sure?"
               description="This action cannot be undone!"
               onConfirmSuccess={(id) => {
@@ -179,7 +180,10 @@ function Patient() {
                 icon={<DeleteOutlined />}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpenConfirm(record._id);
+                  setOpenConfirm({
+                    id: record._id,
+                    source: "table",
+                  });
                 }}
               />
             </DeleteConfirm>

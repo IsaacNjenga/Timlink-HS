@@ -136,6 +136,7 @@ function Doctors() {
             <DeleteConfirm
               recordId={record._id}
               title="Are you sure?"
+              source="table"
               description="This action cannot be undone!"
               onConfirmSuccess={(id) => {
                 console.log(`Successfully deleted ${id}`);
@@ -145,8 +146,10 @@ function Doctors() {
                 type="link"
                 icon={<DeleteOutlined />}
                 onClick={(e) => {
-                  e.stopPropagation();
-                  setOpenConfirm(record._id);
+                  e.stopPropagation();  setOpenConfirm({
+                    id: record._id,
+                    source: "table",
+                  });
                 }}
               />
             </DeleteConfirm>

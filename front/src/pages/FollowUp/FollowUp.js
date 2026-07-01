@@ -37,7 +37,7 @@ const statusTags = ["All", "Active", "Pending", "Completed"];
 
 function FollowUp() {
   const [selectedStatus, setSelectedStatus] = useState("All");
-    const { setOpenConfirm } = usePop();
+  const { setOpenConfirm } = usePop();
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
@@ -191,6 +191,7 @@ function FollowUp() {
             <DeleteConfirm
               recordId={record._id}
               title="Are you sure?"
+              source="table"
               description="This action cannot be undone!"
               onConfirmSuccess={(id) => {
                 console.log(`Successfully deleted ${id}`);
@@ -201,7 +202,10 @@ function FollowUp() {
                 icon={<DeleteOutlined />}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpenConfirm(record._id);
+                  setOpenConfirm({
+                    id: record._id,
+                    source: "table",
+                  });
                 }}
               />
             </DeleteConfirm>

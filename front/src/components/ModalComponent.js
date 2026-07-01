@@ -63,8 +63,9 @@ function ModalComponent({
             }}
           />
         </Tooltip>,
-        <Tooltip title="Delete">
+        <Tooltip title="Delete" key="modal-delete-action">
           <DeleteConfirm
+            source="modal"
             recordId={recordId}
             title="Are you sure?"
             description="This action cannot be undone!"
@@ -78,7 +79,10 @@ function ModalComponent({
               icon={<DeleteOutlined />}
               onClick={(e) => {
                 e.stopPropagation();
-                setOpenConfirm(recordId);
+                setOpenConfirm({
+                  id: recordId,
+                  source: "modal",
+                });
               }}
             />
           </DeleteConfirm>

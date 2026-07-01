@@ -8,11 +8,14 @@ function DeleteConfirm({
   recordId,
   onConfirmSuccess,
   children,
+  source,
 }) {
   const { openConfirm, setOpenConfirm, confirmLoading, setConfirmLoading } =
     usePop();
 
-  const isOpen = openConfirm === recordId;
+  const isOpen =
+    openConfirm?.id === recordId &&
+    openConfirm?.source === source;
 
   const handleOk = async (e) => {
     e.stopPropagation();
