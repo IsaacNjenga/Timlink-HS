@@ -247,8 +247,9 @@ function FollowUp() {
             <Card variant="borderless">
               <Statistic
                 title={<span style={{ color: "whitesnow" }}>All</span>}
-                value={data.length}
-                formatter={<CountUpComponent value={data.length} />}
+                value={data.length} formatter={(value) => (
+                  <CountUpComponent value={data.length} />
+                )}
               />
             </Card>
           </Col>
@@ -261,7 +262,9 @@ function FollowUp() {
                   </span>
                 }
                 value={activeValue.length}
-                formatter={<CountUpComponent value={activeValue.length} />}
+                formatter={(value) => (
+                  <CountUpComponent value={activeValue.length} />
+                )}
               />
             </Card>
           </Col>
@@ -273,8 +276,9 @@ function FollowUp() {
                     Completed <CheckCircleOutlined />
                   </span>
                 }
-                value={completedValue.length}
-                formatter={<CountUpComponent value={completedValue.length} />}
+                value={completedValue.length} formatter={(value) => (
+                  <CountUpComponent value={completedValue.length} />
+                )}
               />
             </Card>
           </Col>
@@ -286,8 +290,9 @@ function FollowUp() {
                     Pending <ClockCircleOutlined />
                   </span>
                 }
-                value={pendingValue.length}
-                formatter={<CountUpComponent value={pendingValue.length} />}
+                value={pendingValue.length} formatter={(value) => (
+                  <CountUpComponent value={pendingValue.length} />
+                )}
               />
             </Card>
           </Col>
