@@ -87,8 +87,14 @@ function Revenue() {
                   value={card.value}
                   formatter={(value) => (
                     <span style={{ color: "whitesmoke" }}>
-                      <span style={{ fontSize: 17 }}>KES. </span>
-                      <span>{<CountUpComponent value={card.value} />}</span>
+                      <span style={{ fontSize: 17 }}>
+                        <strong>KES. </strong>
+                      </span>
+                      <span>
+                        <strong>
+                          {<CountUpComponent value={card.value} />}
+                        </strong>
+                      </span>
                     </span>
                   )}
                 />
@@ -106,7 +112,6 @@ function Revenue() {
           key: String(index),
           children: <div style={{ padding: "12px" }}>{item.content}</div>,
         }))}
-       
       />
     </>
   );
