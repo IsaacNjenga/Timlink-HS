@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageTitle from "../../components/PageTitle";
-import { Row, Statistic, Col, Card, Tabs, Tag } from "antd";
+import { Row, Statistic, Col, Card, Tabs } from "antd";
 import CountUpComponent from "../../components/CountUpComponent";
 import {
   FileAddOutlined,
@@ -24,28 +24,28 @@ const CardData = [
   {
     key: "totalBilled",
     title: "Total Billed",
-    value: 1000000,
+    value: 4297924,
     color: "orange",
     icon: FileAddOutlined,
   },
   {
     key: "totalReceived",
     title: "Total Received",
-    value: 800000,
+    value: 8004829,
     color: "green",
     icon: FileProtectOutlined,
   },
   {
     key: "agencyFeesEarned",
     title: "Agency Fees Earned",
-    value: 200000,
+    value: 247400,
     color: "purple",
     icon: FileDoneOutlined,
   },
   {
     key: "OutstandingBalance",
     title: "Outstanding Balance",
-    value: 100000,
+    value: 140569,
     color: "red",
     icon: FileExclamationOutlined,
   },
@@ -71,7 +71,7 @@ function Revenue() {
 
       {/* statistics cards */}
       <div style={{ marginBottom: 16 }}>
-        <Row gutter={[24, 16]}>
+        <Row gutter={[16, 16]}>
           {CardData.map((card) => (
             <Col span={6} key={card.key}>
               <Card variant="borderless">
@@ -104,31 +104,9 @@ function Revenue() {
         items={itemsData.map((item, index) => ({
           label: item.name,
           key: String(index),
-          children: <div>{item.content}</div>,
+          children: <div style={{ padding: "12px" }}>{item.content}</div>,
         }))}
-        // renderTabBar={(props, DefaultTabBar) => (
-        //   <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-        //     {props?.panes?.map((pane) => {
-        //       const isActive = pane.key === activeKey;
-        //       return (
-        //         <Tag
-        //           key={pane.key}
-        //           color={isActive ? "blue" : "default"}
-        //           style={{
-        //             cursor: "pointer",
-        //             padding: "4px 12px",
-        //             fontSize: "14px",
-        //             border: isActive ? "none" : "1px solid #d9d9d9",
-        //             fontWeight: isActive ? 600 : 400,
-        //           }}
-        //           onClick={() => setActiveKey(pane.key)}
-        //         >
-        //           {pane.props.tab}
-        //         </Tag>
-        //       );
-        //     })}
-        //   </div>
-        // )}
+       
       />
     </>
   );
