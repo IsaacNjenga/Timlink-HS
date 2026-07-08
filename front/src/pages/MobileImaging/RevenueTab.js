@@ -170,6 +170,10 @@ function RevenueTab() {
                 ))}
               </Col>
 
+              <div
+                style={{ borderColor: "#696262", borderLeft: "1px solid" }}
+              />
+
               <Col span={10}>
                 {/* Header Section */}
                 <Flex align="center" gap="small" style={{ marginBottom: 16 }}>
@@ -240,7 +244,7 @@ function RevenueTab() {
 
                 <Divider
                   style={{
-                    borderColor: "rgba(255,255,255,0.1)",
+                    borderColor: "#696262",
                     margin: "12px 0",
                   }}
                 />
