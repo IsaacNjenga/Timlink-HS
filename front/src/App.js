@@ -10,6 +10,8 @@ import Revenue from "./pages/Revenue/Revenue";
 import MobileImaging from "./pages/MobileImaging/MobileImaging";
 import AddServiceJob from "./pages/MobileImaging/ServiceJobs/AddServiceJob";
 import EditServiceJob from "./pages/MobileImaging/ServiceJobs/EditServiceJob";
+import EditInventory from "./pages/MobileImaging/Inventory/EditInventory";
+import AddInventory from "./pages/MobileImaging/Inventory/AddInventory";
 import Quotations from "./pages/Quotations/Quotations";
 import Hospitals from "./pages/Hospitals/Hospitals";
 import Settings from "./pages/Settings/Settings";
@@ -128,12 +130,28 @@ function App() {
                     <AddServiceJob />
                   </ProtectedRoutes>
                 }
+              />{" "}
+              <Route
+                path="/mobile-imaging/add-inventory-item"
+                element={
+                  <ProtectedRoutes>
+                    <AddInventory />
+                  </ProtectedRoutes>
+                }
               />
               <Route
                 path="/mobile-imaging/edit-service-job/:id"
                 element={
                   <ProtectedRoutes>
                     <EditServiceJob />
+                  </ProtectedRoutes>
+                }
+              />{" "}
+              <Route
+                path="/mobile-imaging/edit-inventory-item/:id"
+                element={
+                  <ProtectedRoutes>
+                    <EditInventory />
                   </ProtectedRoutes>
                 }
               />

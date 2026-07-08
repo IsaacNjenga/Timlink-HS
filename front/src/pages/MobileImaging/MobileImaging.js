@@ -42,7 +42,12 @@ function MobileImaging() {
           >
             + New Service Job
           </Button>
-          <Button type="primary">+ New Equipment</Button>
+          <Button
+            type="primary"
+            onClick={() => navigate("/mobile-imaging/add-inventory-item")}
+          >
+            + New Equipment
+          </Button>
         </div>
       </div>
 

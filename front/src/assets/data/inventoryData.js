@@ -1,0 +1,67 @@
+export const InventoryData = [
+  {
+    _id: "1",
+    equipmentId: "EQ-2026-X01",
+    equipmentName: "Mobile Field X-Ray Unit Alpha",
+    category: "X-ray",
+    serialModel: "MXR-990-DR",
+    vehiclePlate: "KDK 412X",
+    location: "Radiology Dispatch - Bay 1",
+    status: "Available",
+    rate: 4500.0,
+    notes:
+      "Annual tube calibration completed in June. Digital sensor array is reporting optimal sensitivity. Mounted securely to vehicle chassis.",
+  },
+  {
+    _id: "2",
+    equipmentId: "EQ-2026-U02",
+    equipmentName: "Portable Ultrasound Unit B",
+    category: "Ultrasound",
+    serialModel: "Vivid-i-2025",
+    vehiclePlate: "KDJ 778Y",
+    location: "Maternal Health Outreach (On-Site)",
+    status: "In Service",
+    rate: 6000.0,
+    notes:
+      "Assigned to the continuous mobile maternal screening camp track in Machakos. Transducer probe replaced last quarter.",
+  },
+  {
+    _id: "3",
+    equipmentId: "EQ-2026-X03",
+    equipmentName: "High-Frequency Compact X-Ray Pack",
+    category: "X-ray",
+    serialModel: "Siemens-Poly-M1",
+    vehiclePlate: "KDE 110A",
+    location: "Central Mechanical Workshop",
+    status: "Maintenance",
+    rate: 5200.0,
+    notes:
+      "Flagged for battery bank replacement and field casing weld repair. Do not deploy until safety radiation inspection certificate is re-signed.",
+  },
+  {
+    _id: "4",
+    equipmentId: "EQ-2026-U04",
+    equipmentName: "Sonoscape Color Doppler Probe System",
+    category: "Ultrasound",
+    serialModel: "S2-Pro-Color",
+    vehiclePlate: "KDA 882U",
+    location: "Emergency Trauma Fleet Alpha",
+    status: "Available",
+    rate: 6000.0,
+    notes:
+      "Disinfected and locked in response vehicle glove vault. Fluidic presets calibrated for point-of-care rapid abdominal assessments.",
+  },
+  {
+    _id: "5",
+    equipmentId: "EQ-2026-X05",
+    equipmentName: "Orthopedic Extremity Digital X-Ray",
+    category: "X-ray",
+    serialModel: "Orthomotion-X",
+    vehiclePlate: "KDH 554C",
+    location: "Kajiado Outpost Hub",
+    status: "In Service",
+    rate: 4500.0,
+    notes:
+      "Currently processing localized fracture alignment scans. Generator fuel efficiency levels within standard limits.",
+  },
+];

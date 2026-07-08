@@ -48,7 +48,7 @@ function EditServiceJob() {
         <Title level={2} style={{ margin: 0 }}>
           Edit Form
         </Title>
-        <Text type="secondary">Edit this doctor's record</Text>
+        <Text type="secondary">Edit this service job record</Text>
       </div>
 
       <ServiceJobForm

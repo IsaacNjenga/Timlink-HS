@@ -28,15 +28,16 @@ function AddServiceJob() {
       setLoading(false);
     }
   };
+
   return (
     <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 16px" }}>
       {/* Page Header */}
       <div style={{ marginBottom: "32px", textAlign: "center" }}>
         <Title level={2} style={{ margin: 0 }}>
-          Doctor & Surgeon Portfolio Form
+          Service Job Registration Form
         </Title>
         <Text type="secondary">
-          Register a new doctor or surgeon record and details
+          Register a new service job record and details
         </Text>
       </div>
 

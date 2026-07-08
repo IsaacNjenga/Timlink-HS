@@ -56,7 +56,7 @@ function ViewService({ content, loading, openModal, setOpenModal }) {
       }
       contentLoading={loading}
       recordId={content?._id}
-      editPath={`/doctor-portfolio/edit-doctor/${content?._id}`}
+      editPath={`/mobile-imaging/edit-service-job/${content?._id}`}
     >
       {content ? (
         <div style={{ padding: "4px 8px" }}>

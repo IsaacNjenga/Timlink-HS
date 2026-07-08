@@ -23,9 +23,9 @@ function ServiceTab() {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const viewService = (doctor) => {
+  const viewService = (service) => {
     setLoading(true);
-    setContent(doctor);
+    setContent(service);
     setOpenModal(true);
     setTimeout(() => setLoading(false), 100);
   };
@@ -125,9 +125,9 @@ function ServiceTab() {
       },
     },
     {
-      title: "Cost",
-      dataIndex: "serviceCost",
-      render: (cost) => <Text>KES. {cost.toLocaleString()}</Text>,
+      title: "Rate",
+      dataIndex: "rate",
+      render: (rate) => <Text>KES. {rate?.toLocaleString()}</Text>,
     },
     {
       title: "Actions",

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSearchParams } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import { Row, Statistic, Col, Card, Tabs } from "antd";
 import CountUpComponent from "../../components/CountUpComponent";
@@ -52,7 +53,9 @@ const CardData = [
 ];
 
 function Revenue() {
-  const [activeKey, setActiveKey] = useState("0");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeKey = searchParams.get("tab") || "0";
+
   return (
     <>
       <div
@@ -106,7 +109,9 @@ function Revenue() {
 
       <Tabs
         activeKey={activeKey}
-        onChange={(key) => setActiveKey(key)}
+        onChange={(key) => {
+          setSearchParams({ tab: key });
+        }}
         items={itemsData.map((item, index) => ({
           label: item.name,
           key: String(index),
