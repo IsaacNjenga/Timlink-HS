@@ -1,5 +1,6 @@
 export const serviceJobs = [
   {
+    _id: "1",
     jobId: "JOB-101",
     serviceType: "X-ray",
     clientType: "Patient",
@@ -20,6 +21,7 @@ export const serviceJobs = [
       "Chest X-ray (PA view) performed routinely. Images successfully routed to PACs server. No technical anomalies logged with Unit A during processing.",
   },
   {
+    _id: "2",
     jobId: "JOB-102",
     serviceType: "Ultrasound",
     clientType: "Patient",
@@ -40,6 +42,7 @@ export const serviceJobs = [
       "Scheduled pelvic scan profile. Patient advised to maintain a full bladder prior to arrival window at the unit.",
   },
   {
+    _id: "3",
     jobId: "JOB-103",
     serviceType: "X-ray",
     clientType: "External",
@@ -61,6 +64,7 @@ export const serviceJobs = [
       "Order cancelled due to bilateral duplicate referral tracking error. Swapped to alternative specialized imaging tier pipeline.",
   },
   {
+    _id: "4",
     jobId: "JOB-104",
     serviceType: "Ultrasound",
     clientType: "Patient",
@@ -81,6 +85,7 @@ export const serviceJobs = [
       "Abdominal Doppler scan complete. High clarity tracking achieved. Archival backup logged safely onto structural server.",
   },
   {
+    _id: "5",
     jobId: "JOB-105",
     serviceType: "X-ray",
     clientType: "Patient",

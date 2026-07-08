@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Typography } from "antd";
-import TableComponent from "../../components/TableComponent";
-import SearchComponent from "../../components/SearchComponent";
+import TableComponent from "../../../components/TableComponent";
+import SearchComponent from "../../../components/SearchComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { format } from "date-fns";
-import DeleteConfirm from "../../components/DeleteConfirm";
-import { usePop } from "../../contexts/popContext";
-import { serviceJobs as data } from "../../assets/data/serviceJobs";
+import DeleteConfirm from "../../../components/DeleteConfirm";
+import { usePop } from "../../../contexts/popContext";
+import { serviceJobs as data } from "../../../assets/data/serviceJobs";
+import ViewService from "./ViewService";
 
 const { Text } = Typography;
 
@@ -21,6 +22,13 @@ function ServiceTab() {
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
+  const viewService = (doctor) => {
+    setLoading(true);
+    setContent(doctor);
+    setOpenModal(true);
+    setTimeout(() => setLoading(false), 100);
+  };
 
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -126,17 +134,17 @@ function ServiceTab() {
       dataIndex: "actions",
       render: (_, record) => (
         <Space size="small">
-          <Tooltip title="Edit Patient">
+          <Tooltip title="Edit Record">
             <Button
               type="link"
               icon={<EditOutlined />}
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`/patient&leads/edit-patient/${record._id}`);
+                navigate(`/mobile-imaging/edit-service-job/${record._id}`);
               }}
             />
           </Tooltip>
-          <Tooltip title="Delete Patient">
+          <Tooltip title="Delete Record">
             <DeleteConfirm
               recordId={record._id}
               source="table"
@@ -201,11 +209,17 @@ function ServiceTab() {
           rowKey="_id"
           columns={columns}
           data={filteredData}
-          size="medium"
+          size="small"
           loading={loading}
-          // viewRecord={viewPatient}
+          viewRecord={viewService}
         />
       </div>
+      <ViewService
+        content={content}
+        loading={loading}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
     </>
   );
 }

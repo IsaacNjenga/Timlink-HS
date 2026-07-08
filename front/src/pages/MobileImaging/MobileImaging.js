@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import PageTitle from "../../components/PageTitle";
 import { Button, Tabs } from "antd";
-import RevenueTab from "./RevenueTab";
-import ServiceTab from "./ServiceTab";
-import InventoryTab from "./InventoryTab";
+import RevenueTab from "./Revenue/RevenueTab";
+import ServiceTab from "./ServiceJobs/ServiceTab";
+import InventoryTab from "./Inventory/InventoryTab";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const itemsData = [
   { name: "Revenue", content: <RevenueTab /> },
@@ -12,7 +13,11 @@ const itemsData = [
 ];
 
 function MobileImaging() {
-  const [activeKey, setActiveKey] = useState("0");
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const activeKey = searchParams.get("tab") || "0";
+
   return (
     <>
       <div
@@ -33,7 +38,7 @@ function MobileImaging() {
         <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
           <Button
             type="primary"
-            // onClick={() => navigate("/patient&leads/add-patient")}
+            onClick={() => navigate("/mobile-imaging/add-service-job")}
           >
             + New Service Job
           </Button>
@@ -44,7 +49,9 @@ function MobileImaging() {
       <div>
         <Tabs
           activeKey={activeKey}
-          onChange={(key) => setActiveKey(key)}
+          onChange={(key) => {
+            setSearchParams({ tab: key });
+          }}
           items={itemsData.map((item, index) => ({
             label: item.name,
             key: String(index),

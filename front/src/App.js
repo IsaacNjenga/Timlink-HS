@@ -8,6 +8,8 @@ import FollowUp from "./pages/FollowUp/FollowUp";
 import Cases from "./pages/Cases/Cases";
 import Revenue from "./pages/Revenue/Revenue";
 import MobileImaging from "./pages/MobileImaging/MobileImaging";
+import AddServiceJob from "./pages/MobileImaging/ServiceJobs/AddServiceJob";
+import EditServiceJob from "./pages/MobileImaging/ServiceJobs/EditServiceJob";
 import Quotations from "./pages/Quotations/Quotations";
 import Hospitals from "./pages/Hospitals/Hospitals";
 import Settings from "./pages/Settings/Settings";
@@ -116,6 +118,22 @@ function App() {
                 element={
                   <ProtectedRoutes>
                     <MobileImaging />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/mobile-imaging/add-service-job"
+                element={
+                  <ProtectedRoutes>
+                    <AddServiceJob />
+                  </ProtectedRoutes>
+                }
+              />
+              <Route
+                path="/mobile-imaging/edit-service-job/:id"
+                element={
+                  <ProtectedRoutes>
+                    <EditServiceJob />
                   </ProtectedRoutes>
                 }
               />

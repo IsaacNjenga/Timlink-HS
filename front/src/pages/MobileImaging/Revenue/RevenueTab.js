@@ -18,7 +18,7 @@ import {
   FileProtectOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import CountUpComponent from "../../components/CountUpComponent";
+import CountUpComponent from "../../../components/CountUpComponent";
 
 const { Text, Title } = Typography;
 
@@ -149,7 +149,7 @@ function RevenueTab() {
             }}
           >
             <Row gutter={[16, 10]}>
-              <Col span={12}>
+              <Col span={12} style={{ paddingRight: 12, paddingTop: 12 }}>
                 {progressData.map((item, index) => (
                   <div key={index} style={{ marginBottom: 12 }}>
                     <div>
@@ -174,7 +174,7 @@ function RevenueTab() {
                 style={{ borderColor: "#696262", borderLeft: "1px solid" }}
               />
 
-              <Col span={10}>
+              <Col span={10} style={{ paddingLeft: 12, paddingTop: 12 }}>
                 {/* Header Section */}
                 <Flex align="center" gap="small" style={{ marginBottom: 16 }}>
                   <FileTextOutlined
