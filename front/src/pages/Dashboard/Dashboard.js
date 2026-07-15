@@ -1,6 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import PageTitle from "../../components/PageTitle";
-import { Row, Statistic, Col, Card, Typography, Progress, Tag } from "antd";
+import {
+  Row,
+  Statistic,
+  Col,
+  Card,
+  Typography,
+  Progress,
+  Tag,
+  Avatar,
+  Divider,
+} from "antd";
 import CountUpComponent from "../../components/CountUpComponent";
 import {
   AlertFilled,
@@ -9,8 +19,10 @@ import {
   UsergroupAddOutlined,
 } from "@ant-design/icons";
 import { PatientData } from "../../assets/data/patientData";
+import TableComponent from "../../components/TableComponent";
+import { formatDistanceToNowStrict } from "date-fns";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const CardData = [
   {
@@ -95,7 +107,104 @@ const colorMatch = (status) => {
   return color;
 };
 
+const columns = [
+  {
+    title: "Patient",
+    dataIndex: "name",
+    render: (_, record) => (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          alignContent: "center",
+          padding: 4,
+          borderRadius: 8,
+        }}
+      >
+        <div style={{ marginRight: 12, display: "flex", alignItems: "center" }}>
+          <Avatar
+            size="medium"
+            style={{ backgroundColor: "#f56a00", verticalAlign: "middle" }}
+          >
+            {record.firstName?.charAt(0)} {record.lastName?.charAt(0)}
+          </Avatar>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
+            {record.firstName} {record.lastName}
+          </div>
+
+          <div>
+            <Text type="secondary">
+              {formatDistanceToNowStrict(new Date(record.dob), {
+                addSuffix: false,
+              })}
+            </Text>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  {
+    title: "Diagnosis",
+    dataIndex: "diagnosis",
+  },
+  {
+    title: "Referral",
+    dataIndex: "referral",
+    render: (_, record) =>
+      record.referral || (
+        <Text>
+          {record.referral === "referral doctor"
+            ? record.referringDoctor
+            : record.referral}
+        </Text>
+      ),
+  },
+  {
+    title: "Payment",
+    dataIndex: "payment",
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    render: (status) => {
+      let color;
+      switch (status) {
+        case "New Lead":
+          color = "blue";
+          break;
+        case "Under Review":
+          color = "orange";
+          break;
+        case "Matched":
+          color = "green";
+          break;
+        case "Scheduled":
+          color = "purple";
+          break;
+        case "Completed":
+          color = "cyan";
+          break;
+        case "Closed":
+          color = "red";
+          break;
+        default:
+          color = "default";
+      }
+      return <Tag color={color}>{status}</Tag>;
+    },
+  },
+  {
+    title: "Date of Registration",
+    dataIndex: "date",
+  },
+];
+
 function Dashboard() {
+  const [loading, setLoading] = useState(false);
+
   const pipelineElements = useMemo(() => {
     if (!PatientData || PatientData.length === 0) return [];
 
@@ -186,12 +295,12 @@ function Dashboard() {
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <div>
-            <Card title="Case Pipeline">
+            <Card title="Case Pipeline" hoverable>
               {pipelineElements.map((item, index) => (
                 <div
                   key={index}
                   style={{
-                    marginBottom: 16,
+                    marginBottom: 16.5,
                     display: "flex",
                     flexDirection: "row",
                     gap: 8,
@@ -214,29 +323,48 @@ function Dashboard() {
           <div>
             <Card title="Payment Summary" hoverable>
               {summaryData.map((s, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginBottom: 18,
-                  }}
-                >
-                  <div>
-                    <Text>{s.label}</Text>
+                <div key={index}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      <Text>{s.label}</Text>
+                    </div>
+                    <div>
+                      <Text type="secondary">
+                        KES. {s.value.toLocaleString()}
+                      </Text>
+                    </div>
                   </div>
-                  <div>
-                    <Text type="secondary">
-                      KES. {s.value.toLocaleString()}
-                    </Text>
-                  </div>
+                  <Divider style={{ margin: 17 }} />
                 </div>
               ))}
             </Card>
           </div>
         </Col>
       </Row>
+
+      {/* recent patients */}
+      <div>
+        <div>
+          <Title type="secondary" level={3}>
+            Recent Patients
+          </Title>
+        </div>
+        <TableComponent
+          rowKey="_id"
+          columns={columns}
+          data={[...PatientData]
+            .sort((a, b) => b.date.localeCompare(a.date))
+            .slice(0, 4)}
+          size="small"
+          loading={loading}
+        />
+      </div>
     </>
   );
 }
