@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home/Home";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import axios from "axios";
 import Auth from "./pages/Auth/Auth";
 import Patient from "./pages/Patient/Patient";
@@ -58,7 +58,7 @@ function App() {
                 </ProtectedRoutes>
               }
             >
-              <Route index element={<Home />} />
+              <Route index element={<Dashboard />} />
               <Route
                 path="/patient&leads"
                 element={
