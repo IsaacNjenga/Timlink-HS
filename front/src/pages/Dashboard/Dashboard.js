@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import PageTitle from "../../components/PageTitle";
-import { Row, Statistic, Col, Card, Typography, Progress } from "antd";
+import { Row, Statistic, Col, Card, Typography, Progress, Tag } from "antd";
 import CountUpComponent from "../../components/CountUpComponent";
 import {
   AlertFilled,
@@ -59,6 +59,42 @@ const CardData = [
   },
 ];
 
+const summaryData = [
+  { label: "Total Billed", value: 45923 },
+  { label: "Agency Fees", value: 17538 },
+  { label: "Outstanding", value: 23383 },
+  { label: "Net Revenue", value: 68658 },
+];
+
+const colorMatch = (status) => {
+  let color = "";
+  switch (status) {
+    case "New Lead":
+      color = "purple";
+      break;
+    case "Under Review":
+      color = "orange";
+      break;
+    case "Matched":
+      color = "green";
+      break;
+    case "Scheduled":
+      color = "gold";
+      break;
+    case "Completed":
+      color = "cyan";
+      break;
+    case "Closed":
+      color = "red";
+      break;
+    default:
+      color = "green";
+      break;
+  }
+
+  return color;
+};
+
 function Dashboard() {
   const pipelineElements = useMemo(() => {
     if (!PatientData || PatientData.length === 0) return [];
@@ -75,6 +111,7 @@ function Dashboard() {
       label: status,
       value: count,
       percent: parseFloat(((count / totalPatients) * 100).toFixed(0)),
+      color: colorMatch(status),
     }));
   }, []);
 
@@ -146,23 +183,60 @@ function Dashboard() {
       </div>
 
       {/* cases pipeline */}
-
-      <div>
-        <Card>
-          {pipelineElements.map((item, index) => (
-            <div key={index} style={{ marginBottom: 12 }}>
-              <div>
-                <div>
-                  <Text>
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <div>
+            <Card title="Case Pipeline">
+              {pipelineElements.map((item, index) => (
+                <div
+                  key={index}
+                  style={{
+                    marginBottom: 16,
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 8,
+                  }}
+                >
+                  <Tag color={item.color}>
                     {item.label} ({item.value.toLocaleString()})
-                  </Text>
+                  </Tag>
+                  <Progress
+                    percent={item.percent}
+                    style={{ color: "red" }}
+                    strokeColor={item.color}
+                  />
                 </div>
-                <Progress percent={item.percent} />
-              </div>
-            </div>
-          ))}
-        </Card>
-      </div>
+              ))}
+            </Card>
+          </div>
+        </Col>
+        <Col span={12}>
+          <div>
+            <Card title="Payment Summary" hoverable>
+              {summaryData.map((s, index) => (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginBottom: 18,
+                  }}
+                >
+                  <div>
+                    <Text>{s.label}</Text>
+                  </div>
+                  <div>
+                    <Text type="secondary">
+                      KES. {s.value.toLocaleString()}
+                    </Text>
+                  </div>
+                </div>
+              ))}
+            </Card>
+          </div>
+        </Col>
+      </Row>
     </>
   );
 }
