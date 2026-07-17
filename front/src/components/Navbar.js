@@ -220,7 +220,7 @@ function Navbar() {
           collapsed={collapsed}
           breakpoint="md"
           onBreakpoint={(broken) => setCollapsed(broken)}
-          width={240}
+          width={230}
           collapsedWidth={70}
           style={{
             background: "var(--timlink-sidebar-bg)",
@@ -590,10 +590,11 @@ function Navbar() {
           {/* ── CONTENT ─────────────────────────────────────────── */}
           <Content
             style={{
-              margin:  current === "/settings" ? 0 :"0 20px",
+              margin: current === "/settings" ? 0 : "0 20px",
               padding: current === "/settings" ? 0 : "0 12px 12px 0",
               minHeight: "calc(100vh - 104px)",
               background: "var(--timlink-content-bg)",
+              transition: "all 0.5s ease-in-out",
             }}
           >
             <Outlet />

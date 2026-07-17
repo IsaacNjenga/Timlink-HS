@@ -373,11 +373,10 @@ export const globalStyles = `
   .admin-menu .ant-menu-item:hover,
   .admin-menu .ant-menu-submenu-title:hover {
     background: ${accentDim} !important;
-    border-radius: 8px !important;
   }
   .admin-menu .ant-menu-item-selected {
     background: ${accentDim} !important;
-    border-radius: 8px !important;
+    border-radius: 4px !important;
     border-left: 3px solid ${accent} !important;
   }
   .admin-menu .ant-menu-submenu-selected > .ant-menu-submenu-title {
@@ -385,20 +384,19 @@ export const globalStyles = `
   }
   .admin-menu .ant-menu-sub {
     background: rgba(0,0,0,0.2) !important;
-    border-radius: 8px !important;
+    border-radius: 1px !important;
     margin: 2px 4px !important;
   }
   .admin-menu .ant-menu-item,
   .admin-menu .ant-menu-submenu-title {
-    border-radius: 8px !important;
-    margin: 3px 4px !important;
-    height: auto !important;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+    border-radius: 1px !important;
+    margin: 2px 1px !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
   }
   .admin-menu .ant-menu-item .ant-menu-item-icon,
   .admin-menu .ant-menu-submenu-title .ant-menu-item-icon {
-    min-width: 22px !important;
+    min-width: 18px !important;
     font-size: 18px !important;
     color: rgba(255,255,255,0.7) !important;
     vertical-align: middle !important;
@@ -412,7 +410,7 @@ export const globalStyles = `
     color: rgba(255,255,255,0.4) !important;
   }
   .admin-menu .ant-menu-inline.ant-menu-sub .ant-menu-item {
-    padding-left: 44px !important;
+    padding-left: 36px !important;
   }
 
   .plus-btn:hover {

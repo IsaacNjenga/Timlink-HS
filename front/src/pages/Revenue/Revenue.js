@@ -115,7 +115,7 @@ function Revenue() {
         items={itemsData.map((item, index) => ({
           label: item.name,
           key: String(index),
-          children: <div style={{ padding: "12px" }}>{item.content}</div>,
+          children: <div>{item.content}</div>,
         }))}
       />
     </>

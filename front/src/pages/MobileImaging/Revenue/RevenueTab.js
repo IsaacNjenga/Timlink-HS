@@ -69,7 +69,7 @@ const progressData = [
 
 function RevenueTab() {
   return (
-    <div style={{ padding: 12 }}>
+    <div>
       <div style={{ marginBottom: 16 }}>
         <Row gutter={[16, 16]}>
           {CardData.map((card) => (
