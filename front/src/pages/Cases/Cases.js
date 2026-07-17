@@ -82,7 +82,7 @@ function Cases() {
       ),
     },
     {
-      title: "Surgery Type & Date",
+      title: "Surgery Info",
       dataIndex: "surgeryType",
       render: (_, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -90,39 +90,32 @@ function Cases() {
             {record.surgeryType}
           </div>
           <div>
-            <Text type="secondary">{record.surgeryDate}</Text>
+            <Text type="secondary">D.O.S: {record.surgeryDate}</Text>
           </div>
         </div>
       ),
     },
     {
-      title: "Surgeon",
+      title: "Surgeon & Hospital",
       dataIndex: "surgeon",
       render: (_, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
             {record.surgeon.name}
           </div>
+          <div>
+            <Text type="secondary">Hospital: {record.hospital}</Text>
+          </div>
         </div>
       ),
     },
+
     {
-      title: "Hospital",
-      dataIndex: "hospital",
-    },
-    {
-      title: "Billed Amount",
+      title: "Billing Info",
       dataIndex: "financials",
-      render: (_, record) => (
-        <Text>KES.{record.financials.finalBilledKsh.toLocaleString()}</Text>
-      ),
-    },
-    {
-      title: "Payment Status",
-      dataIndex: "paymentStatus",
-      render: (status) => {
+      render: (_, record) => {
         let color;
-        switch (status) {
+        switch (record.paymentStatus) {
           case "Pending":
             color = "red";
             break;
@@ -136,7 +129,26 @@ function Cases() {
           default:
             color = "default";
         }
-        return <Tag color={color}>{status}</Tag>;
+        return (
+          <div
+            style={{
+              display: "flex",
+              padding: 4,
+              borderRadius: 8,
+              flexDirection: "column",
+              gap: 4,
+            }}
+          >
+            <div>
+              <Text>
+                KES.{record.financials.finalBilledKsh.toLocaleString()}
+              </Text>
+            </div>
+            <div>
+              <Tag color={color}>{record.paymentStatus}</Tag>
+            </div>
+          </div>
+        );
       },
     },
     {
@@ -204,7 +216,6 @@ function Cases() {
           + New Case
         </Button>
       </div>
-
       <div style={{ marginBottom: 20 }}>
         <div>
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
@@ -240,7 +251,7 @@ function Cases() {
           rowKey="_id"
           columns={columns}
           data={filteredData}
-          size="large"
+          size="medium"
           loading={loading}
           viewRecord={viewCase}
         />

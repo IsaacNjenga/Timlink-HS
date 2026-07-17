@@ -70,7 +70,8 @@ function EditFollowUp({ openForm, setOpenForm, schedule }) {
           </Text>
         </span>
       }
-      width={650}
+      extra={null}
+      width={700}
     >
       <div style={{ maxWidth: "850px", margin: "0px auto", padding: "0px" }}>
         {/* Page Header */}

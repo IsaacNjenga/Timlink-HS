@@ -74,28 +74,13 @@ function Hospitals() {
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
               <Text type="primary">{record.hospitalName}</Text>
+            </div><div style={{ fontSize: 12 }}>
+              <Tag type="secondary">{record.tier}</Tag>
             </div>
             <div style={{ fontSize: 12 }}>
               <Text type="secondary">{record.code}</Text>
             </div>
-          </div>
-        </div>
-      ),
-    },
-    { title: "Tier", dataIndex: "tier", key: "tier" },
-    {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
-      render: (_, record) => (
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
-            <Text type="primary">{record.location.address}</Text>
-          </div>
-          <div style={{ fontSize: 12 }}>
-            <Text type="secondary">
-              {record.location.city}, {record.location.country}
-            </Text>
+            
           </div>
         </div>
       ),
@@ -111,6 +96,23 @@ function Hospitals() {
           </div>
           <div style={{ fontSize: 12 }}>
             <Text type="secondary">{record.contact.email}</Text>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+      render: (_, record) => (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
+            <Text type="primary">{record.location.address}</Text>
+          </div>
+          <div style={{ fontSize: 12 }}>
+            <Text type="secondary">
+              {record.location.city}, {record.location.country}
+            </Text>
           </div>
         </div>
       ),
@@ -234,7 +236,7 @@ function Hospitals() {
           rowKey="_id"
           columns={columns}
           data={filteredData}
-          size="large"
+          size="medium"
           loading={loading}
           viewRecord={viewHospital}
         />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "antd";
+import { Empty, Table } from "antd";
 
 function TableComponent({ columns, data, size, loading, rowKey, viewRecord }) {
   return (
@@ -15,6 +15,9 @@ function TableComponent({ columns, data, size, loading, rowKey, viewRecord }) {
           viewRecord(record);
         },
       })}
+      locale={{
+        emptyText: <Empty description="No Data" />,
+      }}
     />
   );
 }

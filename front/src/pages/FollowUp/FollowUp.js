@@ -42,6 +42,7 @@ function FollowUp() {
   const [content, setContent] = useState({});
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openAddForm, setOpenAddForm] = useState(false);
   const [openForm, setOpenForm] = useState(false);
 
   const activeValue = data.filter(
@@ -231,10 +232,7 @@ function FollowUp() {
         <Button
           type="primary"
           style={{ marginTop: 10 }}
-          onClick={() =>
-            // navigate("/follow-up/add-follow-up")
-            setOpenForm(true)
-          }
+          onClick={() => setOpenAddForm(true)}
         >
           + Schedule Follow Up
         </Button>
@@ -247,9 +245,8 @@ function FollowUp() {
             <Card variant="borderless">
               <Statistic
                 title={<span style={{ color: "whitesnow" }}>All</span>}
-                value={data.length} formatter={(value) => (
-                  <CountUpComponent value={data.length} />
-                )}
+                value={data.length}
+                formatter={(value) => <CountUpComponent value={data.length} />}
               />
             </Card>
           </Col>
@@ -276,7 +273,8 @@ function FollowUp() {
                     Completed <CheckCircleOutlined />
                   </span>
                 }
-                value={completedValue.length} formatter={(value) => (
+                value={completedValue.length}
+                formatter={(value) => (
                   <CountUpComponent value={completedValue.length} />
                 )}
               />
@@ -290,7 +288,8 @@ function FollowUp() {
                     Pending <ClockCircleOutlined />
                   </span>
                 }
-                value={pendingValue.length} formatter={(value) => (
+                value={pendingValue.length}
+                formatter={(value) => (
                   <CountUpComponent value={pendingValue.length} />
                 )}
               />
@@ -349,7 +348,7 @@ function FollowUp() {
         setOpenModal={setOpenModal}
       />
 
-      <AddFollowUp setOpenForm={setOpenForm} openForm={openForm} />
+      <AddFollowUp setOpenForm={setOpenAddForm} openForm={openAddForm} />
 
       <EditFollowUp
         setOpenForm={setOpenForm}

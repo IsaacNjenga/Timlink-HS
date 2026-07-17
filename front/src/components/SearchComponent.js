@@ -17,7 +17,7 @@ function SearchComponent({ value = "", onChange }) {
         onChange={handleSearch}
         size="large"
         enterButton
-        style={{ width: 500, height: 40 }}
+        style={{ width: 600, height: 40 }}
       />
     </Space.Compact>
   );

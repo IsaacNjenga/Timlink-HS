@@ -522,7 +522,7 @@ function Navbar() {
           <Content
             style={{
               margin: "0 20px",
-              padding: 0,
+              padding: "12px 0",
               minHeight: "calc(100vh - 104px)",
               background: "var(--timlink-content-bg)",
             }}

@@ -40,6 +40,7 @@ function ViewDoctor({ content, loading, openModal, setOpenModal }) {
       contentLoading={loading}
       recordId={content._id}
       editPath={`/doctor-portfolio/edit-doctor/${content._id}`}
+      extra={!null}
     >
       {content ? (
         <>

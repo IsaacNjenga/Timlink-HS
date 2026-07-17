@@ -42,18 +42,18 @@ function AddFollowUp({ openForm, setOpenForm }) {
       openModal={openForm}
       setOpenModal={setOpenForm}
       loading={loading}
-      title={""}
-      width={650}
-    >
-      <div style={{ maxWidth: "850px", margin: "0px auto", padding: "0px" }}>
-        {/* Page Header */}
-        <div style={{ marginBottom: "32px", textAlign: "center" }}>
-          <Title level={2} style={{ margin: 0 }}>
+      title={
+        <div>
+          <Title level={5} style={{ margin: 0 }}>
             Patient Follow-Up Form
           </Title>
           <Text type="secondary">Fill in the follow-up details</Text>
         </div>
-
+      }
+      extra={null}
+      width={700}
+    >
+      <div style={{ maxWidth: "850px", margin: "0px auto", padding: "0px" }}>
         <FollowUpForm
           form={form}
           formType="create"

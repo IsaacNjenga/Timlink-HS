@@ -62,6 +62,7 @@ function ViewFollowUp({ content, loading, openModal, setOpenModal }) {
       contentLoading={loading}
       recordId={content._id}
       editPath={null}
+      extra={!null}
     >
       {content ? (
         <>

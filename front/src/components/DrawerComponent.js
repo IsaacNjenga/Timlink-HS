@@ -15,6 +15,7 @@ function DrawerComponent({
   contentLoading,
   recordId,
   editPath,
+  extra,
 }) {
   const navigate = useNavigate();
   const { token } = theme.useToken();
@@ -39,46 +40,50 @@ function DrawerComponent({
         />
       }
       extra={
-        <Space>
-          {editPath !== null ? (
-            <Tooltip title="Edit">
-              <Button
-                key="edit"
-                type="primary"
-                icon={<EditOutlined />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(editPath);
-                }}
-              />
-            </Tooltip>
-          ) : null}
+        extra != null ? (
+          <Space>
+            {editPath !== null ? (
+              <Tooltip title="Edit">
+                <Button
+                  key="edit"
+                  type="primary"
+                  icon={<EditOutlined />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(editPath);
+                  }}
+                />
+              </Tooltip>
+            ) : null}
 
-          <Tooltip title="Delete">
-            <DeleteConfirm
-              recordId={recordId}
-              title="Are you sure?"
-              source="modal"
-              description="This action cannot be undone!"
-              onConfirmSuccess={(id) => {
-                console.log(`Successfully deleted ${id}`);
-              }}
-            >
-              <Button
-                type="primary"
-                danger
-                icon={<DeleteOutlined />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setOpenConfirm({
-                    id: recordId,
-                    source: "modal",
-                  });
+            <Tooltip title="Delete">
+              <DeleteConfirm
+                recordId={recordId}
+                title="Are you sure?"
+                source="modal"
+                description="This action cannot be undone!"
+                onConfirmSuccess={(id) => {
+                  console.log(`Successfully deleted ${id}`);
                 }}
-              />
-            </DeleteConfirm>
-          </Tooltip>
-        </Space>
+              >
+                <Button
+                  type="primary"
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenConfirm({
+                      id: recordId,
+                      source: "modal",
+                    });
+                  }}
+                />
+              </DeleteConfirm>
+            </Tooltip>
+          </Space>
+        ) : (
+          null
+        )
       }
     >
       {contentLoading ? (
@@ -88,9 +93,10 @@ function DrawerComponent({
       ) : (
         <div
           style={{
-            padding: "10px 12px",
+            padding: "10px 16px",
             background: token.colorBgContainer,
             color: token.colorText,
+            borderRadius: 12,
           }}
         >
           {children}
