@@ -5,7 +5,6 @@ import logo from "../assets/icons/logo.jpeg";
 import {
   CreditCardOutlined,
   HomeOutlined,
-  PoweroffOutlined,
   SettingOutlined,
   LeftSquareOutlined,
   RightSquareOutlined,
@@ -24,7 +23,7 @@ import { useUser } from "../contexts/userContext";
 import Swal from "sweetalert2";
 import { primary, accentMid } from "../utils/uiConfig";
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 const { Title, Text } = Typography;
 
 const menuConfig = [
@@ -81,6 +80,12 @@ const menuConfig = [
     label: "Follow-ups",
     icon: UserSwitchOutlined,
     path: "/follow-up",
+  },
+  {
+    key: "settings",
+    label: "Settings",
+    icon: SettingOutlined,
+    path: "/settings",
   },
 ];
 
@@ -177,7 +182,7 @@ function Navbar() {
           to={item.path}
           style={{
             fontFamily: "'Outfit', sans-serif",
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: 500,
             color: "rgba(255,255,255,0.85)",
             textDecoration: "none",
@@ -215,7 +220,7 @@ function Navbar() {
           collapsed={collapsed}
           breakpoint="md"
           onBreakpoint={(broken) => setCollapsed(broken)}
-          width={270}
+          width={240}
           collapsedWidth={70}
           style={{
             background: "var(--timlink-sidebar-bg)",
@@ -301,7 +306,7 @@ function Navbar() {
               background: "transparent",
               border: "none",
               flex: 1,
-              padding: "0 2px",
+              padding: 0,
             }}
             items={antMenuItems}
             onClick={({ key }) => setCurrent(key)}
@@ -310,12 +315,85 @@ function Navbar() {
           {/* ── Collapse toggle ── */}
           <div
             style={{
-              padding: collapsed ? "16px 12px" : "16px 20px",
+              padding: collapsed ? "16px 12px" : "8px",
               borderTop: "1px solid rgba(113,232,161,0.1)",
               display: "flex",
+              flexDirection: "column",
               justifyContent: collapsed ? "center" : "flex-start",
+              marginTop: "auto",
             }}
           >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div>
+                {/* User avatar + name */}
+                <Tooltip title={user?.username}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      padding: "6px 12px 6px 6px",
+                      borderRadius: 10,
+                      border: "1px solid rgba(113,232,161,0.0)",
+                      background: "rgba(113,232,161,0.0)",
+                      cursor: "default",
+                      transition: "all 0.35s ease",
+                    }}
+                  >
+                    <Avatar
+                      src={user?.avatar}
+                      size={collapsed ? 26 : 28}
+                      style={{
+                        background: primary,
+                        border: `1px solid ${accentMid}`,
+                        fontSize: 12,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {user?.username?.[0]?.toUpperCase()}
+                    </Avatar>
+                    {!collapsed && (
+                      <div
+                        style={{
+                          lineHeight: 1.3,
+                          transition: "all 0.35s ease",
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontFamily: "'Outfit', sans-serif",
+                            fontSize: 13,
+                            fontWeight: 600,
+                            color: "#fff",
+                            margin: 0,
+                          }}
+                        >
+                          {user?.username ?? "Admin"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </Tooltip>
+              </div>
+              {!collapsed && (
+                <div>
+                  <Switch
+                    checkedChildren={<SunOutlined />}
+                    unCheckedChildren={<MoonOutlined />}
+                    checked={mode === "light"}
+                    onChange={(checked) => setMode(checked ? "light" : "dark")}
+                  />
+                </div>
+              )}
+            </div>
+
             <button
               className="collapse-toggle"
               onClick={() => setCollapsed((p) => !p)}
@@ -346,7 +424,7 @@ function Navbar() {
 
         <Layout>
           {/* ── HEADER ──────────────────────────────────────────── */}
-          <Header
+          {/* <Header
             style={{
               background: "var(--timlink-header-bg)",
               height: "auto",
@@ -366,34 +444,29 @@ function Navbar() {
                 minHeight: 64,
               }}
             >
-              <div></div>
-              {/* Right actions */}
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {/* Notifications */}
-                {/* <Tooltip title="Notifications">
-                  <Badge count={3} size="small" color={accent}>
-                    <button
-                      className="header-icon-btn"
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 8,
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        background: "rgba(255,255,255,0.04)",
-                        color: "rgba(255,255,255,0.6)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        fontSize: 16,
-                        transition: "all 0.2s ease",
-                        padding: 0,
-                      }}
-                    >
-                      <BellOutlined />
-                    </button>
-                  </Badge>
-                </Tooltip> */}
+                <Tooltip title="Notifications">
+                  <button
+                    className="header-icon-btn"
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 8,
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      background: "rgba(255,255,255,0.04)",
+                      color: "rgba(255,255,255,0.6)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      fontSize: 16,
+                      transition: "all 0.2s ease",
+                      padding: 0,
+                    }}
+                  >
+                    <BellOutlined />
+                  </button>
+                </Tooltip>
 
                 <Switch
                   checkedChildren={<SunOutlined />}
@@ -402,7 +475,6 @@ function Navbar() {
                   onChange={(checked) => setMode(checked ? "light" : "dark")}
                 />
 
-                {/* Settings */}
                 <Tooltip title="Settings">
                   <button
                     className="header-icon-btn"
@@ -427,7 +499,6 @@ function Navbar() {
                   </button>
                 </Tooltip>
 
-                {/* User avatar + name */}
                 <Tooltip title={user?.username}>
                   <div
                     style={{
@@ -475,12 +546,11 @@ function Navbar() {
                         }}
                       >
                         Administrator
-                      </p> */}
+                      </p> 
                     </div>
                   </div>
                 </Tooltip>
 
-                {/* Divider */}
                 <div
                   style={{
                     width: 1,
@@ -490,7 +560,6 @@ function Navbar() {
                   }}
                 />
 
-                {/* Logout */}
                 <Tooltip title="Log Out">
                   <button
                     className="logout-btn"
@@ -516,13 +585,13 @@ function Navbar() {
                 </Tooltip>
               </div>
             </div>
-          </Header>
+          </Header> */}
 
           {/* ── CONTENT ─────────────────────────────────────────── */}
           <Content
             style={{
               margin: "0 20px",
-              padding: "12px 0",
+              padding: "0 12px 12px 0",
               minHeight: "calc(100vh - 104px)",
               background: "var(--timlink-content-bg)",
             }}
