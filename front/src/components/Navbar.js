@@ -97,7 +97,7 @@ export const NavLabel = ({ label, collapsed }) => {
         alignItems: "center",
         justifyContent: "space-between",
         width: "100%",
-        gap: 8,
+        gap: 4,
       }}
     >
       <span
@@ -590,8 +590,8 @@ function Navbar() {
           {/* ── CONTENT ─────────────────────────────────────────── */}
           <Content
             style={{
-              margin: "0 20px",
-              padding: "0 12px 12px 0",
+              margin:  current === "/settings" ? 0 :"0 20px",
+              padding: current === "/settings" ? 0 : "0 12px 12px 0",
               minHeight: "calc(100vh - 104px)",
               background: "var(--timlink-content-bg)",
             }}
