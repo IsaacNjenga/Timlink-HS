@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Tabs, Typography } from "antd";
+import { Tabs, Typography } from "antd";
 import { useSearchParams } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import Profile from "./Profile";
@@ -30,7 +30,7 @@ function Settings() {
 
   const antMenuItems = menuConfig.map((item) => {
     const iconEl = React.createElement(item.icon, {
-      style: { fontSize: 18, color: "rgba(255,255,255,0.75)", flexShrink: 0 },
+      style: { fontSize: 14, color: "rgba(255,255,255,0.75)", flexShrink: 0 },
     });
 
     return {
@@ -44,13 +44,20 @@ function Settings() {
             fontWeight: 500,
             color: "rgba(255,255,255,0.85)",
             textDecoration: "none",
-            letterSpacing: "0.02em",
           }}
         >
           {item.label}
         </Text>
       ),
-      children: <div style={{ padding: "12px" }}>{item.content}</div>,
+      children: (
+        <div
+          style={{
+            margin: "20 0px",
+          }}
+        >
+          {item.content}
+        </div>
+      ),
     };
   });
 
@@ -63,6 +70,7 @@ function Settings() {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          marginBottom: 10,
         }}
       >
         <div>
@@ -72,15 +80,15 @@ function Settings() {
           />
         </div>
       </div>
-      
-      <Divider />
+
+      {/* <Divider /> */}
       <Tabs
         activeKey={activeKey}
         onChange={(key) => {
           setSearchParams({ tab: key });
         }}
         tabPlacement={"left"}
-        style={{ height: "auto" }}
+        style={{ height: "auto", borderTop: "1px solid #162c29" }}
         items={antMenuItems}
       />
     </>

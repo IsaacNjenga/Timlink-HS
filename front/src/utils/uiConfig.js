@@ -377,7 +377,7 @@ export const globalStyles = `
   .admin-menu .ant-menu-item-selected {
     background: ${accentDim} !important;
     border-radius: 4px !important;
-    border-left: 3px solid ${accent} !important;
+    border-left: 2px solid ${accent} !important;
   }
   .admin-menu .ant-menu-submenu-selected > .ant-menu-submenu-title {
     color: ${accent} !important;
