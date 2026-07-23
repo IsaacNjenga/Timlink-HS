@@ -29,7 +29,7 @@ const PatientSchema = new mongoose.Schema(
 
     address: { type: String, required: false, default: "" },
 
-    nextOfKin: { type: [String], required: true },
+    nextOfKin: { type: [{ String }], required: true },
 
     referralType: {
       type: String,
