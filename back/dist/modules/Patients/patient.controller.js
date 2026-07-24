@@ -36,8 +36,8 @@ exports.FetchPatients = (0, catchAsync_1.catchAsync)(async (req, res) => {
             type: "patient",
             refId: req.user._id.toString(),
             action: "fetched",
-            title: "Patients fetches",
-            description: "Patient list was fetched",
+            title: "Patients fetched",
+            description: `Patient list was fetched by ${req.user._id.toString()}`,
             refModel: "patient",
         });
     }
@@ -61,7 +61,7 @@ exports.FetchPatientById = (0, catchAsync_1.catchAsync)(async (req, res) => {
     res.status(200).json({
         success: true,
         data: patient,
-        message: "User retrieved successfully",
+        message: "Patient retrieved successfully",
     });
 });
 exports.UpdatePatient = (0, catchAsync_1.catchAsync)(async (req, res) => {
@@ -78,7 +78,7 @@ exports.UpdatePatient = (0, catchAsync_1.catchAsync)(async (req, res) => {
     res.status(200).json({
         success: true,
         data: patient,
-        message: "User updated successfully",
+        message: "Patient updated successfully",
     });
 });
 exports.PatchPatient = exports.UpdatePatient;

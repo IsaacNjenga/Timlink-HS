@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PatientService = void 0;
 const node_cache_1 = __importDefault(require("node-cache"));
 const BadRequestError_1 = require("../../common/errors/BadRequestError");
-const user_model_1 = require("../Users/user.model");
 const patient_model_1 = require("./patient.model");
 const patientCache = new node_cache_1.default({ stdTTL: 300 });
 // const DOCTOR_PROFILE_POPULATE = [
@@ -100,7 +99,7 @@ class PatientService {
     static async updatePatient(patientId, data, requesterID, requesterRole) {
         assertPatientId(patientId);
         const updateData = sanitizeUpdateData(data, requesterRole);
-        const patient = await user_model_1.UserModel.findByIdAndUpdate(patientId, updateData, {
+        const patient = await patient_model_1.PatientModel.findByIdAndUpdate(patientId, updateData, {
             new: true,
             runValidators: true,
         })

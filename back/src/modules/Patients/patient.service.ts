@@ -143,7 +143,7 @@ export class PatientService {
     assertPatientId(patientId);
 
     const updateData = sanitizeUpdateData(data, requesterRole);
-    const patient = await UserModel.findByIdAndUpdate(patientId, updateData, {
+    const patient = await PatientModel.findByIdAndUpdate(patientId, updateData, {
       new: true,
       runValidators: true,
     })

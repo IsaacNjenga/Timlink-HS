@@ -49,8 +49,8 @@ export const FetchPatients = catchAsync(
         type: "patient",
         refId: req.user._id.toString(),
         action: "fetched",
-        title: "Patients fetches",
-        description: "Patient list was fetched",
+        title: "Patients fetched",
+        description: `Patient list was fetched by ${req.user._id.toString()}`,
         refModel: "patient",
       });
     }
@@ -85,7 +85,7 @@ export const FetchPatientById = catchAsync(
     res.status(200).json({
       success: true,
       data: patient,
-      message: "User retrieved successfully",
+      message: "Patient retrieved successfully",
     });
   },
 );
@@ -113,7 +113,7 @@ export const UpdatePatient = catchAsync(
     res.status(200).json({
       success: true,
       data: patient,
-      message: "User updated successfully",
+      message: "Patient updated successfully",
     });
   },
 );
