@@ -26,7 +26,7 @@ exports.CreatePatient = (0, catchAsync_1.catchAsync)(async (req, res) => {
     res.status(201).json({
         success: true,
         data: patientData,
-        message: "Patient info created successfully",
+        message: "Patient info has been created",
     });
 });
 exports.FetchPatients = (0, catchAsync_1.catchAsync)(async (req, res) => {

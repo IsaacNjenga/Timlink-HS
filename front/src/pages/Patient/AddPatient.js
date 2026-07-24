@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Form, Typography } from "antd";
 import PatientForm from "./PatientForm";
 import dayjs from "dayjs";
+import axios from "axios";
+import { useAuth } from "../../contexts/authContext";
+import { useNotification } from "../../contexts/notificationContext";
 
 const { Title, Text } = Typography;
 
@@ -11,21 +14,39 @@ const formatDateValue = (dateValue) => {
 };
 
 function AddPatient() {
+  const { token } = useAuth();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const openNotification = useNotification();
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     setLoading(true);
     try {
       const formattedValues = {
         ...values,
-        dob: formatDateValue(values.dob),
+        dateOfBirth: formatDateValue(values.dateOfBirth),
+        dateOfRegistration: formatDateValue(values.dateOfRegistration),
       };
-      console.log("Form values:", formattedValues);
+
+      const response = await axios.post(
+        "patients/create-patient",
+        formattedValues,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        openNotification("success", message, "Success!");
+      } else {
+        openNotification("error", message, "Something went wrong...");
+      }
     } catch (error) {
       console.error(error);
+      openNotification("error", error.message, "Something went wrong...");
     } finally {
       setLoading(false);
+      form.resetFields();
     }
   };
 

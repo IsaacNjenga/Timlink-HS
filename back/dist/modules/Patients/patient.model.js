@@ -9,6 +9,7 @@ const NextOfKinSchema = new mongoose_1.default.Schema({
     name: { type: String, required: true, trim: true },
     relation: { type: String, required: true, trim: true },
     contact: { type: String, required: true, trim: true },
+    email: { type: String, required: false, trim: true },
 }, { _id: false });
 const PatientSchema = new mongoose_1.default.Schema({
     firstName: { type: String, trim: true, default: "" },
@@ -42,10 +43,10 @@ const PatientSchema = new mongoose_1.default.Schema({
     },
     referralType: {
         type: String,
-        enum: ["walk-in", "referral doctor", "website", "other"],
+        enum: ["walk-in", "referral doctor", "website", "other", "social media"],
     },
     // referringDoctor:{type: } //ToDo: reference a doctor
-    diagnosis: { type: String, default: null },
+    diagnosis: { type: String, required: true },
     paymentMode: { type: String }, //enum for insurance, cash, debit etc
     status: {
         type: String,
@@ -58,7 +59,7 @@ const PatientSchema = new mongoose_1.default.Schema({
             "Closed",
         ],
     },
-    notes: { type: String, default: null },
+    notes: { type: String, default: null, required: true },
     dateOfRegistration: { type: Date, default: null },
 }, {
     collection: "patients",

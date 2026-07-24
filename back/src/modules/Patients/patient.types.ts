@@ -6,7 +6,12 @@ export type PatientStatus =
   | "Completed"
   | "Closed";
 export type PatientGender = "MALE" | "FEMALE" | "OTHER";
-export type ReferralType = "walk-in" | "referral doctor" | "website" | "other";
+export type ReferralType =
+  | "walk-in"
+  | "referral doctor"
+  | "website"
+  | "other"
+  | "social media";
 
 export interface Patient {
   _id: string;

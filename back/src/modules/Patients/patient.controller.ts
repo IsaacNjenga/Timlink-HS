@@ -35,7 +35,7 @@ export const CreatePatient = catchAsync(
     res.status(201).json({
       success: true,
       data: patientData,
-      message: "Patient info created successfully",
+      message: "Patient info has been created",
     });
   },
 );

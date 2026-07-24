@@ -26,7 +26,10 @@ function EditPatient() {
 
     form.setFieldsValue({
       ...patient,
-      dob: patient.dob ? dayjs(patient.dob) : undefined,
+      dateOfBirth: patient.dateOfBirth ? dayjs(patient.dateOfBirth) : undefined,
+      dateOfRegistration: patient.dateOfRegistration
+        ? dayjs(patient.dateOfRegistration)
+        : undefined,
     });
   }, [patient, form]);
 
@@ -35,13 +38,15 @@ function EditPatient() {
     try {
       const formattedValues = {
         ...values,
-        dob: formatDateValue(values.dob),
+        dateOfBirth: formatDateValue(values.dateOfBirth),
+        dateOfRegistration: formatDateValue(values.dateOfRegistration),
       };
       console.log("Form values:", formattedValues);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+      form.resetFields();
     }
   };
 

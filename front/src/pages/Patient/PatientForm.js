@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Select, DatePicker, Button, Row, Col, Card } from "antd";
 import {
   UserOutlined,
@@ -11,6 +11,7 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 function PatientForm({ form, formType, handleSubmit, loading }) {
+  const [referralType, setReferralType] = useState("");
   return (
     <Form
       form={form}
@@ -56,12 +57,28 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Date of Birth"
-              name="dob"
+              name="dateOfBirth"
               rules={[
                 { required: true, message: "Please select date of birth" },
+                {
+                  validator: (_, value) => {
+                    if (value && value.isAfter(new Date())) {
+                      return Promise.reject(
+                        new Error("Date of Birth cannot be in the future"),
+                      );
+                    }
+                    return Promise.resolve();
+                  },
+                },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} size="large" />
+              <DatePicker
+                style={{ width: "100%" }}
+                size="large"
+                disabledDate={(current) =>
+                  current && current.isAfter(new Date(), "day")
+                }
+              />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
@@ -71,9 +88,9 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
               rules={[{ required: true, message: "Please select gender" }]}
             >
               <Select placeholder="Select gender" size="large">
-                <Option value="Male">Male</Option>
-                <Option value="Female">Female</Option>
-                <Option value="Other">Other</Option>
+                <Option value="MALE">Male</Option>
+                <Option value="FEMALE">Female</Option>
+                <Option value="OTHER">Other</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -96,9 +113,9 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Contact Details (Phone)"
-              name="contact"
+              name="phone"
               rules={[
-                { required: true, message: "Please enter contact number" },
+                { required: false, message: "Please enter contact number" },
               ]}
             >
               <Input placeholder="+254 700 000000" size="large" />
@@ -110,7 +127,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
               name="email"
               rules={[
                 { type: "email", message: "Please enter a valid email" },
-                { required: false, message: "Please enter email address" },
+                { required: true, message: "Please enter email address" },
               ]}
             >
               <Input placeholder="johndoe@example.com" size="large" />
@@ -161,7 +178,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Relationship to Patient"
-              name={["nextOfKin", "relationship"]}
+              name={["nextOfKin", "relation"]}
               rules={[
                 { required: true, message: "Please select relationship" },
               ]}
@@ -182,7 +199,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Primary Contact Number"
-              name={["nextOfKin", "phone"]}
+              name={["nextOfKin", "contact"]}
               rules={[
                 { required: true, message: "Please enter contact number" },
               ]}
@@ -192,10 +209,14 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
           </Col>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Alternative Contact Number"
-              name={["nextOfKin", "altPhone"]}
+              label="Email address"
+              name={["nextOfKin", "email"]}
+              rules={[
+                { type: "email", message: "Please enter a valid email" },
+                { required: false, message: "Please enter email address" },
+              ]}
             >
-              <Input placeholder="+254 722 000000 (Optional)" size="large" />
+              <Input placeholder="johndoe@example.com" size="large" />
             </Form.Item>
           </Col>
         </Row>
@@ -219,7 +240,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
             {/* Wrapped in a flex box to accommodate the dynamic sub-input perfectly */}
             <Form.Item
               label="Referral Source"
-              name="referral"
+              name="referralType"
               rules={[
                 {
                   required: true,
@@ -228,44 +249,77 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
               ]}
               style={{ marginBottom: 0 }}
             >
-              <Select placeholder="Select referral source" size="large">
+              <Select
+                placeholder="Select referral source"
+                size="large"
+                onChange={(value) =>
+                  value === "referral doctor"
+                    ? setReferralType("referralDoctor")
+                    : setReferralType("")
+                }
+              >
                 <Option value="walk-in">Walk-in</Option>
                 <Option value="social media">Social Media</Option>
-                <Option value="facebook">Facebook</Option>
+                {/* <Option value="facebook">Facebook</Option> */}
                 <Option value="website">Website</Option>
                 <Option value="referral doctor">Referral Doctor</Option>
               </Select>
             </Form.Item>
           </Col>
-          {/* Conditional Doctor Selection Field */}
 
           <Col xs={24} sm={12}>
-            <Form.Item dependencies={["referral"]}>
-              {({ getFieldValue }) =>
-                getFieldValue("referral") === "referral doctor" ? (
-                  <Form.Item
-                    label="Select Referring Doctor"
-                    name="referringDoctor"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select the doctor",
-                      },
-                    ]}
-                    style={{ marginBottom: 0 }}
-                  >
-                    <Select placeholder="Choose doctor" size="large">
-                      <Option value="Dr. Smith">Dr. Smith</Option>
-                      <Option value="Dr. Patel">Dr. Patel</Option>
-                      <Option value="Dr. Omwamba">Dr. Omwamba</Option>
-                      <Option value="Dr. Ndwiga">Dr. Ndwiga</Option>
-                    </Select>
-                  </Form.Item>
-                ) : null
-              }
+            <Form.Item
+              label="Date of Registration"
+              name="dateOfRegistration"
+              rules={[
+                {
+                  required: false,
+                  message: "Please select date of registration",
+                },
+              ]}
+            >
+              <DatePicker
+                style={{ width: "100%" }}
+                size="large"
+                disabledDate={(current) =>
+                  current && current.isAfter(new Date(), "day")
+                }
+              />
             </Form.Item>
           </Col>
         </Row>
+
+        {/* Conditional Doctor Selection Field */}
+        {referralType === "referralDoctor" ? (
+          <Row gutter={24} style={{ marginTop: "16px" }}>
+            <Col xs={24} sm={24}>
+              <Form.Item dependencies={["referralType"]}>
+                {({ getFieldValue }) =>
+                  getFieldValue("referralType") === "referral doctor" ? (
+                    <Form.Item
+                      label="Select Referring Doctor"
+                      name="referringDoctor"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select the doctor",
+                        },
+                      ]}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <Select placeholder="Choose doctor" size="large">
+                        <Option value="Dr. Smith">Dr. Smith</Option>
+                        <Option value="Dr. Patel">Dr. Patel</Option>
+                        <Option value="Dr. Omwamba">Dr. Omwamba</Option>
+                        <Option value="Dr. Ndwiga">Dr. Ndwiga</Option>
+                      </Select>
+                    </Form.Item>
+                  ) : null
+                }
+              </Form.Item>
+            </Col>
+          </Row>
+        ) : null}
 
         <Row gutter={24} style={{ marginTop: "16px" }}>
           <Col xs={24}>
@@ -283,7 +337,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Payment Mode (KES)"
-              name="payment"
+              name="paymentMode"
               rules={[
                 { required: true, message: "Please enter payment amount" },
               ]}

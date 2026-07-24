@@ -8,8 +8,8 @@ export const NotificationProvider = ({ children }) => {
 
   const openNotification = (type, message, title) => {
     api[type]({
-      title: <span style={{ fontFamily: "DM Sans" }}>{title}</span>,
-      description: <span style={{ fontFamily: "DM Sans" }}>{message}</span>,
+      title: <span>{title}</span>,
+      description: <span>{message}</span>,
       placement: "topRight",
       duration: 3,
     });
