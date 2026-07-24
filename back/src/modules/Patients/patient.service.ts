@@ -63,7 +63,7 @@ const sanitizeUpdateData = (
 export class PatientService {
   static async createPatient(
     data: CreatePatientDTO,
-    requesterId: string,
+    // requesterId: string,
     requesterRole: string,
   ): Promise<Patient> {
     const createData = sanitizeCreateData(data, requesterRole);

@@ -22,7 +22,7 @@ export const fetchUser = catchAsync(
       await createLog({
         type: "user",
         refId: req.user._id.toString(),
-        action: "received",
+        action: "fetched",
         title: "Users retrieved",
         description: "User list was fetched",
         refModel: "user",

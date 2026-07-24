@@ -2,6 +2,7 @@ export type LOG_ACTIONS =
   | "created"
   | "updated"
   | "deleted"
+  | "fetched"
   | "sent"
   | "received"
   | "failed"
