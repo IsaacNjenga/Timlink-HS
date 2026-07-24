@@ -1,14 +1,18 @@
+import NodeCache from "node-cache";
 import { BadRequestError } from "../../common/errors/BadRequestError";
 import { UserModel } from "../Users/user.model";
 import { PatientModel } from "./patient.model";
 import { CreatePatientDTO, UpdatePatientDTO, Patient } from "./patient.types";
+import { type Request } from "express";
 
-const DOCTOR_PROFILE_POPULATE = [
-  {
-    path: "profile",
-    populate: { path: "role" },
-  },
-];
+const patientCache = new NodeCache({ stdTTL: 300 });
+
+// const DOCTOR_PROFILE_POPULATE = [
+//   {
+//     path: "profile",
+//     populate: { path: "role" },
+//   },
+// ];
 
 const ADMIN_ONLY_FIELDS = new Set(["role"]);
 const BLOCKED_UPDATE_FIELDS = new Set(["_id", "id"]);
@@ -74,15 +78,43 @@ export class PatientService {
     return toPatient(result);
   }
 
-  static async fetchPatients(): Promise<Patient[]> {
-    const patient = await PatientModel.find()
-      .populate(DOCTOR_PROFILE_POPULATE)
-      .lean();
+  static async fetchPatients(req: Request): Promise<{ patients: Patient[] }> {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
 
-    if (!patient) {
-      throw new BadRequestError("Patient not found!");
+    const cacheKey = `patient_page_${page}_limit_${limit}`;
+    const cachedData = patientCache.get<Patient[]>(cacheKey);
+    if (cachedData) {
+      return { patients: cachedData };
     }
-    return patient.map(toPatient);
+
+    const [patients, totalPatients] = (await Promise.all([
+      PatientModel.find()
+        .skip(skip)
+        .limit(limit)
+        // .populate(DOCTOR_PROFILE_POPULATE)
+        .lean()
+        .sort({ createdAt: -1 }),
+      PatientModel.countDocuments(),
+    ])) as unknown as [Patient[], number];
+
+    if (!patients) {
+      throw new BadRequestError("Patients not found!");
+    }
+
+    const responseData = {
+      patients: patients,
+      totalPatients: totalPatients,
+      currentPage: page,
+      totalPages: Math.ceil(totalPatients / limit),
+    };
+
+    //cache response
+    patientCache.set(cacheKey, responseData);
+
+    // return patient.map(toPatient);
+    return responseData;
   }
 
   static async fetchPatientById(
@@ -93,7 +125,7 @@ export class PatientService {
     assertPatientId(patientId);
 
     const patient = await PatientModel.findById(patientId)
-      .populate(DOCTOR_PROFILE_POPULATE)
+      // .populate(DOCTOR_PROFILE_POPULATE)
       .lean();
 
     if (!patient) {
@@ -115,7 +147,7 @@ export class PatientService {
       new: true,
       runValidators: true,
     })
-      .populate(DOCTOR_PROFILE_POPULATE)
+      // .populate(DOCTOR_PROFILE_POPULATE)
       .lean();
 
     if (!patient) {

@@ -17,7 +17,7 @@ exports.fetchUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
         await (0, logs_service_1.createLog)({
             type: "user",
             refId: req.user._id.toString(),
-            action: "received",
+            action: "fetched",
             title: "Users retrieved",
             description: "User list was fetched",
             refModel: "user",

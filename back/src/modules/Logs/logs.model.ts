@@ -17,6 +17,7 @@ const LogSchema = new mongoose.Schema(
         "created",
         "updated",
         "deleted",
+        "fetched",
         "sent",
         "received",
         "failed",
@@ -30,7 +31,7 @@ const LogSchema = new mongoose.Schema(
     refModel: {
       type: String,
       required: true,
-      enum: ["user", "otp"],
+      enum: ["user", "otp", "patient"],
     },
   },
   { collection: "logs", timestamps: true },

@@ -10,8 +10,8 @@ export type ReferralType = "walk-in" | "referral doctor" | "website" | "other";
 
 export interface Patient {
   _id: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   email: string;
   gender?: PatientGender;
   phone: string;

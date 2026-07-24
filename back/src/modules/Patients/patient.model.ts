@@ -1,5 +1,14 @@
 import mongoose from "mongoose";
 
+const NextOfKinSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    relation: { type: String, required: true, trim: true },
+    contact: { type: String, required: true, trim: true },
+  },
+  { _id: false },
+);
+
 const PatientSchema = new mongoose.Schema(
   {
     firstName: { type: String, trim: true, default: "" },
@@ -29,7 +38,14 @@ const PatientSchema = new mongoose.Schema(
 
     address: { type: String, required: false, default: "" },
 
-    nextOfKin: { type: [{ String }], required: true },
+    nextOfKin: {
+      type: [NextOfKinSchema],
+      required: true,
+      validate: [
+        (val: any) => val.length > 0,
+        "At least one next of kin is required",
+      ],
+    },
 
     referralType: {
       type: String,

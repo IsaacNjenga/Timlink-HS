@@ -12,7 +12,7 @@ import {
 export function PatientRouter(): Router {
   const router = Router();
 
-  router.post("create-patient", protectRoute, adminRoute, CreatePatient);
+  router.post("/create-patient", protectRoute, adminRoute, CreatePatient);
   router.get("/get-patients", protectRoute, adminRoute, FetchPatients);
   router.get("/get-patient/:id", protectRoute, adminRoute, FetchPatientById);
   router.put("/update-patient/:id", protectRoute, adminRoute, UpdatePatient);

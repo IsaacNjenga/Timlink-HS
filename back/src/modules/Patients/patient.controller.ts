@@ -21,15 +21,16 @@ export const CreatePatient = catchAsync(
       req.user.role,
     );
 
-    await createLog({
-      type: "patient",
-      refId: patientData._id.toString(),
-      action: "created",
-      title: "New patient created",
-      description:
-        "Patient ${patientData.firstName} ${patientData.lastName} was created",
-      refModel: "patient",
-    });
+    if (patientData) {
+      await createLog({
+        type: "patient",
+        refId: patientData._id.toString(),
+        action: "created",
+        title: "New patient created",
+        description: `Patient ${patientData.firstName} ${patientData.lastName} was created`,
+        refModel: "patient",
+      });
+    }
 
     res.status(201).json({
       success: true,
@@ -41,9 +42,9 @@ export const CreatePatient = catchAsync(
 
 export const FetchPatients = catchAsync(
   async (req: AuthenticatedRequest, res: Response) => {
-    const patients = await PatientService.fetchPatients();
+    const patientsData = await PatientService.fetchPatients(req);
 
-    if (patients && req.user?._id) {
+    if (patientsData && req.user?._id) {
       await createLog({
         type: "patient",
         refId: req.user._id.toString(),
@@ -56,7 +57,7 @@ export const FetchPatients = catchAsync(
 
     res.status(200).json({
       success: true,
-      data: patients,
+      data: patientsData,
       message: "Patients fetched successfully",
     });
   },

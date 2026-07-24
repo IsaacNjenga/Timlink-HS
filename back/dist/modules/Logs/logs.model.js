@@ -21,6 +21,7 @@ const LogSchema = new mongoose_1.default.Schema({
             "created",
             "updated",
             "deleted",
+            "fetched",
             "sent",
             "received",
             "failed",
@@ -34,7 +35,7 @@ const LogSchema = new mongoose_1.default.Schema({
     refModel: {
         type: String,
         required: true,
-        enum: ["user", "otp"],
+        enum: ["user", "otp", "patient"],
     },
 }, { collection: "logs", timestamps: true });
 exports.LogModel = mongoose_1.default.model("logs", LogSchema);
