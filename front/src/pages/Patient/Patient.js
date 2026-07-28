@@ -48,11 +48,6 @@ function Patient() {
     setTimeout(() => setLoading(false), 100);
   };
 
-  console.log(patients);
-  console.log(totalPages);
-  console.log(totalPatients);
-  console.log(currentPage);
-
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
