@@ -59,7 +59,7 @@ const PatientSchema = new mongoose_1.default.Schema({
             "Closed",
         ],
     },
-    notes: { type: String, default: null, required: true },
+    notes: { type: String, default: null },
     dateOfRegistration: { type: Date, default: null },
 }, {
     collection: "patients",

@@ -1,15 +1,16 @@
 import React, { useMemo, useState } from "react";
 import PageTitle from "../../components/PageTitle";
-import { PatientData as data } from "../../assets/data/patientData";
+// import { PatientData as data } from "../../assets/data/patientData";
 import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { formatDistanceToNowStrict } from "date-fns";
+import { format, formatDistanceToNowStrict } from "date-fns";
 import ViewPatient from "./ViewPatient";
 import DeleteConfirm from "../../components/DeleteConfirm";
 import { usePop } from "../../contexts/popContext";
+import { useFetchPatients } from "../../hooks/Patient/fetchAllPatients";
 
 const { Text } = Typography;
 
@@ -26,6 +27,14 @@ const statusTags = [
 function Patient() {
   const navigate = useNavigate();
   const { setOpenConfirm } = usePop();
+  const {
+    patients,
+    loading: patientsLoading,
+    refresh,
+    totalPages,
+    totalPatients,
+    currentPage,
+  } = useFetchPatients();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -39,10 +48,15 @@ function Patient() {
     setTimeout(() => setLoading(false), 100);
   };
 
+  console.log(patients);
+  console.log(totalPages);
+  console.log(totalPatients);
+  console.log(currentPage);
+
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return data.filter((item) => {
+    return patients.filter((item) => {
       const matchesStatus =
         selectedStatus === "All" || item.status === selectedStatus;
       const matchesSearch =
@@ -53,7 +67,7 @@ function Patient() {
 
       return matchesStatus && matchesSearch;
     });
-  }, [searchTerm, selectedStatus]);
+  }, [searchTerm, selectedStatus, patients]);
 
   const columns = [
     {
@@ -86,7 +100,7 @@ function Patient() {
 
             <div>
               <Text type="secondary">
-                {formatDistanceToNowStrict(new Date(record.dob), {
+                {formatDistanceToNowStrict(new Date(record?.dateOfBirth), {
                   addSuffix: false,
                 })}
               </Text>
@@ -102,19 +116,38 @@ function Patient() {
     },
     {
       title: "Referral",
-      dataIndex: "referral",
+      dataIndex: "referralType",
       render: (_, record) =>
-        record.referral || (
+        record.referralType || (
           <Text>
-            {record.referral === "referral doctor"
+            {record.referralType === "referral doctor"
               ? record.referringDoctor
-              : record.referral}
+              : record.referralType}
           </Text>
         ),
     },
     {
-      title: "Payment",
-      dataIndex: "payment",
+      title: "Payment Mode",
+      dataIndex: "paymentMode",
+      render: (_, record) => (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            padding: 4,
+            borderRadius: 8,
+          }}
+        >
+          <div>
+            <Text>{record.paymentMode}</Text>
+          </div>
+          <div>
+            <Text type="secondary">
+              D.O.R: {format(new Date(record.dateOfRegistration), "dd-MM-yyyy")}
+            </Text>
+          </div>
+        </div>
+      ),
     },
     {
       title: "Status",
@@ -145,10 +178,6 @@ function Patient() {
         }
         return <Tag color={color}>{status}</Tag>;
       },
-    },
-    {
-      title: "Date of Registration",
-      dataIndex: "date",
     },
     {
       title: "Actions",
@@ -252,7 +281,7 @@ function Patient() {
           columns={columns}
           data={filteredData}
           size="medium"
-          loading={loading}
+          loading={loading || patientsLoading}
           viewRecord={viewPatient}
         />
       </div>
