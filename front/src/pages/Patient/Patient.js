@@ -51,7 +51,7 @@ function Patient() {
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return patients.filter((item) => {
+    return patients?.filter((item) => {
       const matchesStatus =
         selectedStatus === "All" || item.status === selectedStatus;
       const matchesSearch =
@@ -137,9 +137,11 @@ function Patient() {
             <Text>{record.paymentMode}</Text>
           </div>
           <div>
-            <Text type="secondary">
-              D.O.R: {format(new Date(record.dateOfRegistration), "dd-MM-yyyy")}
-            </Text>
+            <Tooltip title="Date of Registration">
+              <Text type="secondary">
+                {format(new Date(record.dateOfRegistration), "PPP")}
+              </Text>
+            </Tooltip>
           </div>
         </div>
       ),
