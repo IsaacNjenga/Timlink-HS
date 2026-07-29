@@ -113,22 +113,6 @@ function Patient() {
     {
       title: "Diagnosis",
       dataIndex: "diagnosis",
-    },
-    {
-      title: "Referral",
-      dataIndex: "referralType",
-      render: (_, record) =>
-        record.referralType || (
-          <Text style={{ textTransform: "capitalize" }}>
-            {record.referralType === "referral doctor"
-              ? record.referringDoctor
-              : record.referralType}
-          </Text>
-        ),
-    },
-    {
-      title: "Payment Mode",
-      dataIndex: "paymentMode",
       render: (_, record) => (
         <div
           style={{
@@ -139,7 +123,7 @@ function Patient() {
           }}
         >
           <div>
-            <Text>{record.paymentMode}</Text>
+            <Text>{record.diagnosis}</Text>
           </div>
           <div>
             <Tooltip title="Date of Registration">
@@ -150,6 +134,22 @@ function Patient() {
           </div>
         </div>
       ),
+    },
+    {
+      title: "Referral",
+      dataIndex: "referralType",
+      render: (_, record) => (
+        <span style={{ textTransform: "capitalize" }}>
+          {record.referralType === "referral doctor"
+            ? record.referringDoctor
+            : record.referralType}
+        </span>
+      ),
+    },
+    {
+      title: "Payment Mode",
+      dataIndex: "paymentMode",
+      render: (_, record) => <Text>{record.paymentMode}</Text>,
     },
     {
       title: "Status",
