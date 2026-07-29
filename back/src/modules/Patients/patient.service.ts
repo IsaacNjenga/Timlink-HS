@@ -1,6 +1,5 @@
 import NodeCache from "node-cache";
 import { BadRequestError } from "../../common/errors/BadRequestError";
-import { UserModel } from "../Users/user.model";
 import { PatientModel } from "./patient.model";
 import {
   CreatePatientDTO,
