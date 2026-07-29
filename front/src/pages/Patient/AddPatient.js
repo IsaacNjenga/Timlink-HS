@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 import { useAuth } from "../../contexts/authContext";
 import { useNotification } from "../../contexts/notificationContext";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -16,6 +17,7 @@ const formatDateValue = (dateValue) => {
 function AddPatient() {
   const { token } = useAuth();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const openNotification = useNotification();
 
@@ -38,6 +40,7 @@ function AddPatient() {
 
       if (success) {
         openNotification("success", message, "Success!");
+        setTimeout(() => navigate("/patient&leads"), 1200);
       } else {
         openNotification("error", message, "Something went wrong...");
       }
