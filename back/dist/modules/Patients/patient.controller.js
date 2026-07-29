@@ -55,7 +55,7 @@ exports.FetchPatientById = (0, catchAsync_1.catchAsync)(async (req, res) => {
         refId: id,
         action: "received",
         title: "Patient profile retrieved",
-        description: `Fetched profile for patient ${id}`,
+        description: `Fetched profile for patient ${id} by ${req.user._id.toString()}`,
         refModel: "patient",
     });
     res.status(200).json({

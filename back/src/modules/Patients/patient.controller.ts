@@ -78,7 +78,7 @@ export const FetchPatientById = catchAsync(
       refId: id,
       action: "received",
       title: "Patient profile retrieved",
-      description: `Fetched profile for patient ${id}`,
+      description: `Fetched profile for patient ${id} by ${req.user._id.toString()}`,
       refModel: "patient",
     });
 

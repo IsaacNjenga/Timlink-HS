@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Typography } from "antd";
 import PatientForm from "./PatientForm";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { PatientData } from "../../assets/data/patientData";
+// import { PatientData } from "../../assets/data/patientData";
+import { useFetchPatient } from "../../hooks/Patient/fetchPatient";
+import Loader from "../../components/Loader";
 
 const { Title, Text } = Typography;
 
@@ -15,14 +17,15 @@ const formatDateValue = (dateValue) => {
 function EditPatient() {
   const { id } = useParams();
   const [form] = Form.useForm();
+  const { patient, loading: patientLoading, fetchPatient } = useFetchPatient();
   const [loading, setLoading] = useState(false);
-  const patient = useMemo(
-    () => PatientData.find((item) => item._id === id),
-    [id],
-  );
 
   useEffect(() => {
-    if (!patient) return;
+    fetchPatient(id);
+  }, [fetchPatient, id]);
+
+  useEffect(() => {
+    if (patient);
 
     form.setFieldsValue({
       ...patient,
@@ -49,6 +52,8 @@ function EditPatient() {
       form.resetFields();
     }
   };
+
+  if (patientLoading) return <Loader text={"Loading..."} size={"large"} />;
 
   return (
     <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 16px" }}>
