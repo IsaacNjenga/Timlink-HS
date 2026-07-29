@@ -23,6 +23,7 @@ exports.fetchAllLogs = (0, catchAsync_1.catchAsync)(async (req, res) => {
             title: "Logs fetched",
             description: `Admin ${req.user._id} fetched audit logs`,
             refModel: "user",
+            actor: req.user._id.toString(),
         });
     }
     res.status(200).json({

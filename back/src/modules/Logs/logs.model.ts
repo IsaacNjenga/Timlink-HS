@@ -33,6 +33,11 @@ const LogSchema = new mongoose.Schema(
       required: true,
       enum: ["user", "otp", "patient"],
     },
+    actor: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
   { collection: "logs", timestamps: true },
 );

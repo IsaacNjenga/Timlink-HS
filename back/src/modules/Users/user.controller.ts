@@ -26,6 +26,7 @@ export const fetchUser = catchAsync(
         title: "Users retrieved",
         description: "User list was fetched",
         refModel: "user",
+        actor: req.user?._id,
       });
     }
 
@@ -54,6 +55,7 @@ export const fetchUserById = catchAsync(
       title: "User profile retrieved",
       description: `Fetched profile for user ${id}`,
       refModel: "user",
+      actor: req.user?._id,
     });
 
     res.status(200).json({
@@ -82,6 +84,7 @@ export const updateUser = catchAsync(
       title: "User updated",
       description: `Updated profile for user ${id}`,
       refModel: "user",
+      actor: req.user?._id,
     });
 
     res.status(200).json({
@@ -111,6 +114,7 @@ export const deleteUser = catchAsync(
       title: "User deleted",
       description: `Deleted user ${id}`,
       refModel: "user",
+      actor: req.user?._id,
     });
 
     res.status(200).json({
@@ -120,5 +124,3 @@ export const deleteUser = catchAsync(
     });
   },
 );
-
-

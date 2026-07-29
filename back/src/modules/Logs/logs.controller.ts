@@ -31,6 +31,7 @@ export const fetchAllLogs = catchAsync(
         title: "Logs fetched",
         description: `Admin ${req.user._id} fetched audit logs`,
         refModel: "user",
+        actor: req.user._id.toString(),
       });
     }
 

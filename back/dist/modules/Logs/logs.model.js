@@ -37,6 +37,11 @@ const LogSchema = new mongoose_1.default.Schema({
         required: true,
         enum: ["user", "otp", "patient"],
     },
+    actor: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        required: true,
+        ref: "User",
+    },
 }, { collection: "logs", timestamps: true });
 exports.LogModel = mongoose_1.default.model("logs", LogSchema);
 //# sourceMappingURL=logs.model.js.map

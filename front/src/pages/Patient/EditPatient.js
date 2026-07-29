@@ -63,7 +63,7 @@ function EditPatient() {
 
       if (success) {
         openNotification("success", message, "Success!");
-        setTimeout(() => navigate("/patient&leads"), 1200);
+        setTimeout(() => navigate("/patient&leads"), 800);
       } else {
         openNotification("error", message, "Something went wrong...");
       }

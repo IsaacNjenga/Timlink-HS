@@ -7,10 +7,13 @@ import {
   TeamOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
+import { format } from "date-fns";
+import { useDeletePatient } from "../../hooks/Patient/deletePatient";
 
 const { Text } = Typography;
 
-function ViewPatient({ content, loading, openModal, setOpenModal }) {
+function ViewPatient({ content, loading, openModal, setOpenModal, refresh }) {
+  const { deletePatient } = useDeletePatient();
   const { token } = theme.useToken();
 
   // Helper to color-code case status tags beautifully
@@ -35,6 +38,8 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
       contentLoading={loading}
       recordId={content._id}
       editPath={`/patient&leads/edit-patient/${content._id}`}
+      deleteRecord={deletePatient}
+        refresh={refresh}
     >
       {content ? (
         <>
@@ -52,7 +57,9 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
               {content.lastName}
             </Descriptions.Item>
             <Descriptions.Item label="Date of Birth">
-              {content.dob}
+              {content.dateOfBirth
+                ? format(new Date(content.dateOfBirth), "PPPP")
+                : null}
             </Descriptions.Item>
             <Descriptions.Item label="Gender">
               {content.gender}
@@ -67,7 +74,7 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
           </Divider>
           <Descriptions column={{ xs: 1, sm: 2 }} bordered size="small">
             <Descriptions.Item label="Phone Number">
-              {content.contact}
+              {content.phone}
             </Descriptions.Item>
             <Descriptions.Item label="Email Address">
               {content.email || "N/A"}
@@ -86,16 +93,16 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
           {content.nextOfKin ? (
             <Descriptions column={{ xs: 1, sm: 2 }} bordered size="small">
               <Descriptions.Item label="Kin Name">
-                {content.nextOfKin.name}
+                {content.nextOfKin[0].name}
               </Descriptions.Item>
               <Descriptions.Item label="Relationship">
-                {content.nextOfKin.relationship}
+                {content.nextOfKin[0].relation}
               </Descriptions.Item>
               <Descriptions.Item label="Primary Phone">
-                {content.nextOfKin.phone}
+                {content.nextOfKin[0].contact}
               </Descriptions.Item>
-              <Descriptions.Item label="Alternative Phone">
-                {content.nextOfKin.altPhone || "—"}
+              <Descriptions.Item label="Email Address">
+                {content.nextOfKin[0].email || "—"}
               </Descriptions.Item>
             </Descriptions>
           ) : (
@@ -117,17 +124,22 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
               </Tag>
             </Descriptions.Item>
             <Descriptions.Item label="Payment Mode">
-              {content.payment}
+              {content.paymentMode}
+            </Descriptions.Item>
+            <Descriptions.Item label="Date of Registration">
+              {content.dateOfRegistration
+                ? format(new Date(content?.dateOfRegistration), "PPPP")
+                : null}
             </Descriptions.Item>
             <Descriptions.Item
               label="Referral Source"
-              span={content.referral === "referral doctor" ? 1 : 2}
+              span={content.referralType === "referral doctor" ? 1 : 2}
             >
               <span style={{ textTransform: "capitalize" }}>
-                {content.referral}
+                {content.referralType}
               </span>
             </Descriptions.Item>
-            {content.referral === "referral doctor" && (
+            {content.referralType === "referral doctor" && (
               <Descriptions.Item label="Referring Physician">
                 {content.referringDoctor || "Unassigned"}
               </Descriptions.Item>
@@ -144,7 +156,7 @@ function ViewPatient({ content, loading, openModal, setOpenModal }) {
                 }}
               >
                 {content.notes ||
-                  "No historical clinical notes appended to this profile."}
+                  "No historical notes appended to this profile."}
               </div>
             </Descriptions.Item>
           </Descriptions>

@@ -29,6 +29,7 @@ export const userRegisterController = catchAsync(
       title: "New user created",
       description: `User ${result.email} was created`,
       refModel: "user",
+      actor: "",
     });
 
     res.status(201).json({
@@ -56,6 +57,7 @@ export const userLoginController = catchAsync(
       title: "User login",
       description: `User ${user.email} logged in`,
       refModel: "user",
+      actor: user?._id.toString(),
     });
 
     res.status(200).json({
@@ -87,6 +89,7 @@ export const activateAccountController = catchAsync(
         title: "Account activated",
         description: `Account activated for ${req.body.email}`,
         refModel: "user",
+        actor: targetUser._id.toString(),
       });
     }
 
@@ -110,6 +113,7 @@ export const changePasswordController = catchAsync(
         title: "Password changed",
         description: `Password changed for ${targetUser.email}`,
         refModel: "user",
+        actor: targetUser._id.toString(),
       });
     }
 
@@ -133,6 +137,7 @@ export const requestPasswordResetOtpController = catchAsync(
         title: "Password reset OTP requested",
         description: `Password reset OTP requested for ${req.body.email}`,
         refModel: "user",
+        actor: targetUser._id.toString(),
       });
     }
 
@@ -156,6 +161,7 @@ export const verifyPasswordResetOtpController = catchAsync(
         title: "Password reset OTP verified",
         description: `Password reset OTP verified for ${req.body.email}`,
         refModel: "user",
+        actor: targetUser._id.toString(),
       });
     }
 
@@ -179,6 +185,7 @@ export const resetPasswordController = catchAsync(
         title: "Password reset",
         description: `Password was reset for ${req.body.email}`,
         refModel: "user",
+        actor: targetUser._id.toString(),
       });
     }
 

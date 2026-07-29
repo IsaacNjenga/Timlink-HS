@@ -21,6 +21,7 @@ exports.fetchUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
             title: "Users retrieved",
             description: "User list was fetched",
             refModel: "user",
+            actor: req.user?._id,
         });
     }
     res.status(200).json({
@@ -39,6 +40,7 @@ exports.fetchUserById = (0, catchAsync_1.catchAsync)(async (req, res) => {
         title: "User profile retrieved",
         description: `Fetched profile for user ${id}`,
         refModel: "user",
+        actor: req.user?._id,
     });
     res.status(200).json({
         success: true,
@@ -56,6 +58,7 @@ exports.updateUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
         title: "User updated",
         description: `Updated profile for user ${id}`,
         refModel: "user",
+        actor: req.user?._id,
     });
     res.status(200).json({
         success: true,
@@ -74,6 +77,7 @@ exports.deleteUser = (0, catchAsync_1.catchAsync)(async (req, res) => {
         title: "User deleted",
         description: `Deleted user ${id}`,
         refModel: "user",
+        actor: req.user?._id,
     });
     res.status(200).json({
         success: true,

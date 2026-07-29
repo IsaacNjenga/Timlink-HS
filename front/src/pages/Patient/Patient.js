@@ -15,9 +15,7 @@ import ViewPatient from "./ViewPatient";
 import DeleteConfirm from "../../components/DeleteConfirm";
 import { usePop } from "../../contexts/popContext";
 import { useFetchPatients } from "../../hooks/Patient/fetchAllPatients";
-import axios from "axios";
-import { useNotification } from "../../contexts/notificationContext";
-import { useAuth } from "../../contexts/authContext";
+import { useDeletePatient } from "../../hooks/Patient/deletePatient";
 
 const { Text } = Typography;
 
@@ -33,8 +31,6 @@ const statusTags = [
 
 function Patient() {
   const navigate = useNavigate();
-  const { token } = useAuth();
-  const openNotification = useNotification();
   const { setOpenConfirm } = usePop();
   const {
     patients,
@@ -42,6 +38,7 @@ function Patient() {
     refresh,
     totalPatients,
   } = useFetchPatients();
+  const { deletePatient } = useDeletePatient();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -122,7 +119,7 @@ function Patient() {
       dataIndex: "referralType",
       render: (_, record) =>
         record.referralType || (
-          <Text>
+          <Text style={{ textTransform: "capitalize" }}>
             {record.referralType === "referral doctor"
               ? record.referringDoctor
               : record.referralType}
@@ -206,30 +203,8 @@ function Patient() {
               title="Are you sure?"
               description="This action cannot be undone!"
               onConfirmSuccess={async (id) => {
-                try {
-                  const response = await axios.delete(
-                    `patients/delete-patient/${id}`,
-                    { headers: { Authorization: `Bearer ${token}` } },
-                  );
-                  const { success, message } = response.data;
-                  if (success) {
-                    openNotification("success", message, "Success!");
-                    refresh();
-                  } else {
-                    openNotification(
-                      "error",
-                      message,
-                      "Something went wrong...",
-                    );
-                  }
-                } catch (err) {
-                  console.log(err);
-                  openNotification(
-                    "error",
-                    err.message,
-                    "Something went wrong...",
-                  );
-                }
+                deletePatient(id);
+                refresh();
               }}
             >
               <Button
@@ -342,6 +317,7 @@ function Patient() {
         loading={loading}
         openModal={openModal}
         setOpenModal={setOpenModal}
+        refresh={refresh}
       />
     </>
   );

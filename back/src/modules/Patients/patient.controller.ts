@@ -29,13 +29,14 @@ export const CreatePatient = catchAsync(
         title: "New patient created",
         description: `Patient ${patientData.firstName} ${patientData.lastName} was created`,
         refModel: "patient",
+        actor: req.user?._id,
       });
     }
 
     res.status(201).json({
       success: true,
       data: patientData,
-      message: "Patient info has been created",
+      message: "Patient has been created successfully",
     });
   },
 );
@@ -50,8 +51,9 @@ export const FetchPatients = catchAsync(
         refId: req.user._id.toString(),
         action: "fetched",
         title: "Patients fetched",
-        description: `Patient list was fetched by ${req.user._id.toString()}`,
+        description: `Patient list was fetched`,
         refModel: "patient",
+        actor: req.user?._id,
       });
     }
 
@@ -78,8 +80,9 @@ export const FetchPatientById = catchAsync(
       refId: id,
       action: "received",
       title: "Patient profile retrieved",
-      description: `Fetched profile for patient ${id} by ${req.user._id.toString()}`,
+      description: `Fetched profile for patient ${id}`,
       refModel: "patient",
+      actor: req.user?._id,
     });
 
     res.status(200).json({
@@ -108,6 +111,7 @@ export const UpdatePatient = catchAsync(
       title: "Patient updated",
       description: `Updated profile for patient ${id}`,
       refModel: "patient",
+      actor: req.user?._id,
     });
 
     res.status(200).json({
@@ -136,8 +140,8 @@ export const DeletePatient = catchAsync(
       action: "deleted",
       title: "Patient deleted",
       description: `Deleted patient ${id}`,
-      //actor:
       refModel: "patient",
+      actor: req.user?._id,
     });
 
     res.status(200).json({

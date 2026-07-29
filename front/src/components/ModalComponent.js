@@ -15,6 +15,8 @@ function ModalComponent({
   width,
   recordId,
   editPath,
+  deleteRecord,
+  refresh,
 }) {
   const navigate = useNavigate();
   const { token } = theme.useToken();
@@ -70,7 +72,9 @@ function ModalComponent({
             title="Are you sure?"
             description="This action cannot be undone!"
             onConfirmSuccess={(id) => {
-              console.log(`Successfully deleted ${id}`);
+              deleteRecord(id);
+              setOpenModal(false);
+              refresh();
             }}
           >
             <Button

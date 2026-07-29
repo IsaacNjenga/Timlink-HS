@@ -17,6 +17,7 @@ export interface LogEntry {
   title?: string;
   description?: string;
   refModel: string;
+  actor: string;
 }
 
 export interface CreateLogDTO {
@@ -26,4 +27,5 @@ export interface CreateLogDTO {
   title?: string;
   description?: string;
   refModel: string;
+  actor: string;
 }

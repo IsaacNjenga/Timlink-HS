@@ -17,6 +17,7 @@ exports.userRegisterController = (0, catchAsync_1.catchAsync)(async (req, res) =
         title: "New user created",
         description: `User ${result.email} was created`,
         refModel: "user",
+        actor: "",
     });
     res.status(201).json({
         success: true,
@@ -38,6 +39,7 @@ exports.userLoginController = (0, catchAsync_1.catchAsync)(async (req, res) => {
         title: "User login",
         description: `User ${user.email} logged in`,
         refModel: "user",
+        actor: user?._id.toString(),
     });
     res.status(200).json({
         success: true,
@@ -64,6 +66,7 @@ exports.activateAccountController = (0, catchAsync_1.catchAsync)(async (req, res
             title: "Account activated",
             description: `Account activated for ${req.body.email}`,
             refModel: "user",
+            actor: targetUser._id.toString(),
         });
     }
     res.status(200).json({
@@ -82,6 +85,7 @@ exports.changePasswordController = (0, catchAsync_1.catchAsync)(async (req, res)
             title: "Password changed",
             description: `Password changed for ${targetUser.email}`,
             refModel: "user",
+            actor: targetUser._id.toString(),
         });
     }
     res.status(200).json({
@@ -100,6 +104,7 @@ exports.requestPasswordResetOtpController = (0, catchAsync_1.catchAsync)(async (
             title: "Password reset OTP requested",
             description: `Password reset OTP requested for ${req.body.email}`,
             refModel: "user",
+            actor: targetUser._id.toString(),
         });
     }
     res.status(200).json({
@@ -118,6 +123,7 @@ exports.verifyPasswordResetOtpController = (0, catchAsync_1.catchAsync)(async (r
             title: "Password reset OTP verified",
             description: `Password reset OTP verified for ${req.body.email}`,
             refModel: "user",
+            actor: targetUser._id.toString(),
         });
     }
     res.status(200).json({
@@ -136,6 +142,7 @@ exports.resetPasswordController = (0, catchAsync_1.catchAsync)(async (req, res) 
             title: "Password reset",
             description: `Password was reset for ${req.body.email}`,
             refModel: "user",
+            actor: targetUser._id.toString(),
         });
     }
     res.status(200).json({

@@ -21,12 +21,13 @@ exports.CreatePatient = (0, catchAsync_1.catchAsync)(async (req, res) => {
             title: "New patient created",
             description: `Patient ${patientData.firstName} ${patientData.lastName} was created`,
             refModel: "patient",
+            actor: req.user?._id,
         });
     }
     res.status(201).json({
         success: true,
         data: patientData,
-        message: "Patient info has been created",
+        message: "Patient has been created successfully",
     });
 });
 exports.FetchPatients = (0, catchAsync_1.catchAsync)(async (req, res) => {
@@ -37,8 +38,9 @@ exports.FetchPatients = (0, catchAsync_1.catchAsync)(async (req, res) => {
             refId: req.user._id.toString(),
             action: "fetched",
             title: "Patients fetched",
-            description: `Patient list was fetched by ${req.user._id.toString()}`,
+            description: `Patient list was fetched`,
             refModel: "patient",
+            actor: req.user?._id,
         });
     }
     res.status(200).json({
@@ -55,8 +57,9 @@ exports.FetchPatientById = (0, catchAsync_1.catchAsync)(async (req, res) => {
         refId: id,
         action: "received",
         title: "Patient profile retrieved",
-        description: `Fetched profile for patient ${id} by ${req.user._id.toString()}`,
+        description: `Fetched profile for patient ${id}`,
         refModel: "patient",
+        actor: req.user?._id,
     });
     res.status(200).json({
         success: true,
@@ -74,6 +77,7 @@ exports.UpdatePatient = (0, catchAsync_1.catchAsync)(async (req, res) => {
         title: "Patient updated",
         description: `Updated profile for patient ${id}`,
         refModel: "patient",
+        actor: req.user?._id,
     });
     res.status(200).json({
         success: true,
@@ -91,8 +95,8 @@ exports.DeletePatient = (0, catchAsync_1.catchAsync)(async (req, res) => {
         action: "deleted",
         title: "Patient deleted",
         description: `Deleted patient ${id}`,
-        //actor:
         refModel: "patient",
+        actor: req.user?._id,
     });
     res.status(200).json({
         success: true,
