@@ -53,7 +53,7 @@ function EditPatient() {
     }
   };
 
-  if (patientLoading) return <Loader text={"Loading..."} size={"large"} />;
+  if (patientLoading) return <Loader size={"large"} />;
 
   return (
     <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 16px" }}>
