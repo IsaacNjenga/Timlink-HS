@@ -2,10 +2,19 @@ import NodeCache from "node-cache";
 import { BadRequestError } from "../../common/errors/BadRequestError";
 import { UserModel } from "../Users/user.model";
 import { PatientModel } from "./patient.model";
-import { CreatePatientDTO, UpdatePatientDTO, Patient } from "./patient.types";
+import {
+  CreatePatientDTO,
+  UpdatePatientDTO,
+  Patient,
+  PatientListResponse,
+} from "./patient.types";
 import { type Request } from "express";
 
 const patientCache = new NodeCache({ stdTTL: 300 });
+
+const invalidatePatientCache = (): void => {
+  patientCache.flushAll();
+};
 
 // const DOCTOR_PROFILE_POPULATE = [
 //   {
@@ -75,18 +84,19 @@ export class PatientService {
 
     await result.save();
 
+    invalidatePatientCache();
     return toPatient(result);
   }
 
-  static async fetchPatients(req: Request): Promise<{ patients: Patient[] }> {
+  static async fetchPatients(req: Request): Promise<PatientListResponse> {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
 
     const cacheKey = `patient_page_${page}_limit_${limit}`;
-    const cachedData = patientCache.get<Patient[]>(cacheKey);
+    const cachedData = patientCache.get<PatientListResponse>(cacheKey);
     if (cachedData) {
-      return { patients: cachedData };
+      return cachedData;
     }
 
     const [patients, totalPatients] = (await Promise.all([
@@ -143,10 +153,14 @@ export class PatientService {
     assertPatientId(patientId);
 
     const updateData = sanitizeUpdateData(data, requesterRole);
-    const patient = await PatientModel.findByIdAndUpdate(patientId, updateData, {
-      new: true,
-      runValidators: true,
-    })
+    const patient = await PatientModel.findByIdAndUpdate(
+      patientId,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      },
+    )
       // .populate(DOCTOR_PROFILE_POPULATE)
       .lean();
 
@@ -154,6 +168,7 @@ export class PatientService {
       throw new BadRequestError("Patient not found!");
     }
 
+    invalidatePatientCache();
     return toPatient(patient);
   }
 
@@ -169,6 +184,8 @@ export class PatientService {
     if (!patient) {
       throw new BadRequestError("Patient not found!");
     }
+
+    invalidatePatientCache();
     return toPatient(patient);
   }
 }

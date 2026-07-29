@@ -5,12 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import ViewPatient from "./ViewPatient";
 import DeleteConfirm from "../../components/DeleteConfirm";
 import { usePop } from "../../contexts/popContext";
 import { useFetchPatients } from "../../hooks/Patient/fetchAllPatients";
+import axios from "axios";
+import { useNotification } from "../../contexts/notificationContext";
+import { useAuth } from "../../contexts/authContext";
 
 const { Text } = Typography;
 
@@ -26,14 +33,14 @@ const statusTags = [
 
 function Patient() {
   const navigate = useNavigate();
+  const { token } = useAuth();
+  const openNotification = useNotification();
   const { setOpenConfirm } = usePop();
   const {
     patients,
     loading: patientsLoading,
     refresh,
-    totalPages,
     totalPatients,
-    currentPage,
   } = useFetchPatients();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
@@ -95,6 +102,7 @@ function Patient() {
 
             <div>
               <Text type="secondary">
+                Age:{" "}
                 {formatDistanceToNowStrict(new Date(record?.dateOfBirth), {
                   addSuffix: false,
                 })}
@@ -197,8 +205,31 @@ function Patient() {
               source="table"
               title="Are you sure?"
               description="This action cannot be undone!"
-              onConfirmSuccess={(id) => {
-                console.log(`Successfully deleted ${id}`);
+              onConfirmSuccess={async (id) => {
+                try {
+                  const response = await axios.delete(
+                    `patients/delete-patient/${id}`,
+                    { headers: { Authorization: `Bearer ${token}` } },
+                  );
+                  const { success, message } = response.data;
+                  if (success) {
+                    openNotification("success", message, "Success!");
+                    refresh();
+                  } else {
+                    openNotification(
+                      "error",
+                      message,
+                      "Something went wrong...",
+                    );
+                  }
+                } catch (err) {
+                  console.log(err);
+                  openNotification(
+                    "error",
+                    err.message,
+                    "Something went wrong...",
+                  );
+                }
               }}
             >
               <Button
@@ -247,8 +278,15 @@ function Patient() {
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
         </div>
 
-        <div style={{ marginTop: 20 }}>
-          <Flex gap="large" wrap align="center">
+        <div
+          style={{
+            marginTop: 20,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Flex gap="small" wrap align="center">
             {statusTags.map((status) => (
               <Tag.CheckableTag
                 key={status}
@@ -260,6 +298,19 @@ function Patient() {
                 {status}
               </Tag.CheckableTag>
             ))}
+          </Flex>
+          <Flex>
+            <Tooltip title="Refresh">
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={refresh}
+                style={{
+                  borderRadius: 8,
+                  borderColor: "rgba(133,74,154,0.2)",
+                  fontFamily: "'Outfit', sans-serif",
+                }}
+              />
+            </Tooltip>
           </Flex>
         </div>
       </div>
@@ -277,10 +328,13 @@ function Patient() {
           rowKey="_id"
           columns={columns}
           data={filteredData}
-          size="medium"
+          size="middle"
           loading={loading || patientsLoading}
           viewRecord={viewPatient}
         />
+        <div style={{ marginTop: 10 }}>
+          <Text type="secondary">Total Patients: {totalPatients}</Text>
+        </div>
       </div>
 
       <ViewPatient

@@ -136,6 +136,7 @@ export const DeletePatient = catchAsync(
       action: "deleted",
       title: "Patient deleted",
       description: `Deleted patient ${id}`,
+      //actor:
       refModel: "patient",
     });
 

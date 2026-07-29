@@ -8,6 +8,9 @@ const node_cache_1 = __importDefault(require("node-cache"));
 const BadRequestError_1 = require("../../common/errors/BadRequestError");
 const patient_model_1 = require("./patient.model");
 const patientCache = new node_cache_1.default({ stdTTL: 300 });
+const invalidatePatientCache = () => {
+    patientCache.flushAll();
+};
 // const DOCTOR_PROFILE_POPULATE = [
 //   {
 //     path: "profile",
@@ -52,6 +55,7 @@ class PatientService {
         const createData = sanitizeCreateData(data, requesterRole);
         const result = new patient_model_1.PatientModel(createData);
         await result.save();
+        invalidatePatientCache();
         return toPatient(result);
     }
     static async fetchPatients(req) {
@@ -61,7 +65,7 @@ class PatientService {
         const cacheKey = `patient_page_${page}_limit_${limit}`;
         const cachedData = patientCache.get(cacheKey);
         if (cachedData) {
-            return { patients: cachedData };
+            return cachedData;
         }
         const [patients, totalPatients] = (await Promise.all([
             patient_model_1.PatientModel.find()
@@ -108,6 +112,7 @@ class PatientService {
         if (!patient) {
             throw new BadRequestError_1.BadRequestError("Patient not found!");
         }
+        invalidatePatientCache();
         return toPatient(patient);
     }
     static async deletePatient(patientId, requesterId, requesterRole) {
@@ -116,6 +121,7 @@ class PatientService {
         if (!patient) {
             throw new BadRequestError_1.BadRequestError("Patient not found!");
         }
+        invalidatePatientCache();
         return toPatient(patient);
     }
 }

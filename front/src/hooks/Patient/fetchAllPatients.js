@@ -11,7 +11,6 @@ export function useFetchPatients() {
   const [totalPatients, setTotalPatients] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const fetchPatient = useCallback(async () => {
     if (!token) return;
@@ -25,10 +24,10 @@ export function useFetchPatients() {
       const { data, message, success } = response.data;
 
       if (success) {
-        setPatients(data.patients.patients);
-        setTotalPatients(data.patients.totalPatients);
-        setCurrentPage(data.patients.currentPage);
-        setTotalPages(data.patients.totalPages);
+        setPatients(data.patients);
+        setTotalPatients(data.totalPatients);
+        setCurrentPage(data.currentPage);
+        setTotalPages(data.totalPages);
       } else {
         openNotification(
           "error",
@@ -46,9 +45,7 @@ export function useFetchPatients() {
     } finally {
       setLoading(false);
     }
-
-    //eslint-disable-next-line
-  }, [refreshKey, openNotification]);
+  }, [token, openNotification]);
 
   useEffect(() => {
     fetchPatient();
@@ -60,6 +57,6 @@ export function useFetchPatients() {
     totalPages,
     totalPatients,
     currentPage,
-    refresh: () => setRefreshKey((prev) => prev + 1),
+    refresh: fetchPatient,
   };
 }

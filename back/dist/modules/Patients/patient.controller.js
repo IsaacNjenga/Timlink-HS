@@ -91,6 +91,7 @@ exports.DeletePatient = (0, catchAsync_1.catchAsync)(async (req, res) => {
         action: "deleted",
         title: "Patient deleted",
         description: `Deleted patient ${id}`,
+        //actor:
         refModel: "patient",
     });
     res.status(200).json({

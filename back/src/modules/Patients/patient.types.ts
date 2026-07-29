@@ -13,6 +13,13 @@ export type ReferralType =
   | "other"
   | "social media";
 
+export type PatientListResponse = {
+  patients: Patient[];
+  totalPatients: number;
+  currentPage: number;
+  totalPages: number;
+};
+
 export interface Patient {
   _id: string;
   firstName: string;
