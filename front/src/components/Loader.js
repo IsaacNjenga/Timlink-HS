@@ -38,7 +38,7 @@ function Loader({ size = "large" }) {
       }}
     >
       <Spin
-        tip={
+        description={
           <span
             style={{
               opacity: fade ? 1 : 0,

@@ -198,7 +198,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Primary Contact Number"
+              label="Contact Number"
               name={["nextOfKin", "contact"]}
               rules={[
                 { required: true, message: "Please enter contact number" },

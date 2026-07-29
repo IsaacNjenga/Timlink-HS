@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Form, Typography } from "antd";
 import PatientForm from "./PatientForm";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-// import { PatientData } from "../../assets/data/patientData";
 import { useFetchPatient } from "../../hooks/Patient/fetchPatient";
 import Loader from "../../components/Loader";
+import { useNotification } from "../../contexts/notificationContext";
+import axios from "axios";
+import { useAuth } from "../../contexts/authContext";
 
 const { Title, Text } = Typography;
 
@@ -17,26 +19,32 @@ const formatDateValue = (dateValue) => {
 function EditPatient() {
   const { id } = useParams();
   const [form] = Form.useForm();
+  const { token } = useAuth();
+  const navigate = useNavigate();
   const { patient, loading: patientLoading, fetchPatient } = useFetchPatient();
   const [loading, setLoading] = useState(false);
+  const openNotification = useNotification();
 
   useEffect(() => {
     fetchPatient(id);
   }, [fetchPatient, id]);
 
   useEffect(() => {
-    if (patient);
-
-    form.setFieldsValue({
-      ...patient,
-      dateOfBirth: patient.dateOfBirth ? dayjs(patient.dateOfBirth) : undefined,
-      dateOfRegistration: patient.dateOfRegistration
-        ? dayjs(patient.dateOfRegistration)
-        : undefined,
-    });
+    if (patient) {
+      form.setFieldsValue({
+        ...patient,
+        nextOfKin: patient.nextOfKin ? patient.nextOfKin[0] : null,
+        dateOfBirth: patient.dateOfBirth
+          ? dayjs(patient?.dateOfBirth)
+          : undefined,
+        dateOfRegistration: patient.dateOfRegistration
+          ? dayjs(patient?.dateOfRegistration)
+          : undefined,
+      });
+    }
   }, [patient, form]);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     setLoading(true);
     try {
       const formattedValues = {
@@ -44,9 +52,24 @@ function EditPatient() {
         dateOfBirth: formatDateValue(values.dateOfBirth),
         dateOfRegistration: formatDateValue(values.dateOfRegistration),
       };
-      console.log("Form values:", formattedValues);
+
+      const response = await axios.put(
+        `patients/update-patient/${id}`,
+        formattedValues,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        openNotification("success", message, "Success!");
+        setTimeout(() => navigate("/patient&leads"), 1200);
+      } else {
+        openNotification("error", message, "Something went wrong...");
+      }
     } catch (error) {
       console.error(error);
+      openNotification("error", error.message, "Something went wrong...");
     } finally {
       setLoading(false);
       form.resetFields();
