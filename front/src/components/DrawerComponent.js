@@ -16,6 +16,8 @@ function DrawerComponent({
   recordId,
   editPath,
   extra,
+  deleteRecord,
+  refresh,
 }) {
   const navigate = useNavigate();
   const { token } = theme.useToken();
@@ -27,7 +29,7 @@ function DrawerComponent({
       closable={{ "aria-label": "Close Button" }}
       onClose={() => setOpenModal(false)}
       open={openModal}
-      width={width}
+      size={width}
       closeIcon={
         <CloseOutlined
           style={{
@@ -63,7 +65,9 @@ function DrawerComponent({
                 source="modal"
                 description="This action cannot be undone!"
                 onConfirmSuccess={(id) => {
-                  console.log(`Successfully deleted ${id}`);
+                  deleteRecord(id);
+                  setOpenModal(false);
+                  refresh();
                 }}
               >
                 <Button
@@ -81,9 +85,7 @@ function DrawerComponent({
               </DeleteConfirm>
             </Tooltip>
           </Space>
-        ) : (
-          null
-        )
+        ) : null
       }
     >
       {contentLoading ? (

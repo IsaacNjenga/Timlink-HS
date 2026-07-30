@@ -1,1 +1,1 @@
-{"version":3,"file":"hospital.schema.js","sourceRoot":"","sources":["../../../src/modules/Hospitals/hospital.schema.ts"],"names":[],"mappings":""}
+{"version":3,"file":"hospital.schema.js","sourceRoot":"","sources":["../../../src/modules/Hospitals/hospital.schema.ts"],"names":[],"mappings":";;;AAAA,6BAAwB;AAEX,QAAA,cAAc,GAAG,OAAC,CAAC,MAAM,CAAC;IACrC,GAAG,EAAE,OAAC,CAAC,MAAM,EAAE;IACf,YAAY,EAAC,OAAC,CAAC,MAAM,EAAE;CACxB,CAAC,CAAC"}

@@ -2,9 +2,8 @@ import mongoose from "mongoose";
 
 const locationSchema = new mongoose.Schema(
   {
-    address: { type: String, required: true, trim: true },
-    city: { type: String, required: true, trim: true },
-    country: { type: String, required: true, trim: true },
+    address: { type: String, trim: true },
+    city: { type: String, trim: true },
   },
   { _id: false },
 );
@@ -45,13 +44,12 @@ const HospitalSchema = new mongoose.Schema(
     },
 
     location: {
-      type: locationSchema,
-      required: true,
+      type: { locationSchema },
       validate: [(val: any) => val.length > 0, "Location is required"],
     },
 
     operationalCapacity: {
-      type: operationalSchema,
+      type: [operationalSchema],
       required: false,
     },
 
@@ -60,7 +58,7 @@ const HospitalSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Active", "Inactive"],
-      required:true
+      required: true,
     },
   },
   {

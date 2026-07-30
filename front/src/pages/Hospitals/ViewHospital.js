@@ -17,10 +17,12 @@ import {
   ClusterOutlined,
   SafetyCertificateOutlined,
 } from "@ant-design/icons";
+import { useDeleteHospital } from "../../hooks/Hospital/deleteHospital";
 
 const { Text, Title } = Typography;
 
-function ViewHospital({ content, loading, openModal, setOpenModal }) {
+function ViewHospital({ content, loading, openModal, setOpenModal,refresh }) {
+  const {deleteHospital}=useDeleteHospital()
   const { token } = theme.useToken();
 
   const getStatusTagColor = (status) => {
@@ -41,6 +43,8 @@ function ViewHospital({ content, loading, openModal, setOpenModal }) {
       recordId={content._id}
       editPath={`/hospitals/edit-hospital/${content._id}`}
       extra={!null}
+      deleteRecord={deleteHospital}
+      refresh={refresh}
     >
       {content ? (
         <>

@@ -1,43 +1,74 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Typography } from "antd";
 import { useParams } from "react-router-dom";
-import { HospitalData } from "../../assets/data/hospitalData";
+// import { HospitalData } from "../../assets/data/hospitalData";
 import HospitalForm from "./HospitalForm";
+import axios from "axios";
+import { useNotification } from "../../contexts/notificationContext";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/authContext";
+import { useFetchHospital } from "../../hooks/Hospital/fetchHospital";
+import Loader from "../../components/Loader";
 
 const { Title, Text } = Typography;
 
-
-
 function EditHospital() {
   const { id } = useParams();
+  const { token } = useAuth();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const hospital = useMemo(
-    () => HospitalData.find((item) => item._id === id),
-    [id],
-  );
+  const openNotification = useNotification();
+  const {
+    hospital,
+    loading: hospitalLoading,
+    fetchHospital,
+  } = useFetchHospital();
 
   useEffect(() => {
-    if (!hospital) return;
+    fetchHospital(id);
+  }, [fetchHospital, id]);
 
-    form.setFieldsValue({
-      ...hospital,
-    });
+  useEffect(() => {
+    if (hospital) {
+      form.setFieldsValue({
+        ...hospital,
+      });
+    }
   }, [hospital, form]);
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     setLoading(true);
     try {
       const formattedValues = {
         ...values,
       };
-      console.log("Form values:", formattedValues);
+      const response = await axios.put(
+        `hospitals/update-hospital/${id}`,
+        formattedValues,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        openNotification("success", message, "Success!");
+        setTimeout(() => navigate("/hospitals"), 800);
+      } else {
+        openNotification("error", message, "Something went wrong...");
+      }
     } catch (error) {
       console.error(error);
+      openNotification("error", error.message, "Something went wrong...");
     } finally {
       setLoading(false);
+      form.resetFields();
     }
   };
+
+  
+    if (hospitalLoading) return <Loader size={"large"} />;
+    
   return (
     <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 16px" }}>
       {/* Page Header */}

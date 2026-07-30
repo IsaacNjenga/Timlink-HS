@@ -3,32 +3,35 @@ import { useAuth } from "../../contexts/authContext";
 import { useNotification } from "../../contexts/notificationContext";
 import axios from "axios";
 
-export function useFetchPatient() {
+export function useFetchHospital() {
   const { token } = useAuth();
   const openNotification = useNotification();
-  const [patient, setPatient] = useState({});
+  const [hospital, setHospital] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const fetchPatient = useCallback(
-    async (patientId) => {
+  const fetchHospital = useCallback(
+    async (hospitalId) => {
       if (!token) {
         console.warn("No token");
         return;
-      } else if (!patientId) {
+      } else if (!hospitalId) {
         console.warn("No ID");
         return;
       }
       try {
         setLoading(true);
 
-        const response = await axios.get(`/patients/get-patient/${patientId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `/hospitals/get-hospital/${hospitalId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         const { data, message, success } = response.data;
 
         if (success) {
-          setPatient(data);
+          setHospital(data);
         } else {
           openNotification(
             "error",
@@ -53,8 +56,8 @@ export function useFetchPatient() {
   );
 
   return {
-    patient,
+    hospital,
     loading,
-    fetchPatient,
+    fetchHospital,
   };
 }

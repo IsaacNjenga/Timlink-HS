@@ -193,7 +193,7 @@ function HospitalForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={8}>
             <Form.Item
               label="Primary Phone Lines"
-              name={["contact", "phone"]}
+              name={"phone"}
               rules={[
                 {
                   required: true,
@@ -207,7 +207,7 @@ function HospitalForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={8}>
             <Form.Item
               label="Official Email Address"
-              name={["contact", "email"]}
+              name={"email"}
               rules={[
                 { type: "email", message: "Please enter a valid email format" },
                 { required: true, message: "Please enter official email" },
@@ -219,7 +219,7 @@ function HospitalForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={8}>
             <Form.Item
               label="Emergency Extensions / Hotlines"
-              name={["contact", "emergencyExt"]}
+              name={"emergencyExt"}
             >
               <Input placeholder="e.g., 999 / 222" size="large" />
             </Form.Item>

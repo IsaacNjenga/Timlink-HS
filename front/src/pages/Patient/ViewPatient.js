@@ -39,7 +39,7 @@ function ViewPatient({ content, loading, openModal, setOpenModal, refresh }) {
       recordId={content._id}
       editPath={`/patient&leads/edit-patient/${content._id}`}
       deleteRecord={deletePatient}
-        refresh={refresh}
+      refresh={refresh}
     >
       {content ? (
         <>

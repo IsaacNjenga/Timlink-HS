@@ -82,6 +82,5 @@ const PatientSchema = new mongoose.Schema(
   },
 );
 
-PatientSchema.index({ email: 1 });
 
 export const PatientModel = mongoose.model("Patient", PatientSchema);

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import PageTitle from "../../components/PageTitle";
-import { HospitalData as data } from "../../assets/data/hospitalData";
+// import { HospitalData as data } from "../../assets/data/hospitalData";
 import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
@@ -9,6 +9,8 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import ViewHospital from "./ViewHospital";
 import { usePop } from "../../contexts/popContext";
 import DeleteConfirm from "../../components/DeleteConfirm";
+import { useFetchHospitals } from "../../hooks/Hospital/fetchAllHospitals";
+import { useDeleteHospital } from "../../hooks/Hospital/deleteHospital";
 
 const { Text } = Typography;
 
@@ -17,6 +19,13 @@ const statusTags = ["All", "Active", "Inactive"];
 function Hospitals() {
   const navigate = useNavigate();
   const { setOpenConfirm } = usePop();
+  const {
+    hospitals,
+    loading:hospitalsLoading,
+    totalHospitals,
+    refresh
+  } = useFetchHospitals();
+  const {deleteHospital} = useDeleteHospital();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -33,7 +42,7 @@ function Hospitals() {
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return data.filter((item) => {
+    return hospitals.filter((item) => {
       const matchesStatus =
         selectedStatus === "All" || item.status === selectedStatus;
       const matchesSearch =
@@ -44,7 +53,7 @@ function Hospitals() {
 
       return matchesStatus && matchesSearch;
     });
-  }, [searchTerm, selectedStatus]);
+  }, [searchTerm, selectedStatus,hospitals]);
 
   const columns = [
     {
@@ -74,13 +83,13 @@ function Hospitals() {
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
               <Text type="primary">{record.hospitalName}</Text>
-            </div><div style={{ fontSize: 12 }}>
+            </div>
+            <div style={{ fontSize: 12 }}>
               <Tag type="secondary">{record.tier}</Tag>
             </div>
             <div style={{ fontSize: 12 }}>
               <Text type="secondary">{record.code}</Text>
             </div>
-            
           </div>
         </div>
       ),
@@ -92,10 +101,10 @@ function Hospitals() {
       render: (_, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
-            <Text type="primary">{record.contact.phone}</Text>
+            <Text type="primary">{record.phone}</Text>
           </div>
           <div style={{ fontSize: 12 }}>
-            <Text type="secondary">{record.contact.email}</Text>
+            <Text type="secondary">{record.email}</Text>
           </div>
         </div>
       ),
@@ -157,8 +166,7 @@ function Hospitals() {
               source="table"
               title="Are you sure?"
               description="This action cannot be undone!"
-              onConfirmSuccess={(id) => {
-                console.log(`Successfully deleted ${id}`);
+              onConfirmSuccess={(id) => {deleteHospital(id);refresh()
               }}
             >
               <Button
@@ -236,10 +244,12 @@ function Hospitals() {
           rowKey="_id"
           columns={columns}
           data={filteredData}
-          size="medium"
-          loading={loading}
+          size="middle"
+          loading={loading||hospitalsLoading}
           viewRecord={viewHospital}
-        />
+        /> <div style={{ marginTop: 10 }}>
+          <Text type="secondary">Total Hospitals: {totalHospitals}</Text>
+        </div>
       </div>
 
       <ViewHospital
@@ -247,6 +257,7 @@ function Hospitals() {
         loading={loading}
         openModal={openModal}
         setOpenModal={setOpenModal}
+        refresh={refresh}
       />
     </>
   );

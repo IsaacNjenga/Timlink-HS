@@ -67,6 +67,5 @@ const PatientSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-PatientSchema.index({ email: 1 });
 exports.PatientModel = mongoose_1.default.model("Patient", PatientSchema);
 //# sourceMappingURL=patient.model.js.map

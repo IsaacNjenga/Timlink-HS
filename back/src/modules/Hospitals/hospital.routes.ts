@@ -13,7 +13,7 @@ export function HospitalRouter(): Router {
   const router = Router();
 
   router.post("/create-hospital", protectRoute, adminRoute, CreateHospital);
-  router.get("/get-hospital", protectRoute, adminRoute, FetchHospitals);
+  router.get("/get-hospitals", protectRoute, adminRoute, FetchHospitals);
   router.get("/get-hospital/:id", protectRoute, adminRoute, FetchHospitalById);
   router.put("/update-hospital/:id", protectRoute, adminRoute, UpdateHospital);
   router.delete(

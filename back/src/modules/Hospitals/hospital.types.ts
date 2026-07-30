@@ -29,7 +29,7 @@ export interface CreateHospitalDTO {
   phone: string;
   email: string;
   emergencyExt: string;
-  location: string;
+  location?: string;
   operationalCapacity?: string;
   insurancePanels?: string;
   status: HospitalStatus;

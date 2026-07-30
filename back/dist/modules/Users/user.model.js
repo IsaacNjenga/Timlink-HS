@@ -58,8 +58,6 @@ const UserSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-UserSchema.index({ email: 1 });
-UserSchema.index({ username: 1 });
 UserSchema.index({ role: 1 });
 UserSchema.index({ isActivated: 1 });
 exports.UserModel = mongoose_1.default.model("User", UserSchema);
