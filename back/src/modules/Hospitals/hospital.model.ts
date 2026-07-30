@@ -52,6 +52,7 @@ const HospitalSchema = new mongoose.Schema(
 
     operationalCapacity: {
       type: operationalSchema,
+      required: false,
     },
 
     insurancePanels: { type: [String], required: false },
@@ -59,6 +60,7 @@ const HospitalSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Active", "Inactive"],
+      required:true
     },
   },
   {
