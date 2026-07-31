@@ -21,8 +21,8 @@ import { useDeleteHospital } from "../../hooks/Hospital/deleteHospital";
 
 const { Text, Title } = Typography;
 
-function ViewHospital({ content, loading, openModal, setOpenModal,refresh }) {
-  const {deleteHospital}=useDeleteHospital()
+function ViewHospital({ content, loading, openModal, setOpenModal, refresh }) {
+  const { deleteHospital } = useDeleteHospital();
   const { token } = theme.useToken();
 
   const getStatusTagColor = (status) => {
@@ -55,7 +55,7 @@ function ViewHospital({ content, loading, openModal, setOpenModal,refresh }) {
             </span>
           </Divider>
           <Descriptions column={{ xs: 1, sm: 2 }} bordered size="small">
-            <Descriptions.Item label="Hospital Name" span={{ xs: 1, sm: 2 }}>
+            <Descriptions.Item label="Hospital" span={{ xs: 1, sm: 2 }}>
               <Text strong style={{ fontSize: "15px" }}>
                 {content.hospitalName}
               </Text>
@@ -105,21 +105,17 @@ function ViewHospital({ content, loading, openModal, setOpenModal,refresh }) {
               label="Primary Phone Line"
               span={{ xs: 1, sm: 2 }}
             >
-              <Text strong>{content.contact?.phone || "—"}</Text>
+              <Text strong>{content.phone || "—"}</Text>
             </Descriptions.Item>
             <Descriptions.Item label="Official Email" span={{ xs: 1, sm: 2 }}>
-              {content.contact?.email ? (
-                <Text copyable>{content.contact.email}</Text>
-              ) : (
-                "—"
-              )}
+              {content.email ? <Text copyable>{content.email}</Text> : "—"}
             </Descriptions.Item>
             <Descriptions.Item
               label="Emergency Hotline"
               span={{ xs: 1, sm: 2 }}
             >
               <Text type="danger" strong>
-                {content.contact?.emergencyExt || "—"}
+                {content.emergencyExt || "—"}
               </Text>
             </Descriptions.Item>
           </Descriptions>

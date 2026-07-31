@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import TableComponent from "../../components/TableComponent";
 import SearchComponent from "../../components/SearchComponent";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import ViewHospital from "./ViewHospital";
 import { usePop } from "../../contexts/popContext";
 import DeleteConfirm from "../../components/DeleteConfirm";
@@ -21,11 +25,11 @@ function Hospitals() {
   const { setOpenConfirm } = usePop();
   const {
     hospitals,
-    loading:hospitalsLoading,
+    loading: hospitalsLoading,
     totalHospitals,
-    refresh
+    refresh,
   } = useFetchHospitals();
-  const {deleteHospital} = useDeleteHospital();
+  const { deleteHospital } = useDeleteHospital();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -53,7 +57,7 @@ function Hospitals() {
 
       return matchesStatus && matchesSearch;
     });
-  }, [searchTerm, selectedStatus,hospitals]);
+  }, [searchTerm, selectedStatus, hospitals]);
 
   const columns = [
     {
@@ -166,7 +170,9 @@ function Hospitals() {
               source="table"
               title="Are you sure?"
               description="This action cannot be undone!"
-              onConfirmSuccess={(id) => {deleteHospital(id);refresh()
+              onConfirmSuccess={(id) => {
+                deleteHospital(id);
+                refresh();
               }}
             >
               <Button
@@ -214,8 +220,15 @@ function Hospitals() {
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
         </div>
 
-        <div style={{ marginTop: 20 }}>
-          <Flex gap="large" wrap align="center">
+        <div
+          style={{
+            marginTop: 20,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Flex gap="small" wrap align="center">
             {statusTags.map((status) => (
               <Tag.CheckableTag
                 key={status}
@@ -227,6 +240,19 @@ function Hospitals() {
                 {status}
               </Tag.CheckableTag>
             ))}
+          </Flex>
+          <Flex>
+            <Tooltip title="Refresh">
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={refresh}
+                style={{
+                  borderRadius: 8,
+                  borderColor: "rgba(133,74,154,0.2)",
+                  fontFamily: "'Outfit', sans-serif",
+                }}
+              />
+            </Tooltip>
           </Flex>
         </div>
       </div>
@@ -245,9 +271,10 @@ function Hospitals() {
           columns={columns}
           data={filteredData}
           size="middle"
-          loading={loading||hospitalsLoading}
+          loading={loading || hospitalsLoading}
           viewRecord={viewHospital}
-        /> <div style={{ marginTop: 10 }}>
+        />{" "}
+        <div style={{ marginTop: 10 }}>
           <Text type="secondary">Total Hospitals: {totalHospitals}</Text>
         </div>
       </div>

@@ -44,12 +44,11 @@ const HospitalSchema = new mongoose.Schema(
     },
 
     location: {
-      type: { locationSchema },
-      validate: [(val: any) => val.length > 0, "Location is required"],
+      type: locationSchema,
     },
 
     operationalCapacity: {
-      type: [operationalSchema],
+      type: operationalSchema,
       required: false,
     },
 

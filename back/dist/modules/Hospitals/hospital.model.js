@@ -36,11 +36,10 @@ const HospitalSchema = new mongoose_1.default.Schema({
         default: "",
     },
     location: {
-        type: { locationSchema },
-        validate: [(val) => val.length > 0, "Location is required"],
+        type: locationSchema,
     },
     operationalCapacity: {
-        type: [operationalSchema],
+        type: operationalSchema,
         required: false,
     },
     insurancePanels: { type: [String], required: false },
