@@ -1,42 +1,40 @@
-import React from "react";
-import {
-  Form,
-  Input,
-  Select,
-  DatePicker,
-  Button,
-  Row,
-  Col,
-  Card,
-  InputNumber,
-} from "antd";
+import React, { useMemo } from "react";
+import { Form, Input, Select, Button, Row, Col, Card, InputNumber } from "antd";
 import {
   UserOutlined,
   ContactsOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
+import { useFetchHospitals } from "../../hooks/Hospital/fetchAllHospitals";
+import Loader from "../../components/Loader";
 
 const { Option } = Select;
 
-function DoctorForm({ form, formType, handleSubmit, loading }) {
-  // System configurations matching drop-down parameters
-  const specialtyOptions = [
-    "Orthopedics",
-    "Cardiology",
-    "General Surgery",
-    "Neurosurgery",
-    "Urology",
-    "Oncology",
-    "Obstetrics",
-    "Pediatrics",
-  ];
+const specialtyOptions = [
+  "Orthopedics",
+  "Cardiology",
+  "General Surgery",
+  "Neurosurgery",
+  "Urology",
+  "Oncology",
+  "Obstetrics",
+  "Pediatrics",
+];
 
-  const hospitalOptions = [
-    "Nairobi Hospital",
-    "Aga Khan University Hospital",
-    "MP Shah Hospital",
-    "Mater Hospital",
-  ];
+function DoctorForm({ form, formType, handleSubmit, loading }) {
+  const { hospitals, loading: hospitalsLoading } = useFetchHospitals();
+
+  const hospitalOptions = useMemo(() => {
+    if (!hospitals) return [];
+    return hospitals.map((hospital) => ({
+      label: hospital.hospitalName,
+      value: hospital._id,
+    }));
+  }, [hospitals]);
+
+  if (hospitalsLoading) {
+    return <Loader size={"large"} />;
+  }
 
   return (
     <Form
@@ -81,29 +79,14 @@ function DoctorForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Date of Birth"
-              name="dob"
-              rules={[
-                { required: true, message: "Please select date of birth" },
-              ]}
-            >
-              <DatePicker
-                style={{ width: "100%" }}
-                size="large"
-                format="DD/MM/YYYY"
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={12}>
-            <Form.Item
               label="Gender"
               name="gender"
               rules={[{ required: true, message: "Please select gender" }]}
             >
               <Select placeholder="Select gender" size="large">
-                <Option value="Male">Male</Option>
-                <Option value="Female">Female</Option>
-                <Option value="Other">Other</Option>
+                <Option value="MALE">Male</Option>
+                <Option value="FEMALE">Female</Option>
+                <Option value="OTHER">Other</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -126,7 +109,7 @@ function DoctorForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Contact Details (Phone)"
-              name="contact"
+              name="phone"
               rules={[
                 { required: true, message: "Please enter contact number" },
               ]}
@@ -144,21 +127,6 @@ function DoctorForm({ form, formType, handleSubmit, loading }) {
               ]}
             >
               <Input placeholder="johndoe@example.com" size="large" />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={24}>
-          <Col span={24}>
-            <Form.Item
-              label="Physical Address"
-              name="address"
-              rules={[{ required: true, message: "Please enter address" }]}
-            >
-              <Input
-                placeholder="Suite 4B, Kilimani, Nairobi, Kenya"
-                size="large"
-              />
             </Form.Item>
           </Col>
         </Row>
@@ -252,13 +220,14 @@ function DoctorForm({ form, formType, handleSubmit, loading }) {
                 size="large"
                 style={{ width: "100%" }}
                 maxTagCount="responsive"
-              >
-                {hospitalOptions.map((hosp) => (
-                  <Option key={hosp} value={hosp}>
-                    {hosp}
+                options={hospitalOptions}
+              />
+              {/* {hospitalOptions?.map((hosp) => (
+                  <Option key={hosp.value} value={hosp.value}>
+                    {hosp.label}
                   </Option>
                 ))}
-              </Select>
+              </Select> */}
             </Form.Item>
           </Col>
         </Row>

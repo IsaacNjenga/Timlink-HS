@@ -37,7 +37,7 @@ export const CreateHospital = catchAsync(
     res.status(201).json({
       success: true,
       data: hospitalData,
-      message: "Hospital info has been created successfully",
+      message: "Hospital information has been created successfully",
     });
   },
 );

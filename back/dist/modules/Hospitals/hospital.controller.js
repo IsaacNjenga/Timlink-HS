@@ -28,7 +28,7 @@ exports.CreateHospital = (0, catchAsync_1.catchAsync)(async (req, res) => {
     res.status(201).json({
         success: true,
         data: hospitalData,
-        message: "Hospital info has been created successfully",
+        message: "Hospital information has been created successfully",
     });
 });
 exports.FetchHospitals = (0, catchAsync_1.catchAsync)(async (req, res) => {

@@ -6,6 +6,7 @@ export type HospitalListResponse = {
   currentPage: number;
   totalPages: number;
 };
+
 export interface Hospital {
   _id: string;
   hospitalName: string;

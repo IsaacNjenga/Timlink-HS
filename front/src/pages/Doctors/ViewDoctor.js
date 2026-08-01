@@ -7,10 +7,12 @@ import {
   MedicineBoxOutlined,
   BankOutlined,
 } from "@ant-design/icons";
+import { useDeleteDoctor } from "../../hooks/Doctor/deleteDoctor";
 
 const { Text } = Typography;
 
-function ViewDoctor({ content, loading, openModal, setOpenModal }) {
+function ViewDoctor({ content, loading, openModal, setOpenModal, refresh }) {
+  const { deleteDoctor } = useDeleteDoctor();
   const { token } = theme.useToken();
 
   // Color-coding for Operational Status
@@ -41,6 +43,8 @@ function ViewDoctor({ content, loading, openModal, setOpenModal }) {
       recordId={content._id}
       editPath={`/doctor-portfolio/edit-doctor/${content._id}`}
       extra={!null}
+      deleteRecord={deleteDoctor}
+      refresh={refresh}
     >
       {content ? (
         <>
@@ -99,14 +103,10 @@ function ViewDoctor({ content, loading, openModal, setOpenModal }) {
           </Divider>
           <Descriptions column={{ xs: 1, sm: 2 }} bordered size="small">
             <Descriptions.Item label="Phone Line">
-              {content.contact?.phone || "—"}
+              {content?.phone || "—"}
             </Descriptions.Item>
             <Descriptions.Item label="Email Address">
-              {content.contact?.email ? (
-                <Text copyable>{content.contact.email}</Text>
-              ) : (
-                "—"
-              )}
+              {content?.email ? <Text copyable>{content?.email}</Text> : "—"}
             </Descriptions.Item>
           </Descriptions>
 
@@ -130,7 +130,7 @@ function ViewDoctor({ content, loading, openModal, setOpenModal }) {
                         color: token.colorTextDescription,
                       }}
                     />{" "}
-                    {hospital}
+                    {hospital.hospitalName} - {hospital.tier}
                   </Text>
                 </List.Item>
               )}

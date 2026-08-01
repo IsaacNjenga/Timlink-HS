@@ -1,36 +1,51 @@
 import React, { useState } from "react";
 import { Form, Typography } from "antd";
 import DoctorForm from "./DoctorForm";
-import dayjs from "dayjs";
+import { useAuth } from "../../contexts/authContext";
+import { useNavigate } from "react-router-dom";
+import { useNotification } from "../../contexts/notificationContext";
+import axios from "axios";
 
 const { Title, Text } = Typography;
 
-const formatDateValue = (dateValue) => {
-  if (!dateValue) return undefined;
-  return dayjs.isDayjs(dateValue) ? dateValue.format("YYYY-MM-DD") : dateValue;
-};
-
-
 function AddDoctor() {
+  const { token } = useAuth();
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const openNotification = useNotification();
 
-   const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     setLoading(true);
     try {
       const formattedValues = {
         ...values,
-        dob: formatDateValue(values.dob),
       };
-      console.log("Form values:", formattedValues);
+
+      const response = await axios.post(
+        "doctors/create-doctor",
+        formattedValues,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        openNotification("success", message, "Success!");
+        setTimeout(() => navigate("/doctor-portfolio"), 800);
+      } else {
+        openNotification("error", message, "Something went wrong...");
+      }
     } catch (error) {
       console.error(error);
+      openNotification("error", error.message, "Something went wrong...");
     } finally {
       setLoading(false);
+      form.resetFields();
     }
   };
   return (
-     <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 16px" }}>
+    <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 16px" }}>
       {/* Page Header */}
       <div style={{ marginBottom: "32px", textAlign: "center" }}>
         <Title level={2} style={{ margin: 0 }}>
@@ -48,7 +63,7 @@ function AddDoctor() {
         loading={loading}
       />
     </div>
-  )
+  );
 }
 
-export default AddDoctor
+export default AddDoctor;

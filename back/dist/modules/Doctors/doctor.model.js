@@ -5,10 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DoctorModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const ;
 const DoctorSchema = new mongoose_1.default.Schema({
     firstName: { type: String, trim: true, default: "" },
     lastName: { type: String, trim: true, default: "" },
+    gender: {
+        type: String,
+        enum: ["MALE", "FEMALE", "OTHER"],
+        default: "OTHER",
+        required: true,
+    },
     specialty: { type: String, trim: true, required: true },
     phone: {
         type: String,
@@ -31,8 +36,21 @@ const DoctorSchema = new mongoose_1.default.Schema({
         enum: ["Active", "Inactive"],
         required: true,
     },
+    //to-do: see how i can save totalRevenue
     // totalRevenue: 50000,
-    partnerHospitals: ["Nairobi Hospital", "MP Shah Hospital"],
+    partnerHospitals: {
+        type: [
+            {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "Hospital",
+            },
+        ],
+        required: true,
+        validate: [
+            (val) => val.length > 0,
+            "At least one partner hospital is required",
+        ],
+    },
 }, {
     collection: "doctors",
     timestamps: true,

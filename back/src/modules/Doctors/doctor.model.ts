@@ -1,20 +1,15 @@
 import mongoose from "mongoose";
 
-const partnerHospitalsSchema = new mongoose.Schema(
-  {
-    hospital: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "Hospital",
-    },
-  },
-  { _id: false },
-);
-
 const DoctorSchema = new mongoose.Schema(
   {
     firstName: { type: String, trim: true, default: "" },
     lastName: { type: String, trim: true, default: "" },
+    gender: {
+      type: String,
+      enum: ["MALE", "FEMALE", "OTHER"],
+      default: "OTHER",
+      required: true,
+    },
     specialty: { type: String, trim: true, required: true },
 
     phone: {
@@ -35,6 +30,7 @@ const DoctorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     status: {
       type: String,
       enum: ["Active", "Inactive"],
@@ -43,7 +39,12 @@ const DoctorSchema = new mongoose.Schema(
     //to-do: see how i can save totalRevenue
     // totalRevenue: 50000,
     partnerHospitals: {
-      type: [partnerHospitalsSchema],
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Hospital",
+        },
+      ],
       required: true,
       validate: [
         (val: any) => val.length > 0,

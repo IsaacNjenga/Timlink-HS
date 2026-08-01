@@ -89,10 +89,10 @@ function Hospitals() {
               <Text type="primary">{record.hospitalName}</Text>
             </div>
             <div style={{ fontSize: 12 }}>
-              <Tag type="secondary">{record.tier}</Tag>
-            </div>
-            <div style={{ fontSize: 12 }}>
               <Text type="secondary">{record.code}</Text>
+            </div>{" "}
+            <div style={{ fontSize: 12 }}>
+              <Tag type="secondary">{record.tier}</Tag>
             </div>
           </div>
         </div>
@@ -273,7 +273,7 @@ function Hospitals() {
           size="middle"
           loading={loading || hospitalsLoading}
           viewRecord={viewHospital}
-        />{" "}
+        />
         <div style={{ marginTop: 10 }}>
           <Text type="secondary">Total Hospitals: {totalHospitals}</Text>
         </div>
