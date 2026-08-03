@@ -20,6 +20,13 @@ export type PatientListResponse = {
   totalPages: number;
 };
 
+export interface NextOfKin {
+  name: string;
+  relation: string;
+  contact: string;
+  email?: string;
+}
+
 export interface Patient {
   _id: string;
   firstName: string;
@@ -29,8 +36,9 @@ export interface Patient {
   phone: string;
   dateOfBirth: Date;
   address: string;
-  nextOfKin: string;
+  nextOfKin: NextOfKin[];
   referralType: ReferralType;
+  referringDoctor?: string;
   diagnosis: string;
   paymentMode: string;
   status: PatientStatus;
@@ -48,8 +56,9 @@ export interface CreatePatientDTO {
   phone: string;
   dateOfBirth: Date;
   address: string;
-  nextOfKin: string;
+  nextOfKin: NextOfKin | NextOfKin[];
   referralType: ReferralType;
+  referringDoctor?: string;
   diagnosis: string;
   paymentMode: string;
   status: PatientStatus;
@@ -65,8 +74,9 @@ export interface UpdatePatientDTO {
   phone?: string;
   dateOfBirth?: Date;
   address?: string;
-  nextOfKin?: string;
+  nextOfKin?: NextOfKin | NextOfKin[];
   referralType?: ReferralType;
+  referringDoctor?: string;
   diagnosis?: string;
   paymentMode?: string;
   status?: PatientStatus;

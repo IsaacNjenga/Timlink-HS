@@ -27,7 +27,7 @@ function DoctorForm({ form, formType, handleSubmit, loading }) {
   const hospitalOptions = useMemo(() => {
     if (!hospitals) return [];
     return hospitals.map((hospital) => ({
-      label: hospital.hospitalName,
+      label: hospital.hospitalName + " - " + hospital.code,
       value: hospital._id,
     }));
   }, [hospitals]);

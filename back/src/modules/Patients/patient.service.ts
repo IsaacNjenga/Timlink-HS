@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import NodeCache from "node-cache";
 import { BadRequestError } from "../../common/errors/BadRequestError";
 import { PatientModel } from "./patient.model";
@@ -15,12 +16,13 @@ const invalidatePatientCache = (): void => {
   patientCache.flushAll();
 };
 
-// const DOCTOR_PROFILE_POPULATE = [
-//   {
-//     path: "profile",
-//     populate: { path: "role" },
-//   },
-// ];
+const DOCTOR_PROFILE_POPULATE = [
+  {
+    path: "referringDoctor",
+    select:
+      "firstName lastName specialty phone email status createdAt updatedAt",
+  },
+];
 
 const ADMIN_ONLY_FIELDS = new Set(["role"]);
 const BLOCKED_UPDATE_FIELDS = new Set(["_id", "id"]);
@@ -33,6 +35,79 @@ const assertPatientId = (patientId: string) => {
 
 const toPatient = (patient: unknown): Patient => patient as Patient;
 
+const normalizeReferringDoctor = (
+  value: unknown,
+): mongoose.Types.ObjectId | undefined => {
+  if (!value) {
+    return undefined;
+  }
+
+  if (typeof value === "string") {
+    if (mongoose.Types.ObjectId.isValid(value)) {
+      return new mongoose.Types.ObjectId(value);
+    }
+
+    return undefined;
+  }
+
+  if (typeof value === "object") {
+    const doctor = value as Record<string, unknown>;
+    const candidateId =
+      typeof doctor._id === "string"
+        ? doctor._id
+        : typeof doctor.id === "string"
+          ? doctor.id
+          : undefined;
+
+    if (candidateId && mongoose.Types.ObjectId.isValid(candidateId)) {
+      return new mongoose.Types.ObjectId(candidateId);
+    }
+  }
+
+  return undefined;
+};
+
+const normalizeNextOfKin = (value: unknown): unknown => {
+  if (!value) {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  if (typeof value === "object") {
+    return [value];
+  }
+
+  return [];
+};
+
+const normalizePatientPayload = (data: Record<string, unknown>) => {
+  const normalizedData = { ...data };
+
+  if (
+    normalizedData.referralType !== "referral doctor" &&
+    "referringDoctor" in normalizedData
+  ) {
+    delete normalizedData.referringDoctor;
+  } else {
+    const normalizedDoctorId = normalizeReferringDoctor(
+      normalizedData.referringDoctor,
+    );
+
+    if (normalizedDoctorId) {
+      normalizedData.referringDoctor = normalizedDoctorId;
+    }
+  }
+
+  if ("nextOfKin" in normalizedData) {
+    normalizedData.nextOfKin = normalizeNextOfKin(normalizedData.nextOfKin);
+  }
+
+  return normalizedData;
+};
+
 const sanitizeCreateData = (
   data: CreatePatientDTO,
   requesterRole?: string,
@@ -41,7 +116,10 @@ const sanitizeCreateData = (
     throw new BadRequestError("Create data is required");
   }
 
-  const createData = { ...data } as Record<string, unknown>;
+  const createData = normalizePatientPayload({ ...data } as Record<
+    string,
+    unknown
+  >);
 
   return createData as Partial<CreatePatientDTO>;
 };
@@ -54,7 +132,10 @@ const sanitizeUpdateData = (
     throw new BadRequestError("Update data is required");
   }
 
-  const updateData = { ...data } as Record<string, unknown>;
+  const updateData = normalizePatientPayload({ ...data } as Record<
+    string,
+    unknown
+  >);
   const restrictedFields = Object.keys(updateData).filter((field) => {
     if (BLOCKED_UPDATE_FIELDS.has(field)) {
       return true;
@@ -83,8 +164,12 @@ export class PatientService {
 
     await result.save();
 
+    const savedPatient = await PatientModel.findById(result._id)
+      .populate(DOCTOR_PROFILE_POPULATE)
+      .lean();
+
     invalidatePatientCache();
-    return toPatient(result);
+    return toPatient(savedPatient ?? result);
   }
 
   static async fetchPatients(req: Request): Promise<PatientListResponse> {
@@ -102,7 +187,7 @@ export class PatientService {
       PatientModel.find()
         .skip(skip)
         .limit(limit)
-        // .populate(DOCTOR_PROFILE_POPULATE)
+        .populate(DOCTOR_PROFILE_POPULATE)
         .lean()
         .sort({ createdAt: -1 }),
       PatientModel.countDocuments(),
@@ -134,7 +219,7 @@ export class PatientService {
     assertPatientId(patientId);
 
     const patient = await PatientModel.findById(patientId)
-      // .populate(DOCTOR_PROFILE_POPULATE)
+      .populate(DOCTOR_PROFILE_POPULATE)
       .lean();
 
     if (!patient) {
@@ -160,7 +245,7 @@ export class PatientService {
         runValidators: true,
       },
     )
-      // .populate(DOCTOR_PROFILE_POPULATE)
+      .populate(DOCTOR_PROFILE_POPULATE)
       .lean();
 
     if (!patient) {

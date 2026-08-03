@@ -45,7 +45,13 @@ const PatientSchema = new mongoose_1.default.Schema({
         type: String,
         enum: ["walk-in", "referral doctor", "website", "other", "social media"],
     },
-    // referringDoctor:{type: } //ToDo: reference a doctor
+    referringDoctor: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Doctor",
+        required: function () {
+            return this.referralType === "referral doctor";
+        },
+    },
     diagnosis: { type: String, required: true },
     paymentMode: { type: String }, //enum for insurance, cash, debit etc
     status: {

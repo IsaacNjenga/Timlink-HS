@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Form, Input, Select, DatePicker, Button, Row, Col, Card } from "antd";
 import {
   UserOutlined,
@@ -6,12 +6,38 @@ import {
   SolutionOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+import { useFetchDoctors } from "../../hooks/Doctor/fetchAllDoctors";
+import Loader from "../../components/Loader";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 function PatientForm({ form, formType, handleSubmit, loading }) {
-  const [referralType, setReferralType] = useState("");
+  const [referralType, setReferralType] = useState(
+    form.getFieldValue("referralType") || "",
+  );
+  const referralTypeValue = form.getFieldValue("referralType");
+
+  useEffect(() => {
+    const currentReferralType = referralTypeValue;
+    setReferralType(currentReferralType || "");
+  }, [referralTypeValue, form]);
+
+  const { doctors, loading: doctorsLoading } = useFetchDoctors();
+
+  const doctorOptions = useMemo(() => {
+    if (!doctors) return [];
+    return doctors.map((doctor) => ({
+      label:
+        doctor.firstName + " " + doctor.lastName + " - " + doctor.specialty,
+      value: doctor._id,
+    }));
+  }, [doctors]);
+
+  if (doctorsLoading) {
+    return <Loader size={"large"} />;
+  }
+
   return (
     <Form
       form={form}
@@ -254,13 +280,12 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
                 size="large"
                 onChange={(value) =>
                   value === "referral doctor"
-                    ? setReferralType("referralDoctor")
+                    ? setReferralType("referral doctor")
                     : setReferralType("")
                 }
               >
                 <Option value="walk-in">Walk-in</Option>
                 <Option value="social media">Social Media</Option>
-                {/* <Option value="facebook">Facebook</Option> */}
                 <Option value="website">Website</Option>
                 <Option value="referral doctor">Referral Doctor</Option>
               </Select>
@@ -290,7 +315,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
         </Row>
 
         {/* Conditional Doctor Selection Field */}
-        {referralType === "referralDoctor" ? (
+        {referralType === "referral doctor" ? (
           <Row gutter={24} style={{ marginTop: "16px" }}>
             <Col xs={24} sm={24}>
               <Form.Item dependencies={["referralType"]}>
@@ -299,6 +324,7 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
                     <Form.Item
                       label="Select Referring Doctor"
                       name="referringDoctor"
+                      loading={doctorsLoading}
                       rules={[
                         {
                           required: true,
@@ -307,12 +333,18 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
                       ]}
                       style={{ marginBottom: 0 }}
                     >
-                      <Select placeholder="Choose doctor" size="large">
-                        <Option value="Dr. Smith">Dr. Smith</Option>
-                        <Option value="Dr. Patel">Dr. Patel</Option>
-                        <Option value="Dr. Omwamba">Dr. Omwamba</Option>
-                        <Option value="Dr. Ndwiga">Dr. Ndwiga</Option>
-                      </Select>
+                      <Select
+                        placeholder="--Select Doctor--"
+                        allowClear
+                        size="large"
+                        options={doctorOptions}
+                      />
+                      {/* {doctorOptions.map((doctor) => (
+                          <Option key={doctor.value} value={doctor.value}>
+                            {doctor.label}
+                          </Option>
+                        ))}
+                      </Select> */}
                     </Form.Item>
                   ) : null
                 }

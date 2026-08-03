@@ -140,9 +140,7 @@ function Patient() {
       dataIndex: "referralType",
       render: (_, record) => (
         <span style={{ textTransform: "capitalize" }}>
-          {record.referralType === "referral doctor"
-            ? record.referringDoctor
-            : record.referralType}
+          {record.referralType}
         </span>
       ),
     },

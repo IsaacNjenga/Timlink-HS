@@ -16,6 +16,13 @@ const formatDateValue = (dateValue) => {
   return dayjs.isDayjs(dateValue) ? dateValue.format("YYYY-MM-DD") : dateValue;
 };
 
+const normalizeDoctorValue = (value) => {
+  if (!value) return undefined;
+  if (typeof value === "string") return value;
+  if (typeof value === "object") return value._id || value.id;
+  return undefined;
+};
+
 function EditPatient() {
   const { id } = useParams();
   const [form] = Form.useForm();
@@ -31,8 +38,16 @@ function EditPatient() {
 
   useEffect(() => {
     if (patient) {
+      let selectedDoctorId = null;
+      if (patient.referralType === "referral doctor") {
+        selectedDoctorId = normalizeDoctorValue(patient.referringDoctor);
+      } else {
+        selectedDoctorId = null;
+      }
+
       form.setFieldsValue({
         ...patient,
+        referringDoctor: selectedDoctorId,
         nextOfKin: patient.nextOfKin ? patient.nextOfKin[0] : null,
         dateOfBirth: patient.dateOfBirth
           ? dayjs(patient?.dateOfBirth)
@@ -52,7 +67,7 @@ function EditPatient() {
         dateOfBirth: formatDateValue(values.dateOfBirth),
         dateOfRegistration: formatDateValue(values.dateOfRegistration),
       };
-
+      console.log("Formatted Values:", formattedValues);
       const response = await axios.put(
         `patients/update-patient/${id}`,
         formattedValues,

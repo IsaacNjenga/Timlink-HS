@@ -15,7 +15,7 @@ const { Text } = Typography;
 function ViewPatient({ content, loading, openModal, setOpenModal, refresh }) {
   const { deletePatient } = useDeletePatient();
   const { token } = theme.useToken();
-
+  // console.log(content);
   // Helper to color-code case status tags beautifully
   const getStatusTagColor = (status) => {
     const colors = {
@@ -140,8 +140,10 @@ function ViewPatient({ content, loading, openModal, setOpenModal, refresh }) {
               </span>
             </Descriptions.Item>
             {content.referralType === "referral doctor" && (
-              <Descriptions.Item label="Referring Physician">
-                {content.referringDoctor || "Unassigned"}
+              <Descriptions.Item label="Referring Doctor">
+                {content.referringDoctor?.firstName}{" "}
+                {content.referringDoctor?.lastName} -{" "}
+                {content.referringDoctor?.specialty}
               </Descriptions.Item>
             )}
             <Descriptions.Item label="Diagnosis" span={2}>

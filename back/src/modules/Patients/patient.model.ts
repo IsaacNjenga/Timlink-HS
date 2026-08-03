@@ -53,7 +53,13 @@ const PatientSchema = new mongoose.Schema(
       enum: ["walk-in", "referral doctor", "website", "other", "social media"],
     },
 
-    // referringDoctor:{type: } //ToDo: reference a doctor
+    referringDoctor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
+      required: function () {
+        return this.referralType === "referral doctor";
+      },
+    },
 
     diagnosis: { type: String, required: true },
 
@@ -81,6 +87,5 @@ const PatientSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   },
 );
-
 
 export const PatientModel = mongoose.model("Patient", PatientSchema);
