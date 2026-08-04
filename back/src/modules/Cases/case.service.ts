@@ -15,6 +15,30 @@ const invalidateCaseCache = (): void => {
   caseCache.flushAll();
 };
 
+const HOSPITAL_PROFILE_POPULATE = [
+  {
+    path: "hospital",
+    select:
+      "hospitalName code tier phone email emergencyExt location operationalCapacity insurancePanels status createdAt updatedAt",
+  },
+];
+
+const PATIENT_PROFILE_POPULATE = [
+  {
+    path: "patient",
+    select:
+      "firstName lastName dateOfBirth gender phone email address medicalHistory insuranceInfo status createdAt updatedAt",
+  },
+];
+
+const DOCTOR_PROFILE_POPULATE = [
+  {
+    path: "doctor",
+    select:
+      "firstName lastName specialization phone email status createdAt updatedAt",
+  },
+];
+
 const ADMIN_ONLY_FIELDS = new Set(["role"]);
 const BLOCKED_UPDATE_FIELDS = new Set(["_id", "id"]);
 
@@ -92,7 +116,14 @@ export class CaseService {
     }
 
     const [cases, totalCases] = (await Promise.all([
-      CaseModel.find().skip(skip).limit(limit).lean().sort({ createdAt: -1 }),
+      CaseModel.find()
+        .skip(skip)
+        .limit(limit)
+        .populate(HOSPITAL_PROFILE_POPULATE)
+        .populate(PATIENT_PROFILE_POPULATE)
+        .populate(DOCTOR_PROFILE_POPULATE)
+        .lean()
+        .sort({ createdAt: -1 }),
       CaseModel.countDocuments(),
     ])) as unknown as [Case[], number];
 
@@ -120,7 +151,11 @@ export class CaseService {
   ): Promise<Case> {
     assertCaseId(caseId);
 
-    const caseData = await CaseModel.findById(caseId).lean();
+    const caseData = await CaseModel.findById(caseId)
+      .populate(HOSPITAL_PROFILE_POPULATE)
+      .populate(PATIENT_PROFILE_POPULATE)
+      .populate(DOCTOR_PROFILE_POPULATE)
+      .lean();
 
     if (!caseData) {
       throw new BadRequestError("Case not found!");
@@ -140,7 +175,11 @@ export class CaseService {
     const caseData = await CaseModel.findByIdAndUpdate(caseId, updateData, {
       new: true,
       runValidators: true,
-    }).lean();
+    })
+      .populate(HOSPITAL_PROFILE_POPULATE)
+      .populate(PATIENT_PROFILE_POPULATE)
+      .populate(DOCTOR_PROFILE_POPULATE)
+      .lean();
 
     if (!caseData) {
       throw new BadRequestError("Case not found!");

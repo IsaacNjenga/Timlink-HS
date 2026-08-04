@@ -20,7 +20,7 @@ const CaseSchema = new mongoose.Schema(
 
     surgeryType: { type: String, required: true, trim: true },
 
-    surgeon: {
+    doctor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Doctor",
       required: true,
