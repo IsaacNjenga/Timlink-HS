@@ -33,7 +33,7 @@ function DoctorForm({ form, formType, handleSubmit, loading }) {
   }, [hospitals]);
 
   if (hospitalsLoading) {
-    return <Loader size={"large"} />;
+    return <Loader size={"small"} />;
   }
 
   return (

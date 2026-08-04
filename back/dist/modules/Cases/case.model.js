@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CaseModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const financialsSchema = new mongoose_1.default.Schema({
-    estimatedCostKsh: { type: Number, required: false },
+    estimatedCostKsh: { type: Number, required: true },
     finalBilledKsh: { type: Number, required: false },
     amountReceivedKsh: { type: Number, required: false },
     invoiceNo: { type: String, required: false },
@@ -18,7 +18,7 @@ const CaseSchema = new mongoose_1.default.Schema({
         required: true,
     },
     surgeryType: { type: String, required: true, trim: true },
-    surgeon: {
+    doctor: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "Doctor",
         required: true,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Form,
   Button,
@@ -17,100 +17,53 @@ import {
   PercentageOutlined,
   CommentOutlined,
 } from "@ant-design/icons";
-import dayjs from "dayjs";
+import { useFetchPatients } from "../../hooks/Patient/fetchAllPatients";
+import { useFetchDoctors } from "../../hooks/Doctor/fetchAllDoctors";
+import { useFetchHospitals } from "../../hooks/Hospital/fetchAllHospitals";
+import Loader from "../../components/Loader";
 
 const { TextArea } = Input;
 
-const formatDateValue = (dateValue) => {
-  if (!dateValue) return undefined;
-  return dayjs.isDayjs(dateValue) ? dateValue.format("YYYY-MM-DD") : dateValue;
-};
-
 function CaseForm({ form, formType, handleSubmit, loading }) {
-  const patientOptions = [
-    {
-      value: "PT001",
-      label: "John Otieno (PT001)",
-      name: "John Otieno",
-      id: "6677a23b8b2d4c5e9a110001",
-    },
-    {
-      value: "PT002",
-      label: "Grace Wanjiku (PT002)",
-      name: "Grace Wanjiku",
-      id: "6677a23b8b2d4c5e9a110002",
-    },
-    {
-      value: "PT003",
-      label: "David Mwangi (PT003)",
-      name: "David Mwangi",
-      id: "6677a23b8b2d4c5e9a110003",
-    },
-    {
-      value: "PT004",
-      label: "Fatuma Abdallah (PT004)",
-      name: "Fatuma Abdallah",
-      id: "6677a23b8b2d4c5e9a110004",
-    },
-    {
-      value: "PT005",
-      label: "Samuel Kipkoech (PT005)",
-      name: "Samuel Kipkoech",
-      id: "6677a23b8b2d4c5e9a110005",
-    },
-  ];
+  const { patients, loading: patientsLoading } = useFetchPatients();
+  const { doctors, loading: doctorsLoading } = useFetchDoctors();
+  const { hospitals, loading: hospitalsLoading } = useFetchHospitals();
 
-  const surgeonOptions = [
-    { value: "6677a5fa8b2d4c5e9a110501", label: "Dr. James Mutua" },
-    { value: "6677a5fa8b2d4c5e9a110502", label: "Dr. Amina Odhiambo" },
-    { value: "6677a5fa8b2d4c5e9a110503", label: "Dr. Peter Kamau" },
-    { value: "6677a5fa8b2d4c5e9a110504", label: "Dr. Sarah Njoroge" },
-  ];
+  const hospitalOptions = useMemo(() => {
+    if (!hospitals) return [];
+    return hospitals.map((hospital) => ({
+      label: hospital.hospitalName + " - " + hospital.code,
+      value: hospital._id,
+    }));
+  }, [hospitals]);
 
-  const hospitalOptions = [
-    { value: "Nairobi Hospital", label: "Nairobi Hospital" },
-    {
-      value: "Aga Khan University Hospital",
-      label: "Aga Khan University Hospital",
-    },
-    { value: "MP Shah Hospital", label: "MP Shah Hospital" },
-    { value: "Mater Hospital", label: "Mater Hospital" },
-  ];
+  const doctorOptions = useMemo(() => {
+    if (!doctors) return [];
+    return doctors.map((doctor) => ({
+      label:
+        doctor.firstName + " " + doctor.lastName + " - " + doctor.specialty,
+      value: doctor._id,
+    }));
+  }, [doctors]);
 
-  const onFinishHandler = (values) => {
-    const selectedPatient = patientOptions.find(
-      (p) => p.value === values.patientCodeRaw,
-    );
-    const selectedSurgeon = surgeonOptions.find(
-      (s) => s.value === values.surgeonIdRaw,
-    );
+  const patientOptions = useMemo(() => {
+    if (!patients) return [];
+    return patients.map((patient) => ({
+      label:
+        patient.firstName + " " + patient.lastName + " - " + patient.diagnosis,
+      value: patient._id,
+    }));
+  }, [patients]);
 
-    const formattedPayload = {
-      ...values,
-      patient: selectedPatient
-        ? {
-            patientId: selectedPatient.id,
-            patientCode: selectedPatient.value,
-            name: selectedPatient.name,
-          }
-        : undefined,
-      surgeon: selectedSurgeon
-        ? {
-            surgeonId: selectedSurgeon.value,
-            name: selectedSurgeon.label,
-          }
-        : undefined,
-      surgeryDate: formatDateValue(values.surgeryDate),
-    };
-
-    handleSubmit(formattedPayload);
-  };
+  if (hospitalsLoading || doctorsLoading || patientsLoading) {
+    return <Loader size={"small"} />;
+  }
 
   return (
     <Form
       form={form}
       layout="vertical"
-      onFinish={onFinishHandler}
+      onFinish={handleSubmit}
       requiredMark={true}
     >
       {/* SECTION 1: Admission & Surgical Profile */}
@@ -129,7 +82,7 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Patient"
-              name="patientCodeRaw"
+              name="patient"
               rules={[{ required: true, message: "Please select a patient" }]}
             >
               <Select
@@ -137,6 +90,7 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
                 options={patientOptions}
                 showSearch
                 optionFilterProp="label"
+                allowClear
               />
             </Form.Item>
           </Col>
@@ -153,13 +107,13 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
           </Col>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Surgeon"
-              name="surgeonIdRaw"
-              rules={[{ required: true, message: "Please select a surgeon" }]}
+              label="Doctor"
+              name="doctor"
+              rules={[{ required: true, message: "Please select a doctor" }]}
             >
               <Select
-                placeholder="-- Select Surgeon --"
-                options={surgeonOptions}
+                placeholder="-- Select Doctor --"
+                options={doctorOptions}
               />
             </Form.Item>
           </Col>
@@ -196,6 +150,7 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
             >
               <Radio.Group optionType="button" buttonStyle="solid">
                 <Radio value="Cash">Cash</Radio>
+                <Radio value="M-Pesa">M-Pesa</Radio>
                 <Radio value="Insurance">Insurance</Radio>
               </Radio.Group>
             </Form.Item>
@@ -230,16 +185,15 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
           <Col xs={24} sm={12}>
             <Form.Item
               label="Payment Status"
-              name={["financials", "paymentStatus"]}
+              name={"paymentStatus"}
               rules={[
                 { required: true, message: "Please select payment status" },
               ]}
             >
               <Select placeholder="Select Status">
                 <Select.Option value="Pending">Pending</Select.Option>
-                <Select.Option value="Partial">Partial</Select.Option>
+                <Select.Option value="Partially Paid">Partial</Select.Option>
                 <Select.Option value="Paid">Paid</Select.Option>
-                <Select.Option value="Unpaid">Unpaid</Select.Option>
               </Select>
             </Form.Item>
           </Col>

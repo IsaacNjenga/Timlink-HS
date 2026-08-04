@@ -7,19 +7,20 @@ import {
   PercentageOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
+import { useDeleteCase } from "../../hooks/Case/deleteCase";
 
 const { Text } = Typography;
 
-function ViewCase({ content, loading, openModal, setOpenModal }) {
+function ViewCase({ content, loading, openModal, setOpenModal, refresh }) {
+  const { deleteCase } = useDeleteCase();
   const { token } = theme.useToken();
 
   // Color mapping based on paymentStatus parameters
   const getPaymentStatusColor = (status) => {
     const colors = {
       Paid: "success",
-      Partial: "warning",
+      "Partially Paid": "warning",
       Pending: "processing",
-      Unpaid: "error",
     };
     return colors[status] || "default";
   };
@@ -57,6 +58,8 @@ function ViewCase({ content, loading, openModal, setOpenModal }) {
       contentLoading={loading}
       recordId={content._id}
       editPath={`/cases&surgery/edit-case/${content._id}`}
+      deleteRecord={deleteCase}
+      refresh={refresh}
     >
       {content ? (
         <>
@@ -68,18 +71,19 @@ function ViewCase({ content, loading, openModal, setOpenModal }) {
           </Divider>
           <Descriptions column={{ xs: 1, sm: 2 }} bordered size="small">
             <Descriptions.Item label="Patient Name">
-              <Text strong>{content.patient?.name}</Text>{" "}
-              {content.patient?.patientCode &&
-                `(${content.patient.patientCode})`}
+              <Text strong>
+                {content.patient?.firstName} {content.patient?.lastName}
+              </Text>
             </Descriptions.Item>
             <Descriptions.Item label="Surgery Type">
               {content.surgeryType}
             </Descriptions.Item>
             <Descriptions.Item label="Assigned Surgeon">
-              {content.surgeon?.name || "Unassigned"}
+              {content.doctor?.firstName || "N/A"}{" "}
+              {content.doctor?.lastName || "N/A"}
             </Descriptions.Item>
             <Descriptions.Item label="Admitting Hospital">
-              {content.hospital}
+              {content.hospital?.hospitalName}
             </Descriptions.Item>
             <Descriptions.Item label="Surgery Date" span={2}>
               <CalendarOutlined

@@ -4,11 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Avatar, Typography } from "antd";
 import SearchComponent from "../../components/SearchComponent";
 import TableComponent from "../../components/TableComponent";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { CasesData as data } from "../../assets/data/casesData";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
+// import { CasesData as data } from "../../assets/data/casesData";
 import ViewCase from "./ViewCase";
 import DeleteConfirm from "../../components/DeleteConfirm";
 import { usePop } from "../../contexts/popContext";
+import { useDeleteCase } from "../../hooks/Case/deleteCase";
+import { useFetchCases } from "../../hooks/Case/fetchAllCases";
+import { format } from "date-fns";
 
 const { Text } = Typography;
 
@@ -17,6 +24,8 @@ const statusTags = ["All", "Paid", "Partial", "Pending"];
 function Cases() {
   const navigate = useNavigate();
   const { setOpenConfirm } = usePop();
+  const { cases, loading: casesLoading, totalCases, refresh } = useFetchCases();
+  const { deleteCase } = useDeleteCase();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [content, setContent] = useState({});
@@ -33,7 +42,7 @@ function Cases() {
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return data.filter((item) => {
+    return cases.filter((item) => {
       const matchesStatus =
         selectedStatus === "All" || item.paymentStatus === selectedStatus;
       const matchesSearch =
@@ -44,7 +53,7 @@ function Cases() {
 
       return matchesStatus && matchesSearch;
     });
-  }, [searchTerm, selectedStatus]);
+  }, [searchTerm, selectedStatus, cases]);
 
   const columns = [
     {
@@ -67,15 +76,19 @@ function Cases() {
               size="medium"
               style={{ backgroundColor: "#f56a00", verticalAlign: "middle" }}
             >
-              {record.patient.name
-                .split(" ")
-                .map((n) => n.charAt(0))
-                .join("")}
+              {record.patient?.firstName?.charAt(0)}{" "}
+              {record.patient?.lastName?.charAt(0)}
             </Avatar>
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
-              {record.patient.name}
+              {record.patient?.firstName} {record.patient?.lastName}
+            </div>
+            <div>
+              <Text type="secondary">{record.patient?.email || "N/A"}</Text>
+            </div>
+            <div>
+              <Text type="secondary">{record.patient?.phone || "N/A"}</Text>
             </div>
           </div>
         </div>
@@ -90,7 +103,9 @@ function Cases() {
             {record.surgeryType}
           </div>
           <div>
-            <Text type="secondary">D.O.S: {record.surgeryDate}</Text>
+            <Text type="secondary">
+              {format(new Date(record.surgeryDate), "PPP")}
+            </Text>
           </div>
         </div>
       ),
@@ -101,10 +116,10 @@ function Cases() {
       render: (_, record) => (
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
-            {record.surgeon.name}
+            {record.doctor?.firstName} {record.doctor?.lastName}
           </div>
           <div>
-            <Text type="secondary">Hospital: {record.hospital}</Text>
+            <Text type="secondary">{record.hospital?.hospitalName}</Text>
           </div>
         </div>
       ),
@@ -119,7 +134,7 @@ function Cases() {
           case "Pending":
             color = "red";
             break;
-          case "Partial":
+          case "Partially Paid":
             color = "orange";
             break;
           case "Paid":
@@ -173,7 +188,8 @@ function Cases() {
               title="Are you sure?"
               description="This action cannot be undone!"
               onConfirmSuccess={(id) => {
-                console.log(`Successfully deleted ${id}`);
+                deleteCase(id);
+                refresh();
               }}
             >
               <Button
@@ -221,8 +237,15 @@ function Cases() {
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
         </div>
 
-        <div style={{ marginTop: 20 }}>
-          <Flex gap="large" wrap align="center">
+        <div
+          style={{
+            marginTop: 20,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Flex gap="small" wrap align="center">
             {statusTags.map((status) => (
               <Tag.CheckableTag
                 key={status}
@@ -234,6 +257,19 @@ function Cases() {
                 {status}
               </Tag.CheckableTag>
             ))}
+          </Flex>
+          <Flex>
+            <Tooltip title="Refresh">
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={refresh}
+                style={{
+                  borderRadius: 8,
+                  borderColor: "rgba(133,74,154,0.2)",
+                  fontFamily: "'Outfit', sans-serif",
+                }}
+              />
+            </Tooltip>
           </Flex>
         </div>
       </div>
@@ -251,10 +287,13 @@ function Cases() {
           rowKey="_id"
           columns={columns}
           data={filteredData}
-          size="medium"
-          loading={loading}
+          size="small"
+          loading={loading || casesLoading}
           viewRecord={viewCase}
         />
+        <div style={{ marginTop: 10 }}>
+          <Text type="secondary">Total Cases: {totalCases}</Text>
+        </div>
       </div>
 
       <ViewCase
@@ -262,6 +301,7 @@ function Cases() {
         loading={loading}
         openModal={openModal}
         setOpenModal={setOpenModal}
+        refresh={refresh}
       />
     </>
   );
