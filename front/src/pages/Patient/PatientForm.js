@@ -8,11 +8,13 @@ import {
 } from "@ant-design/icons";
 import { useFetchDoctors } from "../../hooks/Doctor/fetchAllDoctors";
 import Loader from "../../components/Loader";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 function PatientForm({ form, formType, handleSubmit, loading }) {
+  const navigate = useNavigate();
   const [referralType, setReferralType] = useState(
     form.getFieldValue("referralType") || "",
   );
@@ -419,6 +421,20 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
 
       {/* Submit Actions */}
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          danger
+          onClick={() => navigate("/patient&leads")}
+          size="large"
+          style={{
+            marginRight: "16px",
+            minWidth: "200px",
+            height: "48px",
+            fontSize: "16px",
+            borderRadius: "6px",
+          }}
+        >
+          Cancel
+        </Button>
         <Button
           type="primary"
           htmlType="submit"
