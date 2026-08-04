@@ -30,7 +30,7 @@ function AddPatient() {
         dateOfRegistration: formatDateValue(values.dateOfRegistration),
       };
 
-      console.log(formattedValues);
+      // console.log(formattedValues);
 
       const response = await axios.post(
         "patients/create-patient",

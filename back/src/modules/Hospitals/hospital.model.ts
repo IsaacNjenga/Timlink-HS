@@ -20,7 +20,7 @@ const operationalSchema = new mongoose.Schema(
 const HospitalSchema = new mongoose.Schema(
   {
     hospitalName: { type: String, required: true },
-    code: { type: String, required: true },
+    code: { type: String, required: true, unique: true },
     tier: { type: String, required: true },
 
     phone: {

@@ -67,7 +67,7 @@ function EditPatient() {
         dateOfBirth: formatDateValue(values.dateOfBirth),
         dateOfRegistration: formatDateValue(values.dateOfRegistration),
       };
-      console.log("Formatted Values:", formattedValues);
+      // console.log("Formatted Values:", formattedValues);
       const response = await axios.put(
         `patients/update-patient/${id}`,
         formattedValues,

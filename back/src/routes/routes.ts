@@ -4,6 +4,7 @@ import { UserRouter } from "../modules/Users";
 import { PatientRouter } from "../modules/Patients/patient.routes";
 import { HospitalRouter } from "../modules/Hospitals/hospital.routes";
 import { DoctorRouter } from "../modules/Doctors/doctor.routes";
+import { CaseRouter } from "../modules/Cases/case.routes";
 
 export function createRoutes(): Router {
   const router = Router();
@@ -13,6 +14,7 @@ export function createRoutes(): Router {
   router.use("/patients", PatientRouter());
   router.use("/hospitals", HospitalRouter());
   router.use("/doctors", DoctorRouter());
+  router.use("/cases", CaseRouter());
 
   return router;
 }

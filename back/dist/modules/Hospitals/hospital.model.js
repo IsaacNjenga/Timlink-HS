@@ -16,7 +16,7 @@ const operationalSchema = new mongoose_1.default.Schema({
 }, { _id: false });
 const HospitalSchema = new mongoose_1.default.Schema({
     hospitalName: { type: String, required: true },
-    code: { type: String, required: true },
+    code: { type: String, required: true, unique: true },
     tier: { type: String, required: true },
     phone: {
         type: String,
