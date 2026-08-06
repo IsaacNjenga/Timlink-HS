@@ -15,7 +15,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./service-job.types"), exports);
-__exportStar(require("./service-job.schema"), exports);
 __exportStar(require("./service-job.controller"), exports);
 __exportStar(require("./service-job.model"), exports);
 __exportStar(require("./service-job.service"), exports);

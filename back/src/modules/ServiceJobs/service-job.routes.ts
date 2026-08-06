@@ -4,7 +4,7 @@ import { adminRoute } from "../../middleware/admin.middleware";
 import {
   CreateServiceJob,
   FetchServiceJobById,
-FetchAllServiceJobs,
+  FetchAllServiceJobs,
   UpdateServiceJob,
   DeleteServiceJob,
 } from "./service-job.controller";
@@ -18,7 +18,12 @@ export function ServiceJobRouter(): Router {
     adminRoute,
     CreateServiceJob,
   );
-  router.get("/get-service-job", protectRoute, adminRoute, FetchAllServiceJobs);
+  router.get(
+    "/get-service-jobs",
+    protectRoute,
+    adminRoute,
+    FetchAllServiceJobs,
+  );
   router.get(
     "/get-service-job/:id",
     protectRoute,

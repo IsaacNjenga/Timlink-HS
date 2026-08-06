@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import DeleteConfirm from "../../../components/DeleteConfirm";
 import { usePop } from "../../../contexts/popContext";
-import { InventoryData as data } from "../../../assets/data/inventoryData";
+// import { InventoryData as data } from "../../../assets/data/inventoryData";
 import ViewInventory from "./ViewInventory";
 import { useDeleteInventory } from "../../../hooks/Inventory/deleteInventory";
 import { useFetchInventory } from "../../../hooks/Inventory/fetchAllInventory";

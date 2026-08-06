@@ -19,7 +19,7 @@ function AddInventory() {
     setLoading(true);
     try {
       const formattedValues = { ...values };
-      console.log("Form values:", formattedValues);
+      // console.log("Form values:", formattedValues);
       
       const response = await axios.post(
         "inventory/create-inventory",

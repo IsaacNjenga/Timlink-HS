@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Form,
   Input,
@@ -17,62 +17,48 @@ import {
   CalendarOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { useFetchPatients } from "../../../hooks/Patient/fetchAllPatients";
+import { useFetchInventory } from "../../../hooks/Inventory/fetchAllInventory";
+import Loader from "../../../components/Loader";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
+const serviceTypes = ["X-ray", "Ultrasound"];
+const clientTypes = ["Patient", "External"];
+const statusOptions = ["Scheduled", "Completed", "Cancelled"];
+
 function ServiceJobForm({ form, formType, handleSubmit, loading }) {
+  const navigate = useNavigate();
   const { token } = theme.useToken();
+  const { patients, loading: patientsLoading } = useFetchPatients();
+  const { inventory, loading: inventoryLoading } = useFetchInventory();
 
-  // Watch the dynamic clientType selection to render conditions natively
-  const clientType = Form.useWatch("clientType", form);
+  // Dynamically watch the clientType field for re-renders
+  const clientType = Form.useWatch("clientType", form) || "Patient";
 
-  // Mock structures matching options provided in previous datasets
-  const patientOptions = [
-    { id: "PT001", label: "John Otieno (PT001)" },
-    { id: "PT002", label: "Grace Wanjiku (PT002)" },
-    { id: "PT003", label: "David Mwangi (PT003)" },
-    { id: "PT004", label: "Fatuma Abdallah (PT004)" },
-    { id: "PT005", label: "Samuel Kipkoech (PT005)" },
-  ];
+  const patientOptions = useMemo(() => {
+    if (!patients) return [];
+    return patients.map((patient) => ({
+      label: `${patient.firstName} ${patient.lastName} - ${patient.diagnosis}`,
+      value: patient._id,
+    }));
+  }, [patients]);
 
-  const equipmentOptions = [
-    {
-      code: "MH-1234",
-      label: "Mobile X-ray Unit A (MH-1234)",
-      name: "Mobile X-ray Unit A",
-    },
-    {
-      code: "MH-5678",
-      label: "Portable Ultrasound Unit B (MH-5678)",
-      name: "Portable Ultrasound Unit B",
-    },
-  ];
+  const inventoryOptions = useMemo(() => {
+    if (!inventory) return [];
+    return inventory
+      .filter((i) => i.status === "Available")
+      .map((inv) => ({
+        label: `${inv.equipmentName} - ${inv.category}`,
+        value: inv._id,
+      }));
+  }, [inventory]);
 
-  const serviceTypes = ["X-ray", "Ultrasound"];
-  const clientTypes = ["Patient", "External"];
-  const statusOptions = ["Scheduled", "Completed", "Cancelled"];
-
-  // Injects human-readable secondary labels into the hidden payload schema
-  const handlePatientSelection = (value) => {
-    const matched = patientOptions.find((p) => p.id === value);
-    if (matched) {
-      // Split display labels to isolate raw name
-      const cleanName = matched.label.split(" (")[0];
-      form.setFieldsValue({
-        patientDetails: { fullName: cleanName },
-      });
-    }
-  };
-
-  const handleEquipmentSelection = (value) => {
-    const matched = equipmentOptions.find((e) => e.code === value);
-    if (matched) {
-      form.setFieldsValue({
-        equipment: { name: matched.name },
-      });
-    }
-  };
+  if (patientsLoading || inventoryLoading) {
+    return <Loader size={"small"} />;
+  }
 
   return (
     <Form
@@ -80,14 +66,9 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
       layout="vertical"
       onFinish={handleSubmit}
       requiredMark={false}
+      initialValues={{ clientType: "Patient", status: "Scheduled" }}
     >
-      {/* Hidden Fields to back-populate unstructured schema text records */}
-      <Form.Item name={["patientDetails", "fullName"]} hidden>
-        <Input />
-      </Form.Item>
-      <Form.Item name={["equipment", "name"]} hidden>
-        <Input />
-      </Form.Item>
+     
 
       {/* CARD 1: Client Classification Setup */}
       <Card
@@ -95,7 +76,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
           <span>
             <UserOutlined
               style={{ marginRight: 8, color: token.colorPrimary }}
-            />{" "}
+            />
             Client Demographics
           </span>
         }
@@ -107,7 +88,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Client Classification"
+              label="Client Type"
               name="clientType"
               rules={[
                 {
@@ -115,7 +96,6 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
                   message: "Please specify client source classification",
                 },
               ]}
-              initialValue="Patient"
             >
               <Select placeholder="Choose type" size="large">
                 {clientTypes.map((type) => (
@@ -127,12 +107,12 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
             </Form.Item>
           </Col>
 
-          {/* Conditional Rendering logic powered by form path watches */}
+          {/* Conditional Rendering based on reactive clientType */}
           {clientType === "Patient" ? (
             <Col xs={24} sm={12}>
               <Form.Item
-                label="Target Active Patient"
-                name={["patientDetails", "patientId"]}
+                label="Patient"
+                name="patient"
                 rules={[
                   {
                     required: true,
@@ -144,27 +124,21 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
                   placeholder="-- Select Patient --"
                   size="large"
                   showSearch
-                  onChange={handlePatientSelection}
                   optionFilterProp="children"
-                >
-                  {patientOptions.map((p) => (
-                    <Option key={p.id} value={p.id}>
-                      {p.label}
-                    </Option>
-                  ))}
-                </Select>
+                  options={patientOptions}
+                />
               </Form.Item>
             </Col>
           ) : (
             <>
               <Col xs={24} sm={12}>
                 <Form.Item
-                  label="Referral Walk-in Full Name"
-                  name={["externalClientDetails", "walkInName"]}
+                  label="Patient Full Name"
+                  name={["externalPatient", "walkInName"]}
                   rules={[
                     {
                       required: true,
-                      message: "Input external individual name description",
+                      message: "Input full name",
                     },
                   ]}
                 >
@@ -173,8 +147,8 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
               </Col>
               <Col xs={24} sm={12}>
                 <Form.Item
-                  label="Originating Health Center / Facility"
-                  name={["externalClientDetails", "organizationName"]}
+                  label="Health Center/Facility"
+                  name={["externalPatient", "organizationName"]}
                   rules={[
                     {
                       required: true,
@@ -182,20 +156,17 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
                     },
                   ]}
                 >
-                  <Input
-                    placeholder="e.g., MediCross Outpost Clinic"
-                    size="large"
-                  />
+                  <Input placeholder="e.g., MediCross Clinic" size="large" />
                 </Form.Item>
               </Col>
               <Col xs={24} sm={12}>
                 <Form.Item
-                  label="Referral Track Reference ID"
-                  name={["externalClientDetails", "referralRef"]}
+                  label="Referral Reference ID"
+                  name={["externalPatient", "referralRef"]}
                   rules={[
                     {
                       required: true,
-                      message: "Track code reference is missing",
+                      message: "Reference is missing",
                     },
                   ]}
                 >
@@ -213,7 +184,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
           <span>
             <SettingOutlined
               style={{ marginRight: 8, color: token.colorPrimary }}
-            />{" "}
+            />
             Service Specification & Assets
           </span>
         }
@@ -225,7 +196,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Requested Service Modality"
+              label="Service Type"
               name="serviceType"
               rules={[
                 {
@@ -245,8 +216,8 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
           </Col>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Assigned Machinery / Hardware"
-              name={["equipment", "code"]}
+              label="Service Machinery / Hardware"
+              name="equipment"
               rules={[
                 {
                   required: true,
@@ -257,21 +228,15 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
               <Select
                 placeholder="-- Select Equipment --"
                 size="large"
-                onChange={handleEquipmentSelection}
-              >
-                {equipmentOptions.map((eq) => (
-                  <Option key={eq.code} value={eq.code}>
-                    {eq.label}
-                  </Option>
-                ))}
-              </Select>
+                options={inventoryOptions}
+              />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={24}>
           <Col span={24}>
             <Form.Item
-              label="Facility Operational Assignment Location"
+              label="Facility Location"
               name="facilityLocation"
               rules={[
                 {
@@ -295,7 +260,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
           <span>
             <CalendarOutlined
               style={{ marginRight: 8, color: token.colorPrimary }}
-            />{" "}
+            />
             Logistics & Financial Metadata
           </span>
         }
@@ -307,7 +272,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={24}>
           <Col xs={24} sm={8}>
             <Form.Item
-              label="Service Booking Date"
+              label="Service Date"
               name="serviceDate"
               rules={[
                 { required: true, message: "Timeline assignment date missing" },
@@ -323,9 +288,8 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
           </Col>
           <Col xs={24} sm={8}>
             <Form.Item
-              label="Execution Status"
+              label="Status"
               name="status"
-              initialValue="Scheduled"
               rules={[
                 { required: true, message: "Define track position state" },
               ]}
@@ -341,7 +305,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
           </Col>
           <Col xs={24} sm={8}>
             <Form.Item
-              label="Service Unit Billing Cost (KES)"
+              label="Service Cost (KES)"
               name="serviceCost"
               rules={[
                 { required: true, message: "Log structural processing fee" },
@@ -369,7 +333,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
           <span>
             <FileTextOutlined
               style={{ marginRight: 8, color: token.colorPrimary }}
-            />{" "}
+            />
             Clinical Diagnostics Remarks
           </span>
         }
@@ -381,7 +345,7 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
         <Row>
           <Col span={24}>
             <Form.Item
-              label="Session Observations & Technician Notes"
+              label="Notes"
               name="notes"
               rules={[
                 {
@@ -400,7 +364,21 @@ function ServiceJobForm({ form, formType, handleSubmit, loading }) {
       </Card>
 
       {/* Submission Actions Footer */}
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+        <Button
+          danger
+          size="large"
+          loading={loading}
+          onClick={() => navigate("/mobile-imaging?tab=1")}
+          style={{
+            minWidth: "200px",
+            height: "46px",
+            borderRadius: "4px",
+            fontSize: "15px",
+          }}
+        >
+          Cancel
+        </Button>
         <Button
           type="primary"
           htmlType="submit"

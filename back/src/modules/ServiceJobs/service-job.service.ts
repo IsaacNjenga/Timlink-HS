@@ -20,13 +20,13 @@ const PATIENT_PROFILE_POPULATE = [
   {
     path: "patient",
     select:
-      "firstName lastName diagnosis phone email status createdAt updatedAt",
+      "firstName lastName dateOfBirth gender diagnosis phone email status address nextOfKin paymentMode referringDoctor referralType createdAt updatedAt",
   },
 ];
 
 const INVENTORY_PROFILE_POPULATE = [
   {
-    path: "inventory",
+    path: "equipment",
     select:
       "equipmentName category serialModel vehiclePlate location status rate notes createdAt updatedAt",
   },

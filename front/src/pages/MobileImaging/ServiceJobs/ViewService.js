@@ -7,11 +7,13 @@ import {
   SettingOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
+import { useDeleteServiceJob } from "../../../hooks/ServiceJobs/deleteServiceJob";
 
 const { Text } = Typography;
 
-function ViewService({ content, loading, openModal, setOpenModal }) {
+function ViewService({ content, loading, openModal, setOpenModal, refresh }) {
   const { token } = theme.useToken();
+  const { deleteServiceJob } = useDeleteServiceJob();
 
   // Status style mapping selector
   const getStatusTagColor = (status) => {
@@ -57,6 +59,9 @@ function ViewService({ content, loading, openModal, setOpenModal }) {
       contentLoading={loading}
       recordId={content?._id}
       editPath={`/mobile-imaging/edit-service-job/${content?._id}`}
+      extra={!null}
+      deleteRecord={deleteServiceJob}
+      refresh={refresh}
     >
       {content ? (
         <div style={{ padding: "4px 8px" }}>

@@ -15,7 +15,7 @@ const ServiceJobSchema = new mongoose.Schema(
     clientType: { type: String, required: true, enum: ["Patient", "External"] },
     patient: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "patients",
+      ref: "Patient",
       required: function () {
         return this.clientType === "Patient";
       },
@@ -25,7 +25,7 @@ const ServiceJobSchema = new mongoose.Schema(
     serviceDate: { type: Date, required: true },
     equipment: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "inventory",
+      ref: "Inventory",
       required: function () {
         return this.clientType === "External";
       },

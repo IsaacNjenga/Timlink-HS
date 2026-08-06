@@ -7,11 +7,13 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 import DrawerComponent from "../../../components/DrawerComponent";
+import { useDeleteInventory } from "../../../hooks/Inventory/deleteInventory";
 
 const { Text } = Typography;
 
-function ViewInventory({ content, loading, openModal, setOpenModal }) {
+function ViewInventory({ content, loading, openModal, setOpenModal, refresh }) {
   const { token } = theme.useToken();
+  const { deleteInventory } = useDeleteInventory();
 
   // Status mapping matching configuration presets
   const getStatusTagColor = (status) => {
@@ -40,6 +42,9 @@ function ViewInventory({ content, loading, openModal, setOpenModal }) {
       contentLoading={loading}
       recordId={content?._id}
       editPath={`/mobile-imaging/edit-inventory-item/${content?._id}`}
+      extra={!null}
+      deleteRecord={deleteInventory}
+      refresh={refresh}
     >
       {content ? (
         <div style={{ padding: "4px 8px" }}>

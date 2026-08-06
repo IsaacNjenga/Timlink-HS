@@ -15,9 +15,11 @@ const { Option } = Select;
 
 function PatientForm({ form, formType, handleSubmit, loading }) {
   const navigate = useNavigate();
+  const { doctors, loading: doctorsLoading } = useFetchDoctors();  
   const [referralType, setReferralType] = useState(
     form.getFieldValue("referralType") || "",
   );
+  
   const referralTypeValue = form.getFieldValue("referralType");
 
   useEffect(() => {
@@ -25,7 +27,6 @@ function PatientForm({ form, formType, handleSubmit, loading }) {
     setReferralType(currentReferralType || "");
   }, [referralTypeValue, form]);
 
-  const { doctors, loading: doctorsLoading } = useFetchDoctors();
 
   const doctorOptions = useMemo(() => {
     if (!doctors) return [];

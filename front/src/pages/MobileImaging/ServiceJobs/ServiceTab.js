@@ -3,12 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Typography } from "antd";
 import TableComponent from "../../../components/TableComponent";
 import SearchComponent from "../../../components/SearchComponent";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { format } from "date-fns";
 import DeleteConfirm from "../../../components/DeleteConfirm";
 import { usePop } from "../../../contexts/popContext";
-import { serviceJobs as data } from "../../../assets/data/serviceJobs";
+// import { serviceJobs as data } from "../../../assets/data/serviceJobs";
 import ViewService from "./ViewService";
+import { useFetchServiceJobs } from "../../../hooks/ServiceJobs/fetchAllServiceJobs";
+import { useDeleteServiceJob } from "../../../hooks/ServiceJobs/deleteServiceJob";
 
 const { Text } = Typography;
 
@@ -17,6 +23,13 @@ const statusTags = ["All", "Completed", "Scheduled", "Cancelled"];
 function ServiceTab() {
   const navigate = useNavigate();
   const { setOpenConfirm } = usePop();
+  const {
+    serviceJobs,
+    loading: serviceJobsLoading,
+    totalServiceJobs,
+    refresh,
+  } = useFetchServiceJobs();
+  const { deleteServiceJob } = useDeleteServiceJob();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -33,7 +46,7 @@ function ServiceTab() {
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return data.filter((item) => {
+    return serviceJobs.filter((item) => {
       const matchesStatus =
         selectedStatus === "All" || item.status === selectedStatus;
       const matchesSearch =
@@ -44,7 +57,7 @@ function ServiceTab() {
 
       return matchesStatus && matchesSearch;
     });
-  }, [searchTerm, selectedStatus]);
+  }, [searchTerm, selectedStatus, serviceJobs]);
 
   const columns = [
     {
@@ -151,7 +164,8 @@ function ServiceTab() {
               title="Are you sure?"
               description="This action cannot be undone!"
               onConfirmSuccess={(id) => {
-                console.log(`Successfully deleted ${id}`);
+                deleteServiceJob(id);
+                refresh();
               }}
             >
               <Button
@@ -179,8 +193,15 @@ function ServiceTab() {
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
         </div>
 
-        <div style={{ marginTop: 20 }}>
-          <Flex gap="large" wrap align="center">
+        <div
+          style={{
+            marginTop: 20,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Flex gap="small" wrap align="center">
             {statusTags.map((status) => (
               <Tag.CheckableTag
                 key={status}
@@ -192,6 +213,19 @@ function ServiceTab() {
                 {status}
               </Tag.CheckableTag>
             ))}
+          </Flex>{" "}
+          <Flex>
+            <Tooltip title="Refresh">
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={refresh}
+                style={{
+                  borderRadius: 8,
+                  borderColor: "rgba(133,74,154,0.2)",
+                  fontFamily: "'Outfit', sans-serif",
+                }}
+              />
+            </Tooltip>
           </Flex>
         </div>
       </div>
@@ -210,15 +244,19 @@ function ServiceTab() {
           columns={columns}
           data={filteredData}
           size="small"
-          loading={loading}
+          loading={loading || serviceJobsLoading}
           viewRecord={viewService}
-        />
+        />{" "}
+        <div style={{ marginTop: 10 }}>
+          <Text type="secondary">Total Service Jobs: {totalServiceJobs}</Text>
+        </div>
       </div>
       <ViewService
         content={content}
         loading={loading}
         openModal={openModal}
         setOpenModal={setOpenModal}
+        refresh={refresh}
       />
     </>
   );
