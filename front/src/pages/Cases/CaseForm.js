@@ -342,9 +342,7 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
           gap: 8,
         }}
       >
-        {" "}
         <Button
-          type="primary"
           size="large"
           loading={loading}
           danger

@@ -16,11 +16,13 @@ import {
   DollarOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 function InventoryForm({ form, formType, handleSubmit, loading }) {
+  const navigate = useNavigate();
   const { token } = theme.useToken();
 
   const categories = ["X-ray", "Ultrasound"];
@@ -51,7 +53,7 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              label="Equipment Designation Name"
+              label="Equipment Name"
               name="equipmentName"
               rules={[
                 {
@@ -71,7 +73,7 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Category Stream"
+              label="Category"
               name="category"
               rules={[
                 {
@@ -91,7 +93,7 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
           </Col>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Serial / Model Number String"
+              label="Serial / Model Number "
               name="serialModel"
               rules={[
                 {
@@ -125,7 +127,7 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
         <Row gutter={24}>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Assigned Vehicle Plate Code"
+              label="Vehicle Plate"
               name="vehiclePlate"
               rules={[
                 {
@@ -148,7 +150,7 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
           </Col>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Asset Lifecycle Status"
+              label="Status"
               name="status"
               initialValue="Available"
               rules={[
@@ -171,7 +173,7 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
         <Row>
           <Col span={24}>
             <Form.Item
-              label="Current Inventory Location Deposition"
+              label="Current Inventory Location"
               name="location"
               rules={[
                 {
@@ -251,7 +253,7 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
         <Row>
           <Col span={24}>
             <Form.Item
-              label="Asset Description Remarks"
+              label="Description Remarks"
               name="notes"
               rules={[{ required: false }]}
             >
@@ -265,7 +267,21 @@ function InventoryForm({ form, formType, handleSubmit, loading }) {
       </Card>
 
       {/* Action Footer Button Drawer */}
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+        <Button
+          danger
+          onClick={() => navigate("/mobile-imaging?tab=2")}
+          size="large"
+          loading={loading}
+          style={{
+            minWidth: "220px",
+            height: "46px",
+            borderRadius: "4px",
+            fontSize: "15px",
+          }}
+        >
+          Cancel
+        </Button>
         <Button
           type="primary"
           htmlType="submit"
