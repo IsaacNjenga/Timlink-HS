@@ -5,7 +5,8 @@ import { PatientRouter } from "../modules/Patients/patient.routes";
 import { HospitalRouter } from "../modules/Hospitals/hospital.routes";
 import { DoctorRouter } from "../modules/Doctors/doctor.routes";
 import { CaseRouter } from "../modules/Cases/case.routes";
-import { InventoryRouter } from "../modules/inventory/inventory.routes";
+import { InventoryRouter } from "../modules/Inventory/inventory.routes";
+import { ServiceJobRouter } from "../modules/ServiceJobs/service-job.routes";
 
 export function createRoutes(): Router {
   const router = Router();
@@ -17,6 +18,7 @@ export function createRoutes(): Router {
   router.use("/doctors", DoctorRouter());
   router.use("/cases", CaseRouter());
   router.use("/inventory", InventoryRouter());
+  router.use("/service-jobs", ServiceJobRouter());
 
   return router;
 }

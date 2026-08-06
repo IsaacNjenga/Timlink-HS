@@ -39,6 +39,7 @@ const LogSchema = new mongoose.Schema(
         "doctor",
         "case",
         "inventory",
+        "service-job",
       ],
     },
     actor: {
