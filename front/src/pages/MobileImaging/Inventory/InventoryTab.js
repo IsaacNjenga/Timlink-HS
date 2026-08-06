@@ -3,11 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Button, Space, Tag, Flex, Tooltip, Typography } from "antd";
 import TableComponent from "../../../components/TableComponent";
 import SearchComponent from "../../../components/SearchComponent";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import DeleteConfirm from "../../../components/DeleteConfirm";
 import { usePop } from "../../../contexts/popContext";
 import { InventoryData as data } from "../../../assets/data/inventoryData";
 import ViewInventory from "./ViewInventory";
+import { useDeleteInventory } from "../../../hooks/Inventory/deleteInventory";
+import { useFetchInventory } from "../../../hooks/Inventory/fetchAllInventory";
 
 const { Text } = Typography;
 
@@ -16,6 +22,13 @@ const statusTags = ["All", "Available", "In Service", "Maintenance"];
 function InventoryTab() {
   const navigate = useNavigate();
   const { setOpenConfirm } = usePop();
+  const {
+    inventory,
+    loading: inventoryLoading,
+    totalInventory,
+    refresh,
+  } = useFetchInventory();
+  const { deleteInventory } = useDeleteInventory();
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [content, setContent] = useState({});
@@ -32,7 +45,7 @@ function InventoryTab() {
   const filteredData = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
-    return data.filter((item) => {
+    return inventory.filter((item) => {
       const matchesStatus =
         selectedStatus === "All" || item.status === selectedStatus;
       const matchesSearch =
@@ -43,7 +56,7 @@ function InventoryTab() {
 
       return matchesStatus && matchesSearch;
     });
-  }, [searchTerm, selectedStatus]);
+  }, [searchTerm, selectedStatus, inventory]);
 
   const columns = [
     {
@@ -53,9 +66,6 @@ function InventoryTab() {
         <div>
           <div>
             <Text strong>{record.equipmentName}</Text>
-          </div>
-          <div>
-            <Text type="secondary">Code: {record.equipmentId}</Text>
           </div>
         </div>
       ),
@@ -132,7 +142,8 @@ function InventoryTab() {
               title="Are you sure?"
               description="This action cannot be undone!"
               onConfirmSuccess={(id) => {
-                console.log(`Successfully deleted ${id}`);
+                deleteInventory(id);
+                refresh();
               }}
             >
               <Button
@@ -160,8 +171,15 @@ function InventoryTab() {
           <SearchComponent value={searchTerm} onChange={setSearchTerm} />
         </div>
 
-        <div style={{ marginTop: 20 }}>
-          <Flex gap="large" wrap align="center">
+        <div
+          style={{
+            marginTop: 20,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Flex gap="small" wrap align="center">
             {statusTags.map((status) => (
               <Tag.CheckableTag
                 key={status}
@@ -173,6 +191,19 @@ function InventoryTab() {
                 {status}
               </Tag.CheckableTag>
             ))}
+          </Flex>{" "}
+          <Flex>
+            <Tooltip title="Refresh">
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={refresh}
+                style={{
+                  borderRadius: 8,
+                  borderColor: "rgba(133,74,154,0.2)",
+                  fontFamily: "'Outfit', sans-serif",
+                }}
+              />
+            </Tooltip>
           </Flex>
         </div>
       </div>
@@ -191,15 +222,19 @@ function InventoryTab() {
           columns={columns}
           data={filteredData}
           size="small"
-          loading={loading}
+          loading={loading || inventoryLoading}
           viewRecord={viewInventory}
         />
+        <div style={{ marginTop: 10 }}>
+          <Text type="secondary">Total Inventory Items: {totalInventory}</Text>
+        </div>
       </div>
       <ViewInventory
         content={content}
         loading={loading}
         openModal={openModal}
         setOpenModal={setOpenModal}
+        refresh={refresh}
       />
     </>
   );

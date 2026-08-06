@@ -47,7 +47,7 @@ function EditDoctor() {
         ...values,
       };
 
-      console.log(formattedValues);
+      // console.log(formattedValues);
       const response = await axios.put(
         `doctors/update-doctor/${id}`,
         formattedValues,
