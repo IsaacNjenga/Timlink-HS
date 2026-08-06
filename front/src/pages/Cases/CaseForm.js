@@ -21,6 +21,7 @@ import { useFetchPatients } from "../../hooks/Patient/fetchAllPatients";
 import { useFetchDoctors } from "../../hooks/Doctor/fetchAllDoctors";
 import { useFetchHospitals } from "../../hooks/Hospital/fetchAllHospitals";
 import Loader from "../../components/Loader";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -28,6 +29,7 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
   const { patients, loading: patientsLoading } = useFetchPatients();
   const { doctors, loading: doctorsLoading } = useFetchDoctors();
   const { hospitals, loading: hospitalsLoading } = useFetchHospitals();
+  const navigate = useNavigate();
 
   const hospitalOptions = useMemo(() => {
     if (!hospitals) return [];
@@ -337,8 +339,25 @@ function CaseForm({ form, formType, handleSubmit, loading }) {
           display: "flex",
           justifyContent: "flex-end",
           marginTop: "20px",
+          gap: 8,
         }}
       >
+        {" "}
+        <Button
+          type="primary"
+          size="large"
+          loading={loading}
+          danger
+          style={{
+            minWidth: "200px",
+            height: "48px",
+            fontSize: "16px",
+            borderRadius: "6px",
+          }}
+          onClick={() => navigate("/cases&surgery")}
+        >
+          Cancel
+        </Button>
         <Button
           type="primary"
           htmlType="submit"

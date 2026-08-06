@@ -31,7 +31,15 @@ const LogSchema = new mongoose.Schema(
     refModel: {
       type: String,
       required: true,
-      enum: ["user", "otp", "patient", "hospital", "doctor", "case"],
+      enum: [
+        "user",
+        "otp",
+        "patient",
+        "hospital",
+        "doctor",
+        "case",
+        "inventory",
+      ],
     },
     actor: {
       type: mongoose.Schema.Types.ObjectId,
