@@ -75,7 +75,9 @@ function ServiceTab() {
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 0 }}>
-              <Text strong>{record.patientDetails?.fullName}</Text>
+              <Text strong>
+                {record.patient?.firstName} {record.patient.lastName}
+              </Text>
             </div>
             <div>
               <Text type="secondary">{record.clientType}</Text>
