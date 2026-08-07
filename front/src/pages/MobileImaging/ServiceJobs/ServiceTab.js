@@ -109,10 +109,10 @@ function ServiceTab() {
       render: (_, record) => (
         <div>
           <div>
-            <Text strong>{record.equipment.name}</Text>
+            <Text strong>{record.equipment.equipmentName}</Text>
           </div>
           <div>
-            <Text type="secondary">Code: {record.equipment.code}</Text>
+            <Text type="secondary">{record.equipment.category}</Text>
           </div>
         </div>
       ),
@@ -140,9 +140,11 @@ function ServiceTab() {
       },
     },
     {
-      title: "Rate",
-      dataIndex: "rate",
-      render: (rate) => <Text>KES. {rate?.toLocaleString()}</Text>,
+      title: "Service Cost",
+      dataIndex: "serviceCost",
+      render: (_, record) => (
+        <Text>KES. {record.serviceCost?.toLocaleString()}</Text>
+      ),
     },
     {
       title: "Actions",
